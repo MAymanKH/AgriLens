@@ -2,9 +2,9 @@
 
 > **Shared specification:** This file covers your full assignment. `START_HERE.md` is authoritative for approved region/crop/science decisions, API field names, error codes, and fallback rules; `AGENTS.md` covers change control. Examples below are development fixtures, not live scientific data. If a conflict appears, flag it to the Technical Lead before changing the contract.
 
-> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. Users see their plan and **two valid alternatives**, compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
+> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. The verified demo shows their plan and **two valid alternatives**; other valid inputs may have fewer alternatives. Plans are compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
 >
-> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. No technology stack is prescribed.
+> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. MongoDB is agreed for backend persistence; languages, frameworks, hosting, and design tools remain owner choices.
 
 
 ## What this job actually means
@@ -16,8 +16,8 @@ Turn NASA's historical weather records into a **clean, repeatable data source** 
 ## Tasks and checkpoints
 
 - **T+0-3:** Agree with Research and the Technical Lead on **one region and coordinates**, a usable history period, required NASA parameters/units, missing-value rules, and year-selection definitions. Provide a sample JSON response **clearly marked as a fixture**.
-- **T+3-12:** Download/cache real daily maximum temperature and precipitation for the region from NASA POWER. Normalize dates/units; reject missing, duplicate or invalid records; keep the original source URL, spatial resolution, time standard and collection date. Provide a first real dataset and metadata.
-- **T+12-22:** Make `GET /internal/climate?region_id=...` work using the cached series. Determine **hottest** and **driest** complete historical years using transparent, reproducible rules. Test boundary/missing-data cases with Research. Coordinate the year/window convention with the Technical Lead before computing scenario metadata.
+- **T+3-12:** Download/cache real daily maximum temperature and precipitation for the region from NASA POWER. Normalize dates/units; reject missing, duplicate or invalid records; keep the original source URL, spatial resolution, time standard and collection date. Provide a first real dataset and metadata. Deliver the independently runnable `GET /internal/climate?region_id=...` and `GET /health` by T+12, including scenario metadata computed under the approved rules.
+- **T+12-22:** Integrate the working service with Comparison. Have Research independently verify **hottest** and **driest** complete historical year selections and boundary/missing-data cases. Confirm that implementation follows the year/window convention agreed by T+3; report unresolved decisions rather than choosing defaults.
 - **T+22-30:** Fix completeness, reproducibility and service errors. Ensure the live demo **does not rely on a fresh NASA request**. Provide source details and climate explanations to Research and Storytelling.
 - **T+30-36:** Support integration, fix critical failures and verify that the delivered source/period/units match the numbers shown in the app.
 
@@ -35,8 +35,8 @@ Turn NASA's historical weather records into a **clean, repeatable data source** 
   "units": {"tmax": "C", "rain": "mm/day"},
   "daily": [{"date": "YYYY-MM-DD", "tmax_c": null, "rain_mm": null}],
   "scenarios": {
-    "hottest_year": {"year": null, "rule": "max annual mean daily maximum temp among complete years"},
-    "driest_year": {"year": null, "rule": "min annual total precipitation among complete years"}
+    "hottest_year": {"year": null, "rule": "Pending Research-approved hottest-year rule"},
+    "driest_year": {"year": null, "rule": "Pending Research-approved driest-year rule"}
   },
   "provenance": {"source_url": "", "retrieved_at": "", "missing_days": null,
     "spatial_resolution": "", "time_standard": ""}

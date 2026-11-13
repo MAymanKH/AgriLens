@@ -2,9 +2,9 @@
 
 > **Shared specification:** This file covers your full assignment. `START_HERE.md` is authoritative for approved region/crop/science decisions, API field names, error codes, and fallback rules; `AGENTS.md` covers change control. Examples below are development fixtures, not live scientific data. If a conflict appears, flag it to the Technical Lead before changing the contract.
 
-> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. Users see their plan and **two valid alternatives**, compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
+> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. The verified demo shows their plan and **two valid alternatives**; other valid inputs may have fewer alternatives. Plans are compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
 >
-> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. No technology stack is prescribed.
+> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. MongoDB is agreed for backend persistence; languages, frameworks, hosting, and design tools remain owner choices.
 
 
 ## What this job actually means
@@ -21,7 +21,7 @@ Build the **working interface farmers or judges will click**. It must be clear, 
 - Four season-compatible crop controls: **Year 1 Summer / Winter; Year 2 Summer / Winter**. Pre-fill a verified example.
 - One **priority** selection: **Less water**, **Less heat exposure**, **More crop diversity**.
 - Main **Compare rotations** button; helpful invalid-selection message; keep the user's input after failures.
-- Include a soil field only if Research and the Lead have a sourced rule that uses it.
+- Keep **More crop diversity** as the approved `soil` priority. Do not add a separate soil-input field without an approved public contract change and sourced rule.
 
 ### Screen 2: Compare
 

@@ -2,9 +2,9 @@
 
 > **Shared specification:** This file covers your full assignment. `START_HERE.md` is authoritative for approved region/crop/science decisions, API field names, error codes, and fallback rules; `AGENTS.md` covers change control. Examples below are development fixtures, not live scientific data. If a conflict appears, flag it to the Technical Lead before changing the contract.
 
-> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. Users see their plan and **two valid alternatives**, compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
+> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. The verified demo shows their plan and **two valid alternatives**; other valid inputs may have fewer alternatives. Plans are compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
 >
-> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. No technology stack is prescribed.
+> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. MongoDB is agreed for backend persistence; languages, frameworks, hosting, and design tools remain owner choices.
 
 
 ## What you are responsible for
@@ -16,7 +16,7 @@ You are the person who turns the climate and crop data into **three sensible cro
 ## Exact work, in order
 
 - **T+0-3:** Agree on the one region, four slots, allowed priorities, heat threshold, historical-window method and API fields with Research and the app owner. Publish a **working example request, response, and mock fixtures** from the other services. Set the rule for winter crops spanning December-January.
-- **T+3-12:** Build a Comparison API against **mock Climate/Crop responses**. Check season compatibility, keep the user baseline unchanged, generate two **distinct valid** alternatives, and calculate sourced water-range totals and qualitative crop-diversity notes. Support clear invalid-input errors. Start a reproducible test suite.
+- **T+3-12:** Build a Comparison API against **mock Climate/Crop responses**. Check season compatibility, keep the user baseline unchanged, generate up to two **distinct valid** alternatives, with two required for the verified demo sample, and calculate sourced water-range totals and qualitative crop-diversity notes. Support clear invalid-input errors. Start a reproducible test suite.
 - **T+12-22:** Connect live internal Climate and Crop APIs. Count historical heat-threshold days across each crop's approved growing window; use complete comparable seasons and documented average/hottest/driest scenario rules. Rank or explain options by the selected priority, but keep trade-offs visible. Deliver the **first real end-to-end response** to the app and have Research independently check it.
 - **T+22-30:** Integrate the complete UI journey, handle unavailable services, source metadata, bad parameters and missing data; deploy with a repeatable start procedure. Freeze new features at T+30.
 - **T+30-36:** Fix only blockers, support demo recording, test deployment/public access and provide clear method/limitations for the pitch.
@@ -25,8 +25,8 @@ You are the person who turns the climate and crop data into **three sensible cro
 
 **Public:**
 
-- `GET /api/config`: supported region, slot order, available crops by season, priorities, historical scenarios, sample baseline. Only include a soil selector if it actually affects a documented calculation.
-- `POST /api/compare`: accept the user's four-crop baseline, priority and climate scenario; return the baseline and two alternatives with comparison values, units, reasons, references and uncertainty.
+- `GET /api/config`: supported region, slot order, available crops by season, priorities, historical scenarios, sample baseline. Include the approved `soil` priority as **More crop diversity**. Its effect on alternative selection must use Research-approved qualitative rules; do not add a separate soil-input field or numeric soil-health score.
+- `POST /api/compare`: accept the user's four-crop baseline, priority and climate scenario; return the baseline and up to two distinct valid alternatives with comparison values, units, reasons, references and uncertainty. The verified demo sample must return both alternatives.
 - `GET /health`: service status.
 
 **Request fixture (identifiers are illustrative, not approved crop records):**
@@ -40,7 +40,7 @@ You are the person who turns the climate and crop data into **three sensible cro
 }
 ```
 
-`priority`: `water | heat | soil`; `scenario`: `average | hottest_year | driest_year`. A soil property is optional **only after Research approves a real rule**.
+`priority`: `water | heat | soil`; `scenario`: `average | hottest_year | driest_year`. The `soil` priority is part of the approved contract. Any additional soil-input property requires an explicit contract change and Research approval before implementation.
 
 **Response shape (placeholder fields are not measurements):**
 
@@ -62,7 +62,7 @@ You are the person who turns the climate and crop data into **three sensible cro
 }
 ```
 
-The **verified demo input** must produce exactly three complete plans. For other valid inputs, return **one to three** plans (baseline plus only distinct, season-valid alternatives) and add an explanation in `meta.warnings` when fewer than three exist. Never repeat or invent a rotation. Keep these IDs stable even if display order changes; add a clear best-fit indication only if it is defensible. Unknown metric = `null` + an explanation, **not zero**. Ensure every quantitative value has an explicit unit and defensible method. Do not claim a scientifically guaranteed global optimum.
+The **verified demo input** must produce exactly three complete plans. For other valid inputs, return **one to three** plans (baseline plus only distinct, season-valid alternatives) and add an explanation in `meta.warnings` when fewer than three exist. Never repeat or invent a rotation. Keep these IDs stable and the baseline first; add a clear best-fit indication only if it is defensible. Unknown metric = `null` + an explanation, **not zero**. Ensure every quantitative value has an explicit unit and defensible method. Do not claim a scientifically guaranteed global optimum.
 
 **Internal inputs you consume:**
 
@@ -89,7 +89,7 @@ No imports from another service's source or database. Use API fixtures until the
 
 ## Handoffs and limits
 
-**To App:** API fixtures by **T+3**, mock-driven endpoint by T+12, verified real response by T+22. **From Climate and Crop:** independent APIs, fixtures, completeness/source checks by T+12. **From Research:** approved crop facts, calendar dates, accepted heat-threshold and method by T+12-22. **To Storytelling:** one checked example with short reasoning by T+22.
+**To App:** API fixtures by **T+3**, mock-driven endpoint by T+12, verified real response by T+22. **From Climate and Crop:** independent APIs, fixtures, completeness/source checks by T+12. **From Research:** approved heat/calendar/scenario methods by T+3; verified crop facts and seasonal-validity inputs by T+12; independent calculation checks by T+22. Unresolved approvals remain Pending. **To Storytelling:** one checked example with short reasoning by T+22.
 
 Do not build extra features (accounts, forecasts, profit/yield or numerical soil-health predictions). If only one metric is fully defensible, show it properly rather than inventing others.
 

@@ -10,7 +10,7 @@ A farmer or agricultural advisor chooses a two-year sequence of four crops and a
 
 The only three screens are **Setup -> Compare -> Details & historical stress test**. Setup uses one preselected region and four slots in order: `y1_summer`, `y1_winter`, `y2_summer`, `y2_winter`. Priorities: `water`, `heat`, `soil` (displayed as Less water, Less heat exposure, More crop diversity). Scenarios: `average`, `hottest_year`, `driest_year`. Historical years illustrate past conditions, **not future forecasts**.
 
-**Out of scope:** logins, national coverage, mapping, dynamic crop prices, yield/profit prediction, measured irrigation savings, numerical soil-health scores, hardware, and unapproved science claims. No language, framework, hosting provider, database or design tool is mandated.
+**Out of scope:** logins, national coverage, mapping, dynamic crop prices, yield/profit prediction, measured irrigation savings, numerical soil-health scores, hardware, and unapproved science claims. MongoDB is agreed for backend persistence. No language, framework, hosting provider, or design tool is mandated.
 
 ## 2. Approved decisions and open decisions
 
@@ -19,10 +19,12 @@ At T+3, the Technical Lead records the team's choices here with Research's sign-
 | Decision | Current rule/value | Status | Decision owner / required sign-off |
 |---|---|---|---|
 | App flow | Exactly three screens; four slots, baseline + at most two alternatives | Approved | Technical Lead + App + UI/UX |
+| Backend persistence technology | MongoDB, as confirmed by the Technical Lead on 2026-11-13; no language, framework, or hosting choice implied | Approved | Technical Lead reports team agreement |
+| MongoDB storage design | [Service-owned, versioned snapshots](docs/database/README.md); proposed internal schemas, no API changes | Proposed; service-owner review pending | Climate + Crop owners review their schemas; Technical Lead coordinates |
 | Slot order | `y1_summer`, `y1_winter`, `y2_summer`, `y2_winter` | Approved | Technical Lead |
 | Priorities and scenarios | `water/heat/soil`; `average/hottest_year/driest_year` | Approved | Technical Lead + Research |
 | Region name, ID and representative coordinates | **To be selected and recorded** | Pending, T+3 | Research proposes; Technical Lead approves |
-| Supported 4-6 crops, crop IDs and allowed seasons | **To be verified and recorded** | Pending, shortlist T+3; catalog T+12 | Research approves; Crop owner publishes |
+| Supported 4-6 crops, crop IDs and allowed seasons | **To be verified and recorded** | Pending, candidate shortlist T+3; initial sourced records T+5; catalog T+12 | Research approves; Crop owner publishes |
 | Historical period, NASA parameters and completeness rule | **To be verified and recorded** | Pending, T+3 | Climate owner proposes; Research approves |
 | Heat threshold and growing-window calendar rule | **To be defined with units and source** | Pending, T+3 | Research approves; Technical Lead implements |
 | Hottest/driest scenario selection and tie-breaks | **To be documented using complete comparable periods** | Pending, T+3 | Climate + Research; Technical Lead approves cross-year semantics |
@@ -119,7 +121,7 @@ If the core sample cannot produce two credible alternatives, **reduce crop scope
 | `roles/03_Backend_Crop_Agriculture.md` | Approved crop catalog, planting windows and internal API | Fixture T+3; verified catalog and service T+12 |
 | `roles/04_App_Developer.md` | Three interactive screens, public API, responsive/error UI | Mock flow T+12; real complete journey T+22 |
 | `roles/05_UIUX_Designer.md` | Designs for the exact three screens and usability review | Setup T+5; other screens T+8; ongoing testing T+30 |
-| `roles/06_Research_Data.md` | Source ledger, region/crop approvals, independent math/claim checking | Decisions T+3; crop shortlist T+5; checks T+22 |
+| `roles/06_Research_Data.md` | Source ledger, region/crop approvals, independent math/claim checking | Decisions and candidate shortlist T+3; initial sourced records T+5; catalog T+12; checks T+22 |
 | `roles/07_Storytelling_Presentation.md` | Narrative, slides, video, demonstration, submission readiness | Outline T+12; edited media T+30; verified package T+36 |
 
 **Timing:** T+0-3 align decisions/fixtures. T+3-12 build services, mock screens and media outline. T+12-22 integrate and validate one real journey. T+22-30 polish and freeze. T+30-36 fix critical blockers and finalize; reserve remaining time for contingency.

@@ -2,9 +2,9 @@
 
 > **Shared specification:** This file covers your full assignment. `START_HERE.md` is authoritative for approved region/crop/science decisions, API field names, error codes, and fallback rules; `AGENTS.md` covers change control. Examples below are development fixtures, not live scientific data. If a conflict appears, flag it to the Technical Lead before changing the contract.
 
-> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. Users see their plan and **two valid alternatives**, compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
+> **Context:** AgriLens is a 48-hour NASA Space Apps prototype for comparing crop rotations in **one verified Egyptian region**. One prefilled farm has **four slots**: Year 1 summer, Year 1 winter, Year 2 summer, Year 2 winter. The verified demo shows their plan and **two valid alternatives**; other valid inputs may have fewer alternatives. Plans are compared by approximate seasonal crop-water needs, historical heat exposure, and qualitative crop-diversity/soil notes. The only app screens are Setup, Compare, and Details/Stress Test.
 >
-> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. No technology stack is prescribed.
+> **Timing:** `T+N` means **N hours after kickoff**. Target a working end-to-end demo by **T+22**, freeze new features at **T+30**, and finish the reviewed package by **T+36**, leaving the remaining time as contingency. MongoDB is agreed for backend persistence; languages, frameworks, hosting, and design tools remain owner choices.
 
 
 ## What this job actually means
@@ -15,10 +15,10 @@ Find the **right data for the one region and 4-6 crops**, organize it so develop
 
 ## Concrete work and checkpoints
 
-- **T+0-3:** With the team, select **one Egyptian region** with usable data and **4-6 candidate crops**. Decide which sources are reliable enough for seasons, growing windows, approximate water ranges, crop family/legume flags and heat threshold. Open a source ledger: **claim -> value -> unit -> location relevance -> URL -> uncertainty**.
-- **T+3-8:** Give the Climate developer checked coordinates, period and needed NASA variables. Give the Crop developer **initial approved records** with seasons/windows and exact references. Share early usable records; do not wait to fill the entire catalog.
+- **T+0-3:** With the team, select **one Egyptian region** with usable data and **4-6 candidate crops**. Decide which sources are reliable enough for seasons, growing windows, approximate water ranges, crop family/legume flags and heat threshold. Approve and hand off region coordinates, climate period/parameters, completeness rules, heat threshold, growing-window/calendar method, and scenario-selection definitions by T+3, or record each unresolved item as Pending with its owner and fixture workaround. Open a source ledger: **claim -> value -> unit -> location relevance -> URL -> uncertainty**.
+- **T+3-8:** Review the Climate developer's first records against the decisions handed off by T+3. Give the Crop developer **initial approved records by T+5** with seasons/windows and exact references. Share early usable records; do not wait to fill the entire catalog.
 - **T+8-12:** Finish the initial approved crop catalog and NASA completeness review. Confirm there are **three distinct, plausible 4-slot rotations** and no unsupported crop/season combinations.
-- **T+12-22:** Independently reproduce **one water range total**, **one count of days above the heat threshold**, and the **hottest/driest year selections**. Record what an average or historical-stress scenario means, especially if winter crosses a year boundary. Reject results with missing/unverifiable inputs.
+- **T+12-22:** Independently reproduce **one water range total**, **one count of days above the heat threshold**, and the **hottest/driest year selections**. Verify implementation against the average/historical-stress and cross-year winter definitions agreed by T+3. Reject results with missing/unverifiable inputs.
 - **T+22-30:** Audit the values displayed across all three screens against service outputs and sources. Finish `docs/METHOD.md` (math and assumptions) and give Storytelling only checked claims. Identify which limitations users must see clearly.
 - **T+30-36:** Review the pitch script, slides, video captions, units and attribution. Prepare short answers to "Where did the data come from?", "How accurate is it?", and "What does your score mean?".
 
@@ -44,8 +44,8 @@ Find the **right data for the one region and 4-6 crops**, organize it so develop
 ## Who gets what, and when
 
 - **Climate Developer:** checked region/coordinates and needed variables by **T+3**, source/completeness review by **T+12**.
-- **Crop Developer:** an initial sourced shortlist by **T+5**, complete MVP catalog by **T+12**.
-- **Technical Lead:** approved seasonal validity, two viable alternatives, heat method and hand-check cases by **T+12-22**.
+- **Crop Developer:** a candidate shortlist by **T+3**, initial sourced records by **T+5**, complete MVP catalog by **T+12**.
+- **Technical Lead:** approved heat/calendar/scenario methods by **T+3**; seasonal-validity inputs and viable sample rotations by **T+12**; independent calculation checks by **T+22**. Unresolved approvals remain Pending.
 - **UI/UX + App:** approved terms, units and limitation text; validation of displayed results by **T+22-30**.
 - **Storytelling:** a sourced, reliable claim sheet by **T+22**, a final media fact-check by **T+36**.
 
