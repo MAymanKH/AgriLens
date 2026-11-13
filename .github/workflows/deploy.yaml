@@ -42,7 +42,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || '22' }}
-          fingerprint: ${{ secrets.SSH_HOST_FINGERPRINT }}
           envs: PROJECT_PATH,PROJECT_NAME,DEPLOY_SHA
           command_timeout: 30m
           script: |
