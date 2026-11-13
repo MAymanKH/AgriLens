@@ -17,8 +17,8 @@ from dev import environment
 
 def config(name):
     return {'apps': [{
-        'name': name, 'cwd': str(ROOT), 'script': str(ROOT / 'tools/backend.py'),
-        'args': ['run'], 'interpreter': str(ROOT / '.local/mongo-venv/bin/python'),
+        'name': name, 'cwd': str(ROOT), 'script': str(ROOT / '.local/mongo-venv/bin/python'),
+        'args': [str(ROOT / 'tools/backend.py'), 'run'], 'interpreter': 'none',
         'exec_mode': 'fork', 'instances': 1, 'autorestart': True,
         'restart_delay': 3000, 'kill_timeout': 25000,
     }]}

@@ -2,6 +2,8 @@ import importlib.util
 import io
 import json
 import socket
+import subprocess
+import sys
 import tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -17,10 +19,24 @@ class ReadinessTests(unittest.TestCase):
     def test_process_supervises_exact_release_with_graceful_shutdown(self):
         app = process.config('agrilens')['apps'][0]
         self.assertEqual(app['cwd'], str(process.ROOT))
-        self.assertEqual(app['script'], str(process.ROOT / 'tools/backend.py'))
-        self.assertEqual(app['args'], ['run'])
+        self.assertEqual(app['script'], str(process.ROOT / '.local/mongo-venv/bin/python'))
+        self.assertEqual(app['args'], [str(process.ROOT / 'tools/backend.py'), 'run'])
+        self.assertEqual(app['interpreter'], 'none')
         self.assertGreater(app['kill_timeout'], 18000)
         self.assertEqual(app['instances'], 1)
+
+    def test_direct_command_runs_under_a_path_containing_bun(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / 'ubuntu'
+            (root / '.local/mongo-venv/bin').mkdir(parents=True)
+            (root / '.local/mongo-venv/bin/python').symlink_to(sys.executable)
+            (root / 'tools').mkdir()
+            (root / 'tools/backend.py').write_text('import sys; print(sys.argv[1])')
+            with patch.object(process, 'ROOT', root):
+                app = process.config('agrilens')['apps'][0]
+            self.assertEqual(app['interpreter'], 'none')
+            result = subprocess.run([app['script'], *app['args']], capture_output=True, text=True, check=True)
+            self.assertEqual(result.stdout.strip(), 'run')
 
     def test_diagnostics_print_only_selected_process_and_redact_credentials(self):
         with tempfile.TemporaryDirectory() as temp:
