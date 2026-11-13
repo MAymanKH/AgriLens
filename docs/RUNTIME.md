@@ -4,7 +4,7 @@ These are Technical Lead defaults, effective immediately. No additional team mee
 
 ## Start development today
 
-Python 3.10 or newer runs the development tools without packages. An installed native MongoDB Community 8.0 server runs persistence. Python is a tooling choice, not a required backend language.
+Python 3.10 or newer runs the HTTP fixture tools without packages. The [local research importer](database/local-import.md) uses the pinned dependencies in `requirements-mongo.txt`. An installed native MongoDB Community 8.0 server runs persistence. Python is a tooling choice, not a required backend language.
 
 ```sh
 cp .env.example .env
@@ -95,7 +95,7 @@ The App only calls Comparison. Comparison calls the two internal services. Compa
 
 ## Start native MongoDB
 
-Install MongoDB Community 8.0 using the package or native binary appropriate for your operating system. Only `mongod` is needed to run the server. No Python database driver, container runtime, or background service manager is required by these tools. If MongoDB already runs on port 27017, use that instance instead of starting another.
+Install MongoDB Community 8.0 using the package or native binary appropriate for your operating system. Only `mongod` is needed to run the server. No container runtime or background service manager is required. The import commands use the separately installed Python tooling dependencies. If MongoDB already runs on port 27017, use that instance instead of starting another.
 
 ```sh
 python3 tools/dev.py mongo
@@ -104,6 +104,8 @@ python3 tools/dev.py mongo
 The launcher starts one foreground `mongod` process on `127.0.0.1:27017`, without authentication. Data stays in ignored `.local/mongo/`. Ctrl+C stops the process and retains data. WiredTiger's internal cache is limited to 0.25 GiB; total process memory can be higher. Set `MONGOD_BIN` if the executable is outside PATH. If the port changes, update `MONGODB_URI` as well.
 
 Both backend services can read/write all local databases. Collection ownership is a code convention, not a permission boundary. Comparison uses internal APIs rather than querying their collections. HTTP fixture servers never use MongoDB; storage tests use database names ending in `_fixtures`.
+
+Follow [the local import guide](database/local-import.md) to install the small tooling environment, run `python tools/dev.py import-data`, and read back the stored records with `python tools/dev.py verify-data`. Each developer imports the same Git-tracked data into their own local databases. Matching imports are repeatable and partial staging imports can resume. Scientific status remains unapproved.
 
 MongoDB creates databases and collections on first write. The Crop importer uses `agrilens_crops.crop_catalogs`; Climate uses `agrilens_climate.climate_datasets` and `climate_daily`. The Climate owner creates the unique `{dataset_id: 1, date: 1}` index through the chosen driver before importing daily records. No synthetic measurements are seeded into these databases.
 

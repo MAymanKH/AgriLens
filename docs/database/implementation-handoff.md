@@ -1,6 +1,6 @@
 # Implement the MongoDB design
 
-Implement [the schema defaults](mongodb-schema.md) using [the local runtime](../RUNTIME.md). Native server startup and HTTP fixtures are provided. Real service validators, importers, adapters, and scientific datasets still need implementation.
+Implement [the schema defaults](mongodb-schema.md) using [the local runtime](../RUNTIME.md). Native server startup, HTTP fixtures, and a [local staging importer](local-import.md) are provided. Live service adapters, scientific publication, and any richer service-owned validators still need implementation.
 
 ## Use the established defaults
 

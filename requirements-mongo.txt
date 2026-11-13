@@ -1,0 +1,3 @@
+# Local database tooling only; backend services choose their own drivers.
+pymongo==4.20.0
+dnspython==2.9.2

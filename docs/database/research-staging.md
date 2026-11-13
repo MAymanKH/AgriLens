@@ -2,6 +2,8 @@
 
 The Zankalon files are candidate evidence from [PR #1](https://github.com/MAymanKH/AgriLens/pull/1). Scientific approval remains Pending in `START_HERE.md`. This procedure creates local files. It does not write to MongoDB, publish a dataset, or approve a claim.
 
+To load these files into each developer's own database, use [the local import guide](local-import.md). Importing preserves their unapproved status.
+
 From the repository root, rebuild the files using the retained NASA response:
 
 ```sh

@@ -26,10 +26,19 @@ def environment():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=['fixtures', 'run', 'mongo'])
+    parser.add_argument('command', choices=['fixtures', 'run', 'mongo', 'import-data', 'verify-data'])
     parser.add_argument('service', choices=['all', *SERVICES], default='all', nargs='?')
     parser.add_argument('--profile', default='normal')
     args = parser.parse_args()
+    if args.command in {'import-data', 'verify-data'}:
+        try:
+            import pymongo
+        except ImportError:
+            parser.error('Install the local tooling dependency: python -m pip install -r requirements-mongo.txt. See docs/database/local-import.md.')
+        cmd = [sys.executable, str(ROOT / 'scripts/import_research_data.py')]
+        if args.command == 'verify-data':
+            cmd.append('--verify')
+        return subprocess.call(cmd, cwd=ROOT, env=environment())
     if args.command == 'mongo':
         env = environment()
         binary = shutil.which(env.get('MONGOD_BIN', 'mongod'))
