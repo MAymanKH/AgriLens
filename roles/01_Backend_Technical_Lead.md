@@ -98,3 +98,7 @@ Do not build extra features (accounts, forecasts, profit/yield or numerical soil
 - [Official Field Shift challenge](https://www.spaceappschallenge.org/2026/challenges/field-shift-adapting-farms-with-nasa-data/) - what the product must solve.
 - [NASA POWER Daily API](https://power.larc.nasa.gov/docs/services/api/temporal/daily/) - available climate series and limitations.
 - [FAO: indicative crop water needs](https://www.fao.org/4/s2022e/s2022e07.htm) - interpretation of ranges and their limitations.
+
+## Local development handoff
+
+Use [the runtime defaults](../docs/RUNTIME.md) and [synthetic HTTP fixtures](../fixtures/README.md) now. No additional implementation agreement is required to start. Owners may change private code/storage while preserving the shared APIs. The Lead owns integration and ranking; Research owns scientific evidence and methods.

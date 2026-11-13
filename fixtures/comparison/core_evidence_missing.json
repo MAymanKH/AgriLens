@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "INSUFFICIENT_DATA",
+    "message": "Fixture crop-season evidence is missing; no recommendation can be verified."
+  }
+}

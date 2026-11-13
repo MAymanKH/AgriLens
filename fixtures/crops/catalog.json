@@ -1,0 +1,98 @@
+{
+  "region_id": "sample_region",
+  "slot_order": [
+    "y1_summer",
+    "y1_winter",
+    "y2_summer",
+    "y2_winter"
+  ],
+  "crops": [
+    {
+      "id": "summer_a",
+      "name": "Fixture summer_a",
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 6,
+        "end_month": 8
+      },
+      "water_need_mm": {
+        "min": 100,
+        "max": 200
+      },
+      "family": "fixture_family_a",
+      "is_legume": false,
+      "source_ids": [
+        "fixture_rules"
+      ]
+    },
+    {
+      "id": "summer_b",
+      "name": "Fixture summer_b",
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 6,
+        "end_month": 8
+      },
+      "water_need_mm": {
+        "min": 60,
+        "max": 100
+      },
+      "family": "fixture_family_b",
+      "is_legume": true,
+      "source_ids": [
+        "fixture_rules"
+      ]
+    },
+    {
+      "id": "winter_a",
+      "name": "Fixture winter_a",
+      "valid_seasons": [
+        "winter"
+      ],
+      "grow_window": {
+        "start_month": 12,
+        "end_month": 2
+      },
+      "water_need_mm": {
+        "min": 80,
+        "max": 120
+      },
+      "family": "fixture_family_c",
+      "is_legume": false,
+      "source_ids": [
+        "fixture_rules"
+      ]
+    },
+    {
+      "id": "winter_b",
+      "name": "Fixture winter_b",
+      "valid_seasons": [
+        "winter"
+      ],
+      "grow_window": {
+        "start_month": 12,
+        "end_month": 2
+      },
+      "water_need_mm": {
+        "min": 50,
+        "max": 70
+      },
+      "family": "fixture_family_b",
+      "is_legume": true,
+      "source_ids": [
+        "fixture_rules"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "fixture_rules",
+      "url": "https://example.invalid/agrilens-fixture",
+      "supports": "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts."
+    }
+  ]
+}

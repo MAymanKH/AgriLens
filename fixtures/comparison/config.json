@@ -1,0 +1,50 @@
+{
+  "region": {
+    "id": "sample_region",
+    "name": "SYNTHETIC fixture region"
+  },
+  "slot_order": [
+    "y1_summer",
+    "y1_winter",
+    "y2_summer",
+    "y2_winter"
+  ],
+  "crops_by_season": {
+    "summer": [
+      {
+        "id": "summer_a",
+        "name": "Fixture summer_a"
+      },
+      {
+        "id": "summer_b",
+        "name": "Fixture summer_b"
+      }
+    ],
+    "winter": [
+      {
+        "id": "winter_a",
+        "name": "Fixture winter_a"
+      },
+      {
+        "id": "winter_b",
+        "name": "Fixture winter_b"
+      }
+    ]
+  },
+  "priorities": [
+    "water",
+    "heat",
+    "soil"
+  ],
+  "scenarios": [
+    "average",
+    "hottest_year",
+    "driest_year"
+  ],
+  "sample_baseline": [
+    "summer_a",
+    "winter_a",
+    "summer_a",
+    "winter_a"
+  ]
+}

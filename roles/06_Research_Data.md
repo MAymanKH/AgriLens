@@ -60,3 +60,7 @@ Every displayed scientific value is traceable to a raw record, a documented calc
 - [FAO Crop Calendar](https://cropcalendar.apps.fao.org/?language=en&pagename=%2Fwelcome.do) - potential planting/harvest windows, check region applicability.
 - [FAO: indicative crop water needs](https://www.fao.org/4/s2022e/s2022e07.htm) - broad crop-water ranges and usage limits.
 - [FAO species diversification](https://www.fao.org/conservation-agriculture/in-practice/species-diversification/en/) - principles for qualitative rotation notes.
+
+## Start independently
+
+Own `docs/SOURCES.md` including stable source IDs and human-readable titles, and `docs/METHOD.md` including scientific definitions and worked examples. Publish source-backed decisions incrementally in the root register without waiting for a group meeting; the Lead retains the final integration/scope decision. Backend runtime and schema work are not Research responsibilities. Final scientific audits still require actual service outputs, App screens, and presentation drafts.

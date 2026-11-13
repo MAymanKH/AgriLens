@@ -1,6 +1,6 @@
 # MongoDB storage design
 
-Status: proposed internal design, 2026-11-13. MongoDB is the team's agreed technology. Climate and Crop owners have not yet approved these collection shapes. Scientific decisions marked Pending in [START_HERE.md](../../START_HERE.md) remain Pending.
+Status: Technical Lead implementation defaults, 2026-11-13. No separate service-owner approval round is required. Owners can adapt private storage while preserving the APIs and evidence rules. Scientific decisions marked Pending in [START_HERE.md](../../START_HERE.md) remain Pending.
 
 This design supports the existing one-region prototype. It makes approved data replaceable and reproducible without changing the public API or making services share database internals.
 
@@ -23,7 +23,7 @@ Each internal service reads one explicitly selected, approved snapshot and retur
 
 ## Ownership and shape
 
-One MongoDB deployment can host separate logical databases. Deployment topology remains the team's choice.
+The local prototype uses one MongoDB instance with separate logical databases. [Runtime defaults](../RUNTIME.md) provide startup commands and connection settings.
 
 | Database | Collection | Owner | Read unit |
 |---|---|---|---|
@@ -33,7 +33,7 @@ One MongoDB deployment can host separate logical databases. Deployment topology 
 
 Comparison has no database requirement initially. Approved region configuration, sample baseline, and calculation methods remain version-controlled service configuration. There is no global `regions`, `sources`, or `users` collection to coordinate across owners.
 
-Production credentials limit each service to its own database. Use separate importer credentials for writes. Comparison cannot read either database directly. Fixtures use separate test databases and credentials, never the live deployment's selected datasets.
+The local prototype runs without authentication or per-service permission restrictions. Service ownership is a code convention: Comparison uses internal APIs. Fixture storage tests use separate databases ending in `_fixtures`; HTTP fixture servers never write to MongoDB. A future production deployment can add scoped credentials without changing APIs.
 
 Logical relationships are:
 
@@ -51,7 +51,7 @@ App -> Comparison API
 
 Catalogs embed their small crop and source sets because consumers read them together. Climate history uses separate daily documents so extending the historical period does not grow one unbounded array. The service assembles the required `daily` API array in date order. This does not introduce API pagination.
 
-The repository sketches are in [the schema reference](mongodb-schema.md). Publication and owner acceptance are in [the implementation handoff](implementation-handoff.md).
+The repository sketches are in [the schema reference](mongodb-schema.md). Publication and implementation responsibilities are in [the implementation handoff](implementation-handoff.md).
 
 ## Flexibility with explicit boundaries
 
@@ -93,7 +93,7 @@ The configured architecture review models were unavailable. This design compares
 
 No accounts, saved farm history, numerical soil scores, forecasts, price tables, or stored ranking results are introduced. More regions and crops can use the same keys later, but the current release still advertises only the approved region and 4–6 crops.
 
-Before implementation, service owners resolve the proposed internal field shapes. Research resolves the region, crop facts, climate period, heat threshold, missing-data method, average/scenario definitions, and winter calendar. No sample in this design resolves those decisions.
+Owners implement these defaults immediately and can adjust private storage. Research owns the source ledger and scientific methods: region, crop facts, climate period, heat threshold, missing-data method, average/scenario definitions, and winter calendar. The Lead implements ranking and integration. No fixture resolves those scientific decisions.
 
 The role documents now match the root contract: `soil` is the approved **More crop diversity** priority, not an additional soil-input field or numeric score. Climate and Crop deliver runnable services by T+12; T+12–22 is integration and independent verification. The candidate shortlist is due at T+3, initial sourced crop records at T+5, and the verified catalog at T+12. These wording and schedule corrections do not approve pending scientific values or change API fields.
 
@@ -101,4 +101,4 @@ The role documents now match the root contract: `soil` is the approved **More cr
 
 The design uses [embedded data](https://www.mongodb.com/docs/manual/data-modeling/embedding/) for bounded catalogs and respects the [16 MiB BSON document limit](https://www.mongodb.com/docs/manual/core/document/). A large raw NASA payload belongs in a durable artifact store or checked file, with its URI and checksum in the manifest.
 
-MongoDB supports [schema validation](https://www.mongodb.com/docs/manual/core/schema-validation/), [unique indexes combined with validation](https://www.mongodb.com/docs/manual/tutorial/unique-indexes-schema-validation/), and [explicit schema versions](https://www.mongodb.com/docs/manual/data-modeling/design-patterns/data-versioning/schema-versioning/). The chosen MongoDB server and driver versions still need to be pinned and tested by the implementers.
+MongoDB supports [schema validation](https://www.mongodb.com/docs/manual/core/schema-validation/), [unique indexes combined with validation](https://www.mongodb.com/docs/manual/tutorial/unique-indexes-schema-validation/), and [explicit schema versions](https://www.mongodb.com/docs/manual/data-modeling/design-patterns/data-versioning/schema-versioning/). The local runtime selects MongoDB 8.0. Each owner selects and records a compatible driver version.

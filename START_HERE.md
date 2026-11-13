@@ -20,7 +20,9 @@ At T+3, the Technical Lead records the team's choices here with Research's sign-
 |---|---|---|---|
 | App flow | Exactly three screens; four slots, baseline + at most two alternatives | Approved | Technical Lead + App + UI/UX |
 | Backend persistence technology | MongoDB, as confirmed by the Technical Lead on 2026-11-13; no language, framework, or hosting choice implied | Approved | Technical Lead reports team agreement |
-| MongoDB storage design | [Service-owned, versioned snapshots](docs/database/README.md); proposed internal schemas, no API changes | Proposed; service-owner review pending | Climate + Crop owners review their schemas; Technical Lead coordinates |
+| MongoDB storage design | [Service-owned, versioned snapshots](docs/database/README.md) as implementation defaults; owners can adapt private storage without changing APIs | Adopted by Technical Lead, 2026-11-13 | Service owners implement; no separate schema sign-off gate |
+| Local prototype runtime | [Runtime defaults](docs/RUNTIME.md): Comparison 8000, Climate 8001, Crop 8002; local MongoDB 27017 without authentication | Adopted by Technical Lead, 2026-11-13 | Backend owners implement; Lead integrates |
+| Development fixtures | [Synthetic HTTP cases](fixtures/README.md); runnable independently of Research data and MongoDB | Development only; never scientific approval | Lead maintains tooling; owners use cases for implementation |
 | Slot order | `y1_summer`, `y1_winter`, `y2_summer`, `y2_winter` | Approved | Technical Lead |
 | Priorities and scenarios | `water/heat/soil`; `average/hottest_year/driest_year` | Approved | Technical Lead + Research |
 | Region name, ID and representative coordinates | **To be selected and recorded** | Pending, T+3 | Research proposes; Technical Lead approves |
@@ -83,6 +85,8 @@ These are the common field names and meanings. **Examples are structural, not re
 - Standard error shape: `{"error":{"code":"INVALID_INPUT","message":"Explain what to fix."}}`. Use stable codes `INVALID_INPUT`, `UNKNOWN_REGION`, `UNSUPPORTED_SCENARIO`, `INSUFFICIENT_DATA`, `NO_VALID_ROTATION`, `SERVICE_UNAVAILABLE` as appropriate. Response messages should be safe to display to a user.
 
 **Contract change rule:** The owner proposes the exact field/meaning change; the Technical Lead checks the public effect; **every affected consumer** explicitly agrees before merging (App for public; Comparison Engine for internal). Research also approves changes to scientific meaning. Update this section, fixtures, impacted role files, and tests **in the same change**. Otherwise keep the current contract and use adapters/fixtures.
+
+Local HTTP status codes, addresses, configuration, startup entrypoints, and timeouts are defined in [the runtime guide](docs/RUNTIME.md). These are Lead-set prototype defaults, not an additional agreement gate. Scientific approvals and shared-contract change control still apply.
 
 ## 4. Failure and fallback policy
 

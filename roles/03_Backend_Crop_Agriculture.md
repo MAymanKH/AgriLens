@@ -68,3 +68,7 @@ A season might cross December-January. Define clearly how `start_month` and `end
 - [FAO Crop Calendar](https://cropcalendar.apps.fao.org/?language=en&pagename=%2Fwelcome.do) - candidate growing seasons, only where local coverage supports them.
 - [FAO: indicative crop water needs](https://www.fao.org/4/s2022e/s2022e07.htm) - range estimates and limitations.
 - [FAO crop rotation / species diversification](https://www.fao.org/conservation-agriculture/in-practice/species-diversification/en/) - qualitative legume/diversity reasoning, not a numeric soil score.
+
+## Local development handoff
+
+Use [the runtime defaults](../docs/RUNTIME.md) and [synthetic HTTP fixtures](../fixtures/README.md) now. No additional implementation agreement is required to start. Owners may change private code/storage while preserving the shared APIs. The Lead owns integration and ranking; Research owns scientific evidence and methods.

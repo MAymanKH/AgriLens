@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "SERVICE_UNAVAILABLE",
+    "message": "Fixture configuration service unavailable. Retry."
+  }
+}

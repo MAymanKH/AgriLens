@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "Provide region_id."
+  }
+}

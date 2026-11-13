@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "INSUFFICIENT_DATA",
+    "message": "Fixture core validation evidence is missing."
+  }
+}

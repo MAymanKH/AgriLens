@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "UNKNOWN_REGION",
+    "message": "Fixture: correct region_id."
+  }
+}

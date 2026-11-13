@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "UNKNOWN_REGION",
+    "message": "This fixture region is not supported."
+  }
+}

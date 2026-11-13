@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "INSUFFICIENT_DATA",
+    "message": "Fixture historical window has missing daily observations."
+  }
+}

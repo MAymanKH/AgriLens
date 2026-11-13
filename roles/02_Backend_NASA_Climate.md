@@ -68,3 +68,7 @@ The lead counts crop-specific hot days using **your daily time series**. A histo
 - [NASA POWER Daily API](https://power.larc.nasa.gov/docs/services/api/temporal/daily/) - request parameters, time conventions and data limits.
 - [NASA POWER parameters](https://power.larc.nasa.gov/docs/tutorials/parameters/) - verify actual parameter names and measurement units.
 - [NASA POWER data access viewer](https://power.larc.nasa.gov/data-access-viewer/) - useful for checking the series manually.
+
+## Local development handoff
+
+Use [the runtime defaults](../docs/RUNTIME.md) and [synthetic HTTP fixtures](../fixtures/README.md) now. No additional implementation agreement is required to start. Owners may change private code/storage while preserving the shared APIs. The Lead owns integration and ranking; Research owns scientific evidence and methods.

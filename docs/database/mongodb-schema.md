@@ -1,6 +1,6 @@
 # MongoDB schema reference
 
-Status: proposed, not deployed. [The design rationale](README.md) defines ownership. [The handoff](implementation-handoff.md) defines publication and acceptance. Root API contracts remain authoritative.
+Status: Technical Lead implementation defaults. Native server startup is supplied in `tools/dev.py`; owners implement indexes, validators, importers, and adapters through their chosen drivers. [The design rationale](README.md) defines ownership. [The handoff](implementation-handoff.md) defines publication and acceptance. Root API contracts remain authoritative.
 
 ## Shared conventions
 
@@ -14,7 +14,7 @@ Document IDs are opaque, nonempty strings chosen by the owning importer. Daily d
 | `kind` | String enum | `fixture` or `observed`; observed means source-backed data, including agricultural references |
 | `status` | String enum | `staging`, `sealed`, `approved`, or `rejected` |
 | `created_at` | BSON date | Import creation timestamp in UTC |
-| `approval` | Object or null | `{research_record, technical_record, approved_at}`; records are durable review references, not invented signatures |
+| `approval` | Object or null | `{research_record, technical_record, approved_at}`; research_record references scientific sign-off; technical_record references the importer validation report, without an extra approval meeting |
 | `limitations` | Array of strings | Missing facts and restrictions on interpretation |
 
 Both catalog and dataset manifests contain these fields. Timestamps in the JSON examples use Extended JSON `$date`. Ordinary `YYYY-MM-DD` strings identify climate days in the dataset's stated time standard, not UTC instants.

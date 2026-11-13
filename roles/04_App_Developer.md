@@ -75,3 +75,7 @@ Two people unfamiliar with the project can choose a rotation, compare options an
 - [W3C WAI: Form labels](https://www.w3.org/WAI/tutorials/forms/labels/) - clear input/select controls.
 - [GOV.UK: Error messages](https://design-system.service.gov.uk/components/error-message/) - give specific recovery instructions.
 - [NN/g: Progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/) - keep scientific details off the first two screens.
+
+## Local development handoff
+
+Use [the runtime defaults](../docs/RUNTIME.md) and [synthetic HTTP fixtures](../fixtures/README.md) now. No additional implementation agreement is required to start. Owners may change private code/storage while preserving the shared APIs. The Lead owns integration and ranking; Research owns scientific evidence and methods.

@@ -1,0 +1,708 @@
+{
+  "notice": "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts.",
+  "cases": [
+    {
+      "id": "catalog",
+      "service": "crops",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/internal/crops?region_id=sample_region"
+      },
+      "status": 200,
+      "response_file": "crops/catalog.json"
+    },
+    {
+      "id": "daily",
+      "service": "climate",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/internal/climate?region_id=sample_region"
+      },
+      "status": 200,
+      "response_file": "climate/daily.json"
+    },
+    {
+      "id": "missing_day",
+      "service": "climate",
+      "profile": "missing_day",
+      "request": {
+        "method": "GET",
+        "path": "/internal/climate?region_id=sample_region"
+      },
+      "status": 200,
+      "response_file": "climate/missing_day.json"
+    },
+    {
+      "id": "missing_water",
+      "service": "crops",
+      "profile": "missing_water",
+      "request": {
+        "method": "GET",
+        "path": "/internal/crops?region_id=sample_region"
+      },
+      "status": 200,
+      "response_file": "crops/missing_water.json"
+    },
+    {
+      "id": "config",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/api/config"
+      },
+      "status": 200,
+      "response_file": "comparison/config.json"
+    },
+    {
+      "id": "water_average",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/water_average.json"
+    },
+    {
+      "id": "water_hottest_year",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "hottest_year"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/water_hottest_year.json"
+    },
+    {
+      "id": "water_driest_year",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "driest_year"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/water_driest_year.json"
+    },
+    {
+      "id": "heat_average",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "heat",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/heat_average.json"
+    },
+    {
+      "id": "heat_hottest_year",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "heat",
+          "scenario": "hottest_year"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/heat_hottest_year.json"
+    },
+    {
+      "id": "heat_driest_year",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "heat",
+          "scenario": "driest_year"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/heat_driest_year.json"
+    },
+    {
+      "id": "soil_average",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "soil",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/soil_average.json"
+    },
+    {
+      "id": "soil_hottest_year",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "soil",
+          "scenario": "hottest_year"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/soil_hottest_year.json"
+    },
+    {
+      "id": "soil_driest_year",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "soil",
+          "scenario": "driest_year"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/soil_driest_year.json"
+    },
+    {
+      "id": "incomplete_scenario",
+      "service": "comparison",
+      "profile": "incomplete_scenario",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "hottest_year"
+        }
+      },
+      "status": 422,
+      "response_file": "comparison/incomplete_scenario.json"
+    },
+    {
+      "id": "one_plan",
+      "service": "comparison",
+      "profile": "one_plan",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/one_plan.json"
+    },
+    {
+      "id": "two_plans",
+      "service": "comparison",
+      "profile": "two_plans",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/two_plans.json"
+    },
+    {
+      "id": "missing_metrics",
+      "service": "comparison",
+      "profile": "missing_metrics",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/missing_metrics.json"
+    },
+    {
+      "id": "unknown_region",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "unknown",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 404,
+      "response_file": "comparison/unknown_region.json"
+    },
+    {
+      "id": "unknown_crop",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "unknown",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 400,
+      "response_file": "comparison/unknown_crop.json"
+    },
+    {
+      "id": "wrong_season",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "winter_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 400,
+      "response_file": "comparison/wrong_season.json"
+    },
+    {
+      "id": "wrong_slot_count",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 400,
+      "response_file": "comparison/wrong_slot_count.json"
+    },
+    {
+      "id": "invalid_priority",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "profit",
+          "scenario": "average"
+        }
+      },
+      "status": 400,
+      "response_file": "comparison/invalid_priority.json"
+    },
+    {
+      "id": "invalid_scenario",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "future"
+        }
+      },
+      "status": 422,
+      "response_file": "comparison/invalid_scenario.json"
+    },
+    {
+      "id": "unavailable_scenario",
+      "service": "comparison",
+      "profile": "unsupported_scenario",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "hottest_year"
+        }
+      },
+      "status": 422,
+      "response_file": "comparison/unavailable_scenario.json"
+    },
+    {
+      "id": "unknown_region",
+      "service": "crops",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/internal/crops?region_id=unknown"
+      },
+      "status": 404,
+      "response_file": "crops/unknown_region.json"
+    },
+    {
+      "id": "missing_region",
+      "service": "crops",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/internal/crops"
+      },
+      "status": 400,
+      "response_file": "crops/missing_region.json"
+    },
+    {
+      "id": "insufficient_data",
+      "service": "crops",
+      "profile": "insufficient_data",
+      "request": {
+        "method": "GET",
+        "path": "/internal/crops?region_id=sample_region"
+      },
+      "status": 422,
+      "response_file": "crops/insufficient_data.json"
+    },
+    {
+      "id": "unknown_region",
+      "service": "climate",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/internal/climate?region_id=unknown"
+      },
+      "status": 404,
+      "response_file": "climate/unknown_region.json"
+    },
+    {
+      "id": "missing_region",
+      "service": "climate",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/internal/climate"
+      },
+      "status": 400,
+      "response_file": "climate/missing_region.json"
+    },
+    {
+      "id": "insufficient_data",
+      "service": "climate",
+      "profile": "insufficient_data",
+      "request": {
+        "method": "GET",
+        "path": "/internal/climate?region_id=sample_region"
+      },
+      "status": 422,
+      "response_file": "climate/insufficient_data.json"
+    },
+    {
+      "id": "core_evidence_missing",
+      "service": "comparison",
+      "profile": "insufficient_data",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 422,
+      "response_file": "comparison/core_evidence_missing.json"
+    },
+    {
+      "id": "config_unavailable",
+      "service": "comparison",
+      "profile": "outage",
+      "request": {
+        "method": "GET",
+        "path": "/api/config"
+      },
+      "status": 503,
+      "response_file": "comparison/config_unavailable.json"
+    },
+    {
+      "id": "health",
+      "service": "comparison",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "status": 200,
+      "response_file": "comparison/health.json"
+    },
+    {
+      "id": "service_unavailable",
+      "service": "comparison",
+      "profile": "outage",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 503,
+      "response_file": "comparison/service_unavailable.json"
+    },
+    {
+      "id": "health_unavailable",
+      "service": "comparison",
+      "profile": "outage",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "status": 503,
+      "response_file": "comparison/health_unavailable.json"
+    },
+    {
+      "id": "health",
+      "service": "crops",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "status": 200,
+      "response_file": "crops/health.json"
+    },
+    {
+      "id": "service_unavailable",
+      "service": "crops",
+      "profile": "outage",
+      "request": {
+        "method": "GET",
+        "path": "/internal/crops?region_id=sample_region"
+      },
+      "status": 503,
+      "response_file": "crops/service_unavailable.json"
+    },
+    {
+      "id": "health_unavailable",
+      "service": "crops",
+      "profile": "outage",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "status": 503,
+      "response_file": "crops/health_unavailable.json"
+    },
+    {
+      "id": "health",
+      "service": "climate",
+      "profile": "normal",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "status": 200,
+      "response_file": "climate/health.json"
+    },
+    {
+      "id": "service_unavailable",
+      "service": "climate",
+      "profile": "outage",
+      "request": {
+        "method": "GET",
+        "path": "/internal/climate?region_id=sample_region"
+      },
+      "status": 503,
+      "response_file": "climate/service_unavailable.json"
+    },
+    {
+      "id": "health_unavailable",
+      "service": "climate",
+      "profile": "outage",
+      "request": {
+        "method": "GET",
+        "path": "/health"
+      },
+      "status": 503,
+      "response_file": "climate/health_unavailable.json"
+    }
+  ]
+}

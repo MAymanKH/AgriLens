@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "UNSUPPORTED_SCENARIO",
+    "message": "Fixture historical scenario is unavailable."
+  }
+}

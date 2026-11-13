@@ -1,0 +1,53 @@
+{
+  "region_id": "sample_region",
+  "priority": "water",
+  "scenario": "average",
+  "plans": [
+    {
+      "id": "baseline",
+      "crops": [
+        "summer_a",
+        "winter_a",
+        "summer_a",
+        "winter_a"
+      ],
+      "water_need_mm": {
+        "min": 360,
+        "max": 640
+      },
+      "hot_days": 101.66666666666667,
+      "soil_note": "Synthetic diversity/legume example; no soil-health prediction.",
+      "reasons": [
+        "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts.",
+        "Fixture trade-off: water ranges differ; all crops share seasonal windows, so heat exposure ties."
+      ],
+      "source_ids": [
+        "fixture_rules"
+      ]
+    }
+  ],
+  "meta": {
+    "heat_threshold_c": 35,
+    "climate_period": "2020-2024 SYNTHETIC",
+    "scenario_year": null,
+    "sources": [
+      {
+        "id": "fixture_rules",
+        "title": "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts.",
+        "url": "https://example.invalid/agrilens-fixture"
+      }
+    ],
+    "assumptions": [
+      "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts.",
+      "Fixture only: strict tmax > 35 C; full calendar months; winter follows its summer.",
+      "Fixture average uses complete two-year anchors 2020, 2021 and 2022; this is not an approved scientific method."
+    ],
+    "limitations": [
+      "No scientific validity. Priority ties are intentional; not a production ranking algorithm."
+    ],
+    "warnings": [
+      "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts.",
+      "Fixture constraint: only 0 alternatives are eligible in this case."
+    ]
+  }
+}
