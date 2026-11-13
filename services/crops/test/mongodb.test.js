@@ -26,7 +26,7 @@ test('real MongoDB import/readback/retry/conflict/schema protection and HTTP app
     await assert.rejects(Model.collection.insertOne({...doc, _id: 'bad-version', schema_version: 2}), /validation/);
     await Model.collection.updateOne({_id: doc._id}, {$set: {status: 'sealed'}});
     await assert.rejects(importStaging(Model, doc), /conflicts/);
-    const server = createApp({mode: 'live', catalogId: doc._id, Model, knownRegion: doc.region.id}).listen(0, '127.0.0.1');
+    const server = createApp({mode: 'live', catalogId: doc._id, Model}).listen(0, '127.0.0.1');
     await once(server, 'listening');
     try {
       const base = `http://127.0.0.1:${server.address().port}`;

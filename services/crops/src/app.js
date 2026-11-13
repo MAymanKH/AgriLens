@@ -4,7 +4,7 @@ const { validateApi, validateSnapshot, toApi } = require('./catalog');
 class ApiError extends Error {
   constructor(code, status, message) { super(message); this.code = code; this.status = status; }
 }
-function createApp({mode, catalogId = '', Model, getModel, fixture, knownRegion}) {
+function createApp({mode, catalogId = '', Model, getModel, fixture}) {
   if (!['live', 'fixture'].includes(mode)) throw new Error('Invalid data mode.');
   if (mode === 'fixture') validateApi(fixture);
   const app = express();
@@ -16,14 +16,15 @@ function createApp({mode, catalogId = '', Model, getModel, fixture, knownRegion}
     next();
   });
   const insufficient = () => new ApiError('INSUFFICIENT_DATA', 422, 'No approved crop catalog is available for this region. Research approval and a pinned catalog revision are required.');
-  async function load() {
+  async function load(regionId) {
     if (mode === 'fixture') return fixture;
     // Check availability first; even with no selected release an outage stays retryable.
     const selectedModel = getModel ? await getModel() : Model;
     await selectedModel.db.db.command({ping: 1});
     if (!catalogId) throw insufficient();
-    const doc = await selectedModel.findOne({_id: catalogId, status: 'approved', kind: 'observed'}).lean().maxTimeMS(1500);
+    const doc = await selectedModel.findOne({_id: catalogId}).lean().maxTimeMS(1500);
     if (!doc) throw insufficient();
+    if (regionId && doc.region?.id !== regionId) throw new ApiError('UNKNOWN_REGION', 404, 'This region is not supported.');
     try { validateSnapshot(doc, {live: true}); }
     catch { throw insufficient(); }
     return toApi(doc);
@@ -38,8 +39,7 @@ function createApp({mode, catalogId = '', Model, getModel, fixture, knownRegion}
       throw new ApiError('INVALID_INPUT', 400, 'Provide one nonempty region_id containing letters, numbers, underscores or hyphens.');
     }
     if (mode === 'fixture' && regionId !== fixture.region_id) throw new ApiError('UNKNOWN_REGION', 404, 'This region is not supported.');
-    if (mode === 'live' && regionId !== knownRegion) throw new ApiError('UNKNOWN_REGION', 404, 'This region is not supported.');
-    const catalog = await load();
+    const catalog = await load(regionId);
     if (regionId !== catalog.region_id) throw new ApiError('UNKNOWN_REGION', 404, 'This region is not supported.');
     res.json(catalog);
   });

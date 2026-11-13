@@ -19,53 +19,28 @@ Importing is not Research approval. The live API therefore returns
 catalog is selected. Use the inspection command below to review your real stored
 candidate data, or explicit fixture mode to exercise a successful API response.
 
-## Start on this laptop
+## Start locally
 
-MongoDB Community **8.0.38** is installed locally at
-`/home/abdo/AgriLens/.local/mongodb/bin/mongod`. The ignored root `.env` records
-that path. Its database files are in `.local/mongo/`. MongoDB listens on loopback
-only, on port 27017, following the team's local development defaults.
-
-Terminal 1, from the repository root:
+Install Node.js 22 or newer, Python 3 and native MongoDB Community 8.0.
+Run commands from the repository root. Set `MONGOD_BIN` in the ignored root
+`.env` if MongoDB is outside PATH; see [the runtime guide](../../docs/RUNTIME.md).
 
 ```sh
-cd /home/abdo/AgriLens
+npm ci --prefix services/crops
 python3 tools/dev.py mongo
 ```
 
-Skip that command if this project's MongoDB is already running. Keep this terminal
-open; Ctrl+C stops the server without deleting the data.
-
-Terminal 2:
+Keep MongoDB running, then in another terminal:
 
 ```sh
-cd /home/abdo/AgriLens/services/crops
-npm ci
-npm run import:data
-npm run verify:data
-npm run inspect:data
-npm start
-```
-
-Dependencies are already installed on this laptop. On another machine install
-Node.js 22 or newer, Python 3 for the existing research-file check, and MongoDB
-Community 8.0. Set `MONGOD_BIN` in that machine's ignored root `.env` as needed.
-No MongoDB account, Docker, Python MongoDB driver or `mongosh` is needed for this
-Node service. Mongoose is the Node.js library used to connect to the server.
-
-The shared launcher also works:
-
-```sh
-cd /home/abdo/AgriLens
+npm run import:data --prefix services/crops
+npm run verify:data --prefix services/crops
 python3 tools/dev.py run crops
 ```
 
-The native executable was extracted from MongoDB's official Ubuntu 24.04 x86-64
-server package and successfully run on this Arch Linux laptop. It is a local
-installation, not an Arch system package or boot-time service. Download SHA-256:
-`095bb91b05ae0cf37a85855bd72c0324d7a9cfe7d02989636343f8fd2f4a5f9b`.
-See the [official installation guide](https://www.mongodb.com/docs/manual/installation/)
-for installation on other systems.
+The importer does not approve or select data. Pin `CROP_CATALOG_ID` only after
+approval. The selected database catalog determines the served region; the
+service does not infer it from a research file in the checkout.
 
 ## Try a successful development response
 
@@ -73,8 +48,7 @@ Stop the Crop HTTP server first so port 8002 is free; keep MongoDB running if yo
 still want to inspect the stored candidate data. Then run:
 
 ```sh
-cd /home/abdo/AgriLens/services/crops
-npm run fixture
+npm run fixture --prefix services/crops
 ```
 
 In another terminal or a browser:

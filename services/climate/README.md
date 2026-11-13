@@ -3,10 +3,11 @@
 Run this service through the project launcher from the repository root:
 
 ```sh
+npm ci --prefix services/climate
 python3 tools/dev.py run climate
 ```
 
-The launcher reads `.env.example` and the optional local `.env`, then starts the service on the configured Climate port. The service uses the existing Express and Mongoose dependencies.
+The launcher reads `.env.example` and the optional local `.env`, then starts the service on the configured Climate port. The service uses the existing Express and MongoDB driver dependencies.
 
 Endpoints:
 
@@ -18,3 +19,5 @@ The local data importer reads the checked-in package under `data/processed/mongo
 The imported dataset is currently a staging candidate and is not scientifically approved. The service rejects staging, sealed, rejected, fixture, or unsupported-schema records. Keep `CLIMATE_DATASET_ID` empty until Research approval and a release selection are recorded. An empty ID returns the standard unavailable response.
 
 `DATA_MODE=fixture` is handled by the separate project fixture server. The live service refuses to start in fixture mode so fixture values cannot be mistaken for live climate evidence.
+
+Run `npm test --prefix services/climate` from the repository root for validation and HTTP contract checks.

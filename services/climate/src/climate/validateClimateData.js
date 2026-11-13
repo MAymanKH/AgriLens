@@ -21,7 +21,7 @@ const datesInPeriod = (firstYear, lastYear) => {
 
 const addIssue = (issues, message) => issues.push(message);
 
-const isMeasurement = (value) => value === null || (
+const isMeasurement = (value) => (
   typeof value === "number" && Number.isFinite(value) && value > NASA_MISSING_VALUE_MAX
 );
 

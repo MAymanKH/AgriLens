@@ -125,6 +125,13 @@ export const createClimateHandlers = ({
 export const createApp = (options) => {
   const app = express();
   const handlers = createClimateHandlers(options);
+  app.disable("x-powered-by");
+  app.set("query parser", "simple");
+  app.use((_req, res, next) => {
+    res.set("Cache-Control", "no-store");
+    res.set("X-AgriLens-Data-Mode", "live");
+    next();
+  });
   app.use(cors());
   app.use(express.json());
   app.get("/health", handlers.health);

@@ -162,3 +162,43 @@ test("database outage returns service unavailable from health and climate endpoi
   assert.equal(climate.body.error.code, "SERVICE_UNAVAILABLE");
 });
 
+
+test("null observations cannot pass readiness with unavailable scenarios", async () => {
+  const dataset = makeDataset();
+  dataset.daily[0].tmax_c = null;
+  dataset.manifest.validation.complete_years = [];
+  dataset.manifest.scenarios.hottest_year.year = null;
+  dataset.manifest.scenarios.driest_year.year = null;
+  assert.equal(validateClimateData(dataset).ok, false);
+  const health = response();
+  await makeHandlers(dataset).health({}, health);
+  assert.equal(health.statusCode, 503);
+});
+
+test("HTTP contract exposes only climate fields and rejects ambiguous queries", async () => {
+  const { createApp } = await import("../src/bootstrap.js");
+  const { once } = await import("node:events");
+  const dataset = makeDataset();
+  const server = createApp({ repository: { getClimateData: async () => dataset },
+    getDatasetId: () => "test-only" }).listen(0, "127.0.0.1");
+  await once(server, "listening");
+  try {
+    const base = `http://127.0.0.1:${server.address().port}`;
+    const result = await fetch(`${base}/internal/climate?region_id=test_region`);
+    assert.equal(result.status, 200);
+    assert.equal(result.headers.get("cache-control"), "no-store");
+    assert.equal(result.headers.get("x-agrilens-data-mode"), "live");
+    const body = await result.json();
+    assert.deepEqual(Object.keys(body).sort(), ["region_id", "coordinates", "period", "units", "daily", "scenarios", "provenance"].sort());
+    assert.equal(body.daily.length, 366);
+    assert.equal(body.provenance.retrieved_at, dataset.manifest.provenance.retrieved_at);
+    for (const query of ["", "?region_id=", "?region_id=a&region_id=b", "?region_id[x]=a"]) {
+      const invalid = await fetch(`${base}/internal/climate${query}`);
+      assert.equal(invalid.status, 400);
+      assert.equal((await invalid.json()).error.code, "INVALID_INPUT");
+    }
+  } finally {
+    server.closeAllConnections();
+    await new Promise(resolve => server.close(resolve));
+  }
+});

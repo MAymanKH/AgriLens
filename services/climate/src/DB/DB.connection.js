@@ -9,6 +9,8 @@ export const DBConnection = async () => {
   if (!connectionPromise) {
     client = new MongoClient(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017", {
       serverSelectionTimeoutMS: Number(process.env.MONGODB_SERVER_SELECTION_TIMEOUT_MS || 2000),
+      connectTimeoutMS: Number(process.env.MONGODB_SERVER_SELECTION_TIMEOUT_MS || 2000),
+      socketTimeoutMS: Number(process.env.MONGODB_SERVER_SELECTION_TIMEOUT_MS || 2000),
     });
     connectionPromise = client.connect().then(async () => {
       await client.db(getDatabaseName()).collection("climate_daily").createIndex(

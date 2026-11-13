@@ -23,7 +23,7 @@ async function withServer(app, run) {
 }
 function memoryModel(document, outage = false) {
   return {db: {db: {command: async () => {if (outage) throw new Error('secret connection details');}}},
-    findOne: query => ({lean: () => ({maxTimeMS: async () => document && document._id === query._id && document.status === query.status && document.kind === query.kind ? document : null})})};
+    findOne: query => ({lean: () => ({maxTimeMS: async () => document && document._id === query._id ? document : null})})};
 }
 
 test('fixture HTTP contract, labels, health, missing/duplicate query and unknown region', async () => {
@@ -43,7 +43,7 @@ test('fixture HTTP contract, labels, health, missing/duplicate query and unknown
 });
 test('live projection omits all database metadata and source titles', async () => {
   const doc = snapshot();
-  await withServer(createApp({mode: 'live', catalogId: doc._id, Model: memoryModel(doc), knownRegion: 'sample_region'}), async base => {
+  await withServer(createApp({mode: 'live', catalogId: doc._id, Model: memoryModel(doc)}), async base => {
     const r = await fetch(`${base}/internal/crops?region_id=sample_region`);
     assert.equal(r.status, 200); assert.deepEqual(await r.json(), fixture);
     assert.equal((await fetch(`${base}/health`)).status, 200);
@@ -52,7 +52,7 @@ test('live projection omits all database metadata and source titles', async () =
 for (const status of ['staging', 'sealed', 'rejected']) {
   test(`live rejects ${status} catalog with no fallback`, async () => {
     const doc = snapshot(); doc.status = status;
-    await withServer(createApp({mode: 'live', catalogId: doc._id, Model: memoryModel(doc), knownRegion: 'sample_region'}), async base => {
+    await withServer(createApp({mode: 'live', catalogId: doc._id, Model: memoryModel(doc)}), async base => {
       const r = await fetch(`${base}/internal/crops?region_id=sample_region`);
       assert.equal(r.status, 422); assert.equal((await r.json()).error.code, 'INSUFFICIENT_DATA');
       assert.equal((await fetch(`${base}/health`)).status, 503);
@@ -68,11 +68,10 @@ test('live rejects fixture data, pending evidence and unknown schema versions', 
 });
 test('no selection returns insufficient evidence and storage outage is retryable without leaking details', async () => {
   for (const outage of [false, true]) {
-    await withServer(createApp({mode: 'live', Model: memoryModel(null, outage), knownRegion: 'sample_region'}), async base => {
+    await withServer(createApp({mode: 'live', Model: memoryModel(null, outage)}), async base => {
       const r = await fetch(`${base}/internal/crops?region_id=sample_region`);
       assert.equal(r.status, outage ? 503 : 422);
       assert.equal((await r.json()).error.code, outage ? 'SERVICE_UNAVAILABLE' : 'INSUFFICIENT_DATA');
-      assert.equal((await fetch(`${base}/internal/crops?region_id=unknown`)).status, 404);
     });
   }
 });
@@ -106,3 +105,14 @@ test('slot compatibility and December–January wrap do not invent rotation year
   assert.equal(crossesYear({start_month: null, end_month: 4}), null);
 });
 module.exports = {snapshot, withServer};
+
+test('pinned catalog determines region independently of the research checkout', async () => {
+  const doc = snapshot();
+  doc.region.id = 'new_approved_region';
+  await withServer(createApp({mode: 'live', catalogId: doc._id, Model: memoryModel(doc)}), async base => {
+    const result = await fetch(`${base}/internal/crops?region_id=new_approved_region`);
+    assert.equal(result.status, 200);
+    assert.equal((await result.json()).region_id, 'new_approved_region');
+    assert.equal((await fetch(`${base}/internal/crops?region_id=old_region`)).status, 404);
+  });
+});

@@ -19,8 +19,7 @@ async function main() {
     return connecting;
   }
   const app = createApp({mode: config.mode, catalogId: config.catalogId, getModel,
-    fixture: config.mode === 'fixture' ? require(path.join(ROOT, 'fixtures/crops/catalog.json')) : undefined,
-    knownRegion: require(path.join(ROOT, 'data/processed/mongodb/crop_catalog_document.json')).region.id});
+    fixture: config.mode === 'fixture' ? require(path.join(ROOT, 'fixtures/crops/catalog.json')) : undefined});
   const server = app.listen(config.port, config.host, () => {
     console.log(`Crop service: http://${config.host}:${config.port} (${config.mode})`);
     if (config.mode === 'fixture') console.log('SYNTHETIC DEVELOPMENT FIXTURES — not agricultural results.');

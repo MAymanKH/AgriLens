@@ -66,6 +66,61 @@ python3 tools/dev.py run comparison
 
 Run each in its own terminal. Missing command files fail explicitly; the launcher never substitutes fixture data automatically. Real services must reject `DATA_MODE=fixture` unless they explicitly implement an isolated fixture mode. Their default is `live`; missing approved dataset selections produce an unavailable state rather than invented data.
 
+## Run and verify the integrated internal services
+
+Install Node.js 22 or newer and each service's pinned dependencies:
+
+```sh
+npm ci --prefix services/climate
+npm ci --prefix services/crops
+```
+
+With MongoDB running, start each service in its own terminal from the repository root:
+
+```sh
+python3 tools/dev.py run climate
+python3 tools/dev.py run crops
+```
+
+Pin approved revisions with `CLIMATE_DATASET_ID` and `CROP_CATALOG_ID`.
+The checked-in research package remains staging, so requests for its region
+return HTTP 422 `INSUFFICIENT_DATA` and readiness returns HTTP 503.
+Missing selections and storage outages never trigger a fixture fallback.
+For example, with the staging revisions selected:
+
+```sh
+curl -i 'http://127.0.0.1:8001/internal/climate?region_id=zankalon_sharkia'
+curl -i 'http://127.0.0.1:8002/internal/crops?region_id=zankalon_sharkia'
+```
+
+Both bodies contain `{"error":{"code":"INSUFFICIENT_DATA","message":"..."}}`.
+Use the explicit fixture launcher for successful development responses while
+Research reviews the data.
+
+Run these checks after installing `requirements-mongo.txt` into your Python environment:
+
+```sh
+npm test --prefix services/climate
+npm test --prefix services/crops
+npm run test:mongodb --prefix services/crops
+python -m unittest discover -s scripts -p 'test_*.py'
+python3 tools/verify_fixtures.py
+python3 tools/verify_runtime.py
+```
+
+The MongoDB tests require Community 8.0. They use randomly named databases ending
+in `_fixtures` and delete those databases afterward. `scripts/test_backend_services.py`
+imports the research package using the existing Python importer, starts both
+Node services through `tools/dev.py`, and checks HTTP approval gates, error codes,
+response projection, health, and shutdown. Its invented approval records and
+synthetic crop records exist only in disposable test databases.
+
+These checks verify the internal services and development tools. The repository
+has no Comparison service implementation yet, so they do not prove the public
+comparison journey. Research must approve the region, final crop catalog, and
+scientific methods before the Lead selects live revisions and connects Comparison
+through the internal HTTP APIs.
+
 ## Configuration and timeouts
 
 The launcher reads `.env.example`, overrides it with optional `.env`, then applies process environment variables. Values are literal `KEY=value` strings, not shell code. Quoting, interpolation and `export` prefixes are not supported. It sets each service's `PORT` from its named port setting. `.env` is ignored by Git.
