@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "decision_revision": "6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
+  "decision_revision": "aae933bb097d22d97dc615a9b8185ca304b16a4c",
   "region": {
     "id": "zankalon_sharkia",
     "name": "Zankalon, Sharkia Governorate, Egypt (East Nile Delta)",
@@ -20,7 +20,7 @@
     "A new database import must record its actual creation timestamp.",
     "Source titles are copied from the candidate Research ledger; citation review remains open."
   ],
-  "_id": "climate-zankalon_sharkia-2016_2025-staging-6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
+  "_id": "climate-zankalon_sharkia-2016_2025-staging-aae933bb097d22d97dc615a9b8185ca304b16a4c",
   "period": {
     "first_year": 2016,
     "last_year": 2025
@@ -58,7 +58,7 @@
     "sha256": "7c36f877a91df648116f600079ec02fb47183b070257717f0257f2704c5b6fcc"
   },
   "validation": {
-    "method_ref": "6777af9a0e6b12c9f328d102b63d6cf87f0eadb1:docs/METHOD.md",
+    "method_ref": "aae933bb097d22d97dc615a9b8185ca304b16a4c:docs/METHOD.md",
     "expected_days": 3653,
     "record_count": 3653,
     "complete_years": [
@@ -74,7 +74,7 @@
       2025
     ],
     "report_uri": "data/processed/mongodb/validation_report.json",
-    "normalized_sha256": "59748bfab32c058db53d7ab3c33bd76558d63585597aa270721b85da9adecea7"
+    "normalized_sha256": "dce9cdedba4877bfe4e8f2175bfca5455ca9c7f8fcc3bba15c0310a143571010"
   },
   "scenarios": {
     "hottest_year": {

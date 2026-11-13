@@ -21,6 +21,8 @@ RAW_PATH = "data/raw/nasa_power_zankalon_2016_2025.json"
 SLOTS = ["y1_summer", "y1_winter", "y2_summer", "y2_winter"]
 CROP_FIELDS = ("id", "name", "valid_seasons", "grow_window", "water_need_mm",
                "family", "is_legume", "source_ids")
+REVIEW_FIELDS = ("evidence_status", "eligible_for_live", "evidence_review",
+                 "eligibility_status", "regulatory_note")
 PARAMETERS = {
     "tmax": "T2M_MAX", "tmin": "T2M_MIN", "rh": "RH2M",
     "rain": "PRECTOTCORR", "solar_radiation": "ALLSKY_SFC_SW_DWN",
@@ -159,7 +161,9 @@ def prepare(root, revision, retrieved_at=None):
         "scenarios": climate["scenarios"],
     }
     crop_fixture = {"region_id": catalog["region_id"], "slot_order": catalog["slot_order"],
+                    **{key: catalog[key] for key in ("evidence_status", "usage_note") if key in catalog},
                     "crops": [{**{k: c[k] for k in CROP_FIELDS},
+                               **{k: c[k] for k in REVIEW_FIELDS if k in c},
                                "grow_window": {k: c["grow_window"][k] for k in ("start_month", "end_month")}}
                               for c in catalog["crops"]], "sources": sources}
     region["climate"]["time_standard"] = raw["header"]["time_standard"]

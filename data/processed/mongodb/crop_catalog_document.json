@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "decision_revision": "6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
+  "decision_revision": "aae933bb097d22d97dc615a9b8185ca304b16a4c",
   "region": {
     "id": "zankalon_sharkia",
     "name": "Zankalon, Sharkia Governorate, Egypt (East Nile Delta)",
@@ -20,7 +20,7 @@
     "A new database import must record its actual creation timestamp.",
     "Source titles are copied from the candidate Research ledger; citation review remains open."
   ],
-  "_id": "catalog-zankalon_sharkia-staging-6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
+  "_id": "catalog-zankalon_sharkia-staging-aae933bb097d22d97dc615a9b8185ca304b16a4c",
   "slot_order": [
     "y1_summer",
     "y1_winter",
@@ -56,7 +56,31 @@
         "SRC-FAO-CROPWATER",
         "SRC-ZANKALON-SUGITA-2017",
         "SRC-SPRINGER-WATER-PROD-2024"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     },
     {
       "id": "rice",
@@ -82,12 +106,37 @@
       "family": "Poaceae",
       "is_legume": false,
       "regulatory_status": "conditional_quota",
-      "regulatory_note": "Governed by annual MWRI Ministerial Decree; restricted in southern Sharkia canal commands to protect downstream conveyance.",
+      "regulatory_note": "Conditional candidate only. No applicable MWRI decree and farm/canal-command geographic match have been verified. This record does not establish permission to grow rice; exclude from a live recommended rotation until eligibility is verified.",
       "source_ids": [
         "SRC-FAO-CROPWATER",
         "SRC-ZANKALON-SUGITA-2017",
         "SRC-MWRI-RICE-REGULATION"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      },
+      "eligibility_status": "unknown"
     },
     {
       "id": "cotton",
@@ -117,7 +166,31 @@
         "SRC-FAO-CROPWATER",
         "SRC-USDA-COTTON-EG",
         "SRC-ZANKALON-SUGITA-2017"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     },
     {
       "id": "soybean",
@@ -147,7 +220,31 @@
         "SRC-FAO-CROPWATER",
         "SRC-FAO-CALENDAR-EG-DELTA",
         "SRC-FAO-SPECIES-DIVERSIFICATION"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     },
     {
       "id": "wheat",
@@ -177,7 +274,31 @@
         "SRC-FAO-CROPWATER",
         "SRC-ZANKALON-SUGITA-2017",
         "SRC-SPRINGER-WATER-PROD-2024"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     },
     {
       "id": "berseem",
@@ -207,7 +328,31 @@
         "SRC-FAO-CROPWATER",
         "SRC-ZANKALON-SUGITA-2017",
         "SRC-FAO-SPECIES-DIVERSIFICATION"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     },
     {
       "id": "faba_bean",
@@ -237,7 +382,31 @@
         "SRC-FAO-CROPWATER",
         "SRC-FAO-CALENDAR-EG-DELTA",
         "SRC-ICARDA-LEGUMES-MENA"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     },
     {
       "id": "sugar_beet",
@@ -266,7 +435,31 @@
       "source_ids": [
         "SRC-FAO-CROPWATER",
         "SRC-SPRINGER-WATER-PROD-2024"
-      ]
+      ],
+      "evidence_status": "candidate_pending_exact_citations",
+      "eligible_for_live": false,
+      "evidence_review": {
+        "water_need_mm": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Retained branch estimate; exact supporting page/table, local applicability and ET versus irrigation accounting must be established."
+        },
+        "kc_stages": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Stage coefficients retained as candidates; exact table, cultivar/stage durations and local transferability not verified."
+        },
+        "heat_threshold_c": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Crop-specific candidate threshold is not the common public hot_days exposure threshold; exact crop/stage evidence not verified."
+        },
+        "grow_window": {
+          "status": "pending",
+          "source_location": null,
+          "reason": "Month fields retained; exact local calendar row/page and partial-day boundaries not verified."
+        }
+      }
     }
   ],
   "sources": [
@@ -274,55 +467,57 @@
       "id": "SRC-NASA-POWER-DAILY",
       "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
       "supports": "NASA POWER daily meteorological series: T2M_MAX, T2M_MIN, RH2M, PRECTOTCORR, ALLSKY_SFC_SW_DWN, WS2M (2016-2025).",
-      "title": "NASA Prediction Of Worldwide Energy Resources (POWER) Daily Temporal API"
+      "title": "NASA POWER Daily Temporal API."
     },
     {
       "id": "SRC-FAO-CROPWATER",
       "url": "https://www.fao.org/4/s2022e/s2022e07.htm",
-      "supports": "FAO Paper 24/33/56 indicative crop water requirement ranges (mm/growing period) and stage coefficients.",
-      "title": "FAO Irrigation and Drainage Paper No. 24, 33 & 56 (Crop Evapotranspiration & Indicative Needs)"
+      "supports": "Chapter 3 Table 14 generic indicative crop evapotranspiration ranges only; not evidence for all retained catalog values or stage Kc. Local adaptation and exact coefficient tables pending.",
+      "title": "FAO, Irrigation Water Management: Irrigation Water Needs, Chapter 3: Crop Water Needs."
     },
     {
       "id": "SRC-ZANKALON-SUGITA-2017",
-      "url": "https://tsukuba.repo.nii.ac.jp/record/41521/files/HydrologicalSciencesJournal_20170314.pdf",
-      "supports": "Sugita et al. (2017) continuous eddy covariance evapotranspiration measurements at Zankalon (30.58057 N, 31.43332 E) for maize, rice, cotton, and wheat.",
-      "title": "Crop Evapotranspiration in the Nile Delta under Different Irrigation Methods (Sugita et al., 2017)"
+      "url": "https://doi.org/10.1080/02626667.2017.1341631",
+      "supports": "Nile Delta evapotranspiration study; exact crop/field/table mappings for the retained catalog estimates remain pending review.",
+      "citation": "Hydrological Sciences Journal 62(10), 1618–1635 (2017); DOI 10.1080/02626667.2017.1341631",
+      "title": "Crop evapotranspiration in the Nile Delta under different irrigation methods."
     },
     {
       "id": "SRC-SPRINGER-WATER-PROD-2024",
       "url": "https://link.springer.com/article/10.1007/s42106-024-00301-7",
-      "supports": "Zankalon four-crop water-productivity evaluation (2024), remote sensing calibration and crop coefficients.",
-      "title": "Evaluation of Water Productivity of Major Crops in the Nile Delta, Egypt Using Remote Sensing and Field Measurements"
+      "supports": "Potential Improvements in Crop Production in Egypt and Implications for Future Water and Land Demand, International Journal of Plant Production; does not establish the previously claimed Zankalon crop-coefficient calibration.",
+      "title": "Potential Improvements in Crop Production in Egypt and Implications for Future Water and Land Demand.",
+      "citation": "International Journal of Plant Production 18, 313–334 (2024); DOI 10.1007/s42106-024-00301-7"
     },
     {
       "id": "SRC-FAO-CALENDAR-EG-DELTA",
       "url": "https://api-cropcalendar.apps.fao.org/api/v1/countries/EG/cropCalendar?language=en&aez=001",
       "supports": "FAO Crop Calendar for Nile Delta agro-ecological zone: sowing and harvest windows for wheat, faba bean, soybean, and maize.",
-      "title": "FAO Crop Calendar: Egypt Nile Delta Agro-ecological Zone (AEZ 001)"
+      "title": "FAO Crop Calendar, Egypt, Delta region (AEZ 001)."
     },
     {
       "id": "SRC-FAO-SPECIES-DIVERSIFICATION",
       "url": "https://www.fao.org/conservation-agriculture/in-practice/species-diversification/en/",
       "supports": "Qualitative agronomic principles for rotation diversity, legume nitrogen fixation, and pest life-cycle interruption.",
-      "title": "FAO Conservation Agriculture: Species Diversification & Crop Rotation Principles"
+      "title": "FAO Conservation Agriculture: Species diversification."
     },
     {
       "id": "SRC-USDA-COTTON-EG",
       "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Cotton%20and%20Products%20Annual_Cairo_Egypt_EG2026-0003.pdf",
       "supports": "USDA FAS Cotton and Products Annual: Delta cotton sowing, thermal tolerance, and cultivation cycles.",
-      "title": "USDA FAS Cotton and Products Annual: Egypt (Report EG2026-0003)"
+      "title": "USDA FAS, Cotton and Products Annual, Egypt, EG2026-0003."
     },
     {
       "id": "SRC-MWRI-RICE-REGULATION",
       "url": "https://www.mwri.gov.eg/",
-      "supports": "Ministry of Water Resources and Irrigation annual decrees on rice cultivation zoning in Sharkia Governorate.",
-      "title": "Egyptian Ministry of Water Resources and Irrigation (MWRI) - Annual Rice Cultivation Zoning Decrees"
+      "supports": "Ministry homepage only; applicable decree and geographic eligibility remain unverified.",
+      "title": "MWRI rice zoning evidence — **pending**."
     },
     {
       "id": "SRC-ICARDA-LEGUMES-MENA",
       "url": "https://www.icarda.org/research/crop-improvement/grain-legumes",
       "supports": "ICARDA dryland grain legume water requirements and thermal tolerance for faba bean in Egypt.",
-      "title": "ICARDA Food Legume Program: Dryland Grain Legumes in Egypt and the MENA Region"
+      "title": "ICARDA grain legume program (discovery reference)."
     }
   ]
 }

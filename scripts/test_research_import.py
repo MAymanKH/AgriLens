@@ -54,6 +54,8 @@ class ResearchImportTests(unittest.TestCase):
         fixture = json.loads(outputs["data/fixtures/mock_crop_catalog.json"])
         ids = {s["id"] for s in fixture["sources"]}
         self.assertTrue(all(set(c["source_ids"]) <= ids for c in fixture["crops"]))
+        self.assertTrue(all(c["eligible_for_live"] is False for c in fixture["crops"]))
+        self.assertEqual(fixture["evidence_status"], "pending_research_and_lead_review")
 
     def test_missing_date_rejected(self):
         self.edit(RAW_PATH, lambda x: x["properties"]["parameter"]["T2M_MAX"].pop("20240229"))
@@ -62,18 +64,18 @@ class ResearchImportTests(unittest.TestCase):
 
     def test_plain_source_titles_with_optional_blank_lines(self):
         ledger_path = self.root / "docs/SOURCES.md"
-        original = ledger_path.read_text()
+        original = ledger_path.read_text().replace("- Title:", "- **Title:**")
         expected = prepare(self.root, REVISION)
         plain = original.replace("- **Title:**", "- Title:")
-        for ledger in (plain, plain.replace("`\n- Title:", "`\n\n- Title:")):
+        for ledger in (original, plain, plain.replace("`\n- Title:", "`\n\n- Title:")):
             with self.subTest(blank_line="`\n\n- Title:" in ledger):
                 ledger_path.write_text(ledger)
                 self.assertEqual(prepare(self.root, REVISION), expected)
 
     def test_missing_title_does_not_use_next_sources_title(self):
         ledger_path = self.root / "docs/SOURCES.md"
-        lines = ledger_path.read_text().splitlines(keepends=True)
-        first_title = next(i for i, line in enumerate(lines) if line.startswith("- **Title:**"))
+        lines = ledger_path.read_text().replace("- **Title:**", "- Title:").splitlines(keepends=True)
+        first_title = next(i for i, line in enumerate(lines) if line.startswith("- Title:"))
         del lines[first_title]
         ledger_path.write_text("".join(lines))
         with self.assertRaisesRegex(ValueError, "Missing ledger title for SRC-NASA-POWER-DAILY"):
