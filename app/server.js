@@ -11,7 +11,7 @@ const files = new Map([
   ['/src/styles.css', ['src/styles.css', 'text/css']],
 ]);
 
-export function createAppServer({ comparisonUrl = 'http://127.0.0.1:8000', timeoutMs = 8000 } = {}) {
+export function createAppServer({ comparisonUrl = 'https://agriapi.mohamedayman.net', timeoutMs = 8000 } = {}) {
   const upstream = new URL(comparisonUrl);
   if (!['http:', 'https:'].includes(upstream.protocol) || upstream.username || upstream.password || upstream.search || upstream.hash || upstream.pathname !== '/') {
     throw new Error('COMPARISON_BASE_URL must be an HTTP origin without credentials.');

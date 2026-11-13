@@ -4,16 +4,9 @@ Run commands from the repository root with Node.js 22 or newer. The app has no
 runtime packages or build step. Its Node server serves browser modules and proxies
 only `GET /api/config` and `POST /api/compare` to the Comparison service.
 
-## Use retained research inputs
+## Use the deployed API
 
-Start the pinned backend with [the backend runbook](../docs/BACKEND.md).
-If its MongoDB and release import are already ready, run:
-
-```sh
-.local/mongo-venv/bin/python tools/backend.py run
-```
-
-In another terminal, start the app:
+Start the app. No local backend is required:
 
 ```sh
 npm start --prefix app
@@ -25,10 +18,19 @@ and inspect sources. The retained-data prototype stays labelled unreviewed.
 Hottest and driest scenarios are eligible rotation anchors, not record-wide extremes.
 
 If Comparison uses another address, set `COMPARISON_BASE_URL` in the app server's
-environment. It defaults to `http://127.0.0.1:8000`. Set `APP_PORT` to change 5173
+environment. It defaults to `https://agriapi.mohamedayman.net`. Set `APP_PORT` to change 5173
 or `APP_HOST` to change the loopback bind address. The app server reads process
 environment variables, not the repository `.env` file. The browser always calls
 the app's own origin, so no CORS adjustment is needed.
+
+## Use a local backend
+
+Start the pinned backend with [the backend runbook](../docs/BACKEND.md), then start
+the app in another terminal with an explicit local override:
+
+```sh
+COMPARISON_BASE_URL=http://127.0.0.1:8000 npm start --prefix app
+```
 
 ## Use synthetic development fixtures
 
@@ -38,7 +40,7 @@ Stop any Comparison process occupying port 8000, then start its fixture server:
 python3 tools/dev.py fixtures comparison
 ```
 
-Start the app in another terminal with the same command above. Synthetic labels
+Start the app in another terminal with the local override above. Synthetic labels
 remain visible. Select a Comparison fixture profile from [the fixture catalog](../fixtures/README.md)
 to develop unavailable, missing-metric, or fewer-plan states. Fixture results are
 recorded cases, so arbitrary crop edits require the real Comparison engine.
@@ -59,7 +61,7 @@ is added to this app.
 npm run test:browser --prefix app
 ```
 
-To also exercise the real backend, start the backend first, then run:
+To also exercise the deployed API, run:
 
 ```sh
 TEST_REAL_BACKEND=1 npm run test:browser --prefix app
@@ -70,7 +72,8 @@ browser afterward. Screenshots go to ignored `.local/app-verification/`.
 Checks cover configuration failure, keyboard controls, mobile overflow, the three
 screens, preserved input, missing metrics, fewer plans, unavailable scenarios,
 retry, source navigation, and responses arriving after the user edits choices.
-The real-backend check covers MongoDB through all three services and all scenarios.
+The real-backend check covers the deployed API and all scenarios. Set
+`COMPARISON_BASE_URL=http://127.0.0.1:8000` to run it against a local backend instead.
 
 ## Handoff to the final design
 
