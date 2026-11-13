@@ -1,127 +1,67 @@
-# AgriLens | Scientific Methodology & Calculation Reference
+# AgriLens | Scientific Method and Reproduction Notes
 
-**Owner:** Research & Data Specialist (Role 06)  
-**Authority:** Companion to `START_HERE.md`, `AgriLens_NASA_Data_Audit_and_Implementation_Brief.md`, and `docs/SOURCES.md`.  
-**Primary Pilot Area:** Zankalon Water Research Station, Sharkia Governorate, Egypt (`30.58057° N, 31.43332° E`, Elevation: 10.0 m)  
-**Last Verified:** 2026-11-13  
+Owner: Research (Role 06). Updated 2026-11-13 in response to PR #1 import review.
 
----
+`START_HERE.md` remains the shared authority. The detailed calendar/exposure rules below are an executable **proposal for Lead, Climate, Crop and App approval**. They resolve ambiguities in the branch; they do not record scientific sign-off or authorize live results. Source verification is tracked in `docs/SOURCES.md` and `docs/EVIDENCE_REVIEW.md` when present. Structural validation is not scientific approval.
 
-## 1. Scope & Core Agronomic Model
+## 1. What the numbers mean
 
-AgriLens models smallholder farm decision-making over a discrete **two-year agricultural sequence** consisting of **four chronological slots**:
-1. `y1_summer`: Year 1 Summer (May – September/October)
-2. `y1_winter`: Year 1 Winter (October/November – April/May)
-3. `y2_summer`: Year 2 Summer (May – September/October)
-4. `y2_winter`: Year 2 Winter (October/November – April/May)
+The pilot is Zankalon, Egypt (`zankalon_sharkia`, 30.58057 N, 31.43332 E). The retained NASA POWER daily response covers 2016-01-01 through 2025-12-31, 3,653 dates. Its header specifies **LST**, not an interchangeable UTC/LST convention. POWER is gridded meteorological input, not an on-farm weather station measurement. Do not describe grid differences as demonstrated local microclimates.
 
-### Seasonal Calendar & Year-Crossing Rules
-- **Summer Crops:** Lie strictly within the same calendar year.
-  - Maize: 1 May to 30 September (153 days).
-  - Rice: 15 May to 15 October (153 days).
-  - Cotton: 1 April to 31 October (214 days).
-  - Soybean: 15 May to 30 September (138 days).
-- **Winter Crops (Cross-Year Convention):** Sown in late autumn of calendar year $n$ and harvested in spring of calendar year $n+1$:
-  - Wheat: 15 November (year $n$) to 10 May (year $n+1$) (176 days).
-  - Berseem (Multi-cut Miskawi): 1 October (year $n$) to 31 May (year $n+1$) (243 days).
-  - Faba Bean: 15 October (year $n$) to 30 April (year $n+1$) (197 days).
-  - Sugar Beet: 1 October (year $n$) to 30 April (year $n+1$) (212 days).
+`water_need_mm` is an indicative range in mm per crop growing period. Sum the four lower endpoints and the four upper endpoints separately. Keep the same range across scenarios until a different method is approved. A difference between range endpoints is arithmetic over assumptions; it does not establish actual irrigation savings, a probability interval, or farm delivery. If a component's evidence is unresolved, the live aggregate is Not evaluated (`null`).
 
-Month-level convention: When `start_month > end_month`, the calendar window crosses December/January and evaluates days from month `start_month` in year $n$ through month `end_month` in year $n+1$.
+Reference ET0, crop evapotranspiration ETc, puddling/percolation, and irrigation delivery are separate quantities. The ingestion script derives ET0 using a FAO-56 Penman-Monteith implementation from Tmax, Tmin, RH2M, shortwave radiation and WS2M, assuming elevation 10 m and daily ground heat flux zero. Humidity is approximated using daily mean RH. This implementation and its units need independent FAO-56 review before scientific acceptance. ETc = Kc * ET0 additionally requires supported stage lengths and Kc values. The mere presence of stage coefficients in JSON does not establish a validated stage model. No generic 200–400 mm rice addition or ditch-loss percentage is accepted here without exact supporting evidence and applicability.
 
----
+## 2. Proposed executable exposure/calendar convention
 
-## 2. Quantitative Metric Formulas & Calculation Logic
+The public `hot_days` is **whole growing-window exposure at a common Tmax >=35 C threshold**, not a count restricted to flowering, actual crop damage, or a comparison of crop-specific tolerances. The common threshold permits a consistent exposure comparison. Catalog thresholds of 32/35/36/38 C are candidate crop attributes pending evidence review; they do not override this public calculation. A >=38 C diagnostic is a separate metric and must not silently substitute for `hot_days`.
 
-### A. Reference Evapotranspiration ($ET_0$) via FAO-56 Penman-Monteith
-Unlike simple temperature formulas, AgriLens derives daily grass-reference evapotranspiration ($ET_0$ in mm/day) from 5 NASA POWER parameters (`T2M_MAX`, `T2M_MIN`, `RH2M`, `ALLSKY_SFC_SW_DWN`, `WS2M`) according to the FAO-56 Penman-Monteith equation (Allen et al., 1998):
+The shared API contains months, not planting/harvest dates. Therefore use inclusive **whole months**: first day of `start_month` through last day of `end_month`. If start month exceeds end month, end in the following calendar year. Ignore free-text descriptions such as “15 May” or “10 May” for computation; they are candidate agronomic details requiring an approved contract change if needed. Do not quietly clip partial months.
 
-$$ET_0 = \frac{0.408 \Delta (R_n - G) + \gamma \frac{900}{T_{\text{mean}} + 273} u_2 (e_s - e_a)}{\Delta + \gamma (1 + 0.34 u_2)}$$
+For anchor year n, map four slots as follows:
 
-Where:
-- $T_{\text{mean}} = \frac{T_{\max} + T_{\min}}{2}$ (°C)
-- $u_2 = \text{WS2M}$ (wind speed at 2 m, m/s)
-- $e_s = \frac{e^0(T_{\max}) + e^0(T_{\min})}{2}$ (saturation vapour pressure, kPa)
-- $e_a = e_s \times \frac{\text{RH2M}}{100}$ (actual vapour pressure, kPa)
-- $\Delta = \frac{4098 \left[0.6108 \exp\left(\frac{17.27 T_{\text{mean}}}{T_{\text{mean}} + 237.3}\right)\right]}{(T_{\text{mean}} + 237.3)^2}$ (slope of vapour pressure curve, kPa/°C)
-- Psychrometric constant $\gamma = 0.0673$ kPa/°C at $z = 10.0$ m elevation.
-- Net radiation $R_n = R_{ns} - R_{nl}$, where $R_{ns} = (1 - 0.23) R_s$ ($R_s = \text{ALLSKY\_SFC\_SW\_DWN}$), and $R_{nl}$ is net longwave radiation.
-- Soil heat flux $G = 0$ for daily calculations.
+| Slot | Sowing/window-start year | Cross-year harvest |
+|---|---|---|
+| y1_summer | n | same year |
+| y1_winter | n | n+1 |
+| y2_summer | n+1 | same year |
+| y2_winter | n+1 | n+2 |
 
-### B. Crop Water Need Quantities
-AgriLens maintains strict separation between **three distinct water quantities**:
-1. **Indicative Sourced Ranges (`water_need_mm`):** Bounded ranges [min, max] mm across the full crop cycle from FAO Paper 24/33/56. Additive across rotation slots:
-   $$\text{Total Water Need}_{\min} = \sum_{i=1}^{4} \text{Crop}_i.\text{water\_need\_mm}.\min$$
-   $$\text{Total Water Need}_{\max} = \sum_{i=1}^{4} \text{Crop}_i.\text{water\_need\_mm}.\max$$
-2. **Modeled Consumptive Demand ($ET_c$):** Derived using stage-specific crop coefficients ($K_c$) from Sugita et al. (2017) and FAO-56:
-   $$ET_c(d) = K_c(d) \times ET_0(d)$$
-3. **Paddy Rice Water Requirement:** For rice, consumptive evapotranspiration ($ET_c \approx 900 - 1100$ mm) is augmented by 200–400 mm for seedling nursery preparation, puddling, and ponding percolation losses under Delta level-basin flood irrigation.
+Count actual calendar dates, including February 29 when present. For each slot, count dates with Tmax >=35 C; sum slot counts. This is crop-day exposure, so overlapping windows would count a date once for each crop. **A field rotation with overlapping full-month windows is not validated:** identify the conflicting slots and require Crop/Research/Lead calendar resolution before recommending it. Do not trim, deduplicate, shift a planting date, or claim an intercropping system without evidence. Arithmetic overlap diagnostics are not valid recommendations.
 
-### C. Extreme Heat Exposure (`hot_days`)
-Heat stress days are quantified across each crop's active growing window based on daily peak temperature ($T_{\max}$):
-- **Cereal Flowering Heat Threshold ($35.0^\circ\text{C}$):** Critical threshold for maize silking and late-season wheat grain filling; counts days with $T_{\max} \ge 35.0^\circ\text{C}$.
-- **Extreme Thermal Stress Threshold ($38.0^\circ\text{C}$):** Acute threshold causing vegetative heat stunting and stomatal shutdown.
+Require every date in every requested crop window to exist with valid non-sentinel inputs. Missing coverage gives `INSUFFICIENT_DATA` (HTTP 422); an unadvertised scenario gives `UNSUPPORTED_SCENARIO`. Never wrap dates into another year or substitute a complete year's weather. Keep previous UI results only under the previously successful, clearly labelled scenario.
 
-$$\text{hot\_days}(\text{Plan}) = \sum_{i=1}^{4} \sum_{d \in \text{GrowWindow}(\text{Crop}_i)} \mathbb{I}(T_{\max}(d) \ge 35.0^\circ\text{C})$$
+## 3. Scenario selection and availability
 
----
+Calculate annual mean daily Tmax and annual precipitation totals from complete calendar years only. Select greatest mean Tmax for hottest; select least precipitation for driest. On exact ties, choose the earliest year. Select first, then check all four slot windows: do not select a different year merely because it has enough following winter data.
 
-## 3. Climate Scenario Selection Rules (2016–2025 Baseline)
+The retained raw cache independently gives hottest **2024**, driest **2025**, and **2025 rain 39.81 mm**. The older 39.80 mm statement is a rounding/transcription discrepancy: summing the retained decimal daily values gives 39.81. This is a raw-cache correction, not a new measurement.
 
-From the 10-year NASA POWER series for Zankalon (`30.58057° N, 31.43332° E`, 3,653 complete days, 0 missing values):
-1. **`average` Scenario:** 10-year historical baseline mean (Annual mean $T_{\max} = 31.14^\circ\text{C}$, annual rainfall = $111.43$ mm, annual $ET_0 = 1964.3$ mm, scenario year = `null`).
-2. **`hottest_year` Scenario:** **2024**
-   - Annual mean daily $T_{\max} = 31.79^\circ\text{C}$
-   - Days $\ge 35^\circ\text{C}$: 146 days
-   - Days $\ge 38^\circ\text{C}$: 117 days (East Delta all-time record heat)
-   - Annual $ET_0 = 2023.7$ mm
-3. **`driest_year` Scenario:** **2025**
-   - Total annual precipitation: **39.80 mm**
-   - Annual $ET_0 = 1996.3$ mm
+With the proposed four-slot year mapping, a 2024 anchor's last winter ends in **2026**, and a 2025 anchor's last winter ends in **2027**; even the first 2025 winter needs 2026. The cache ends in 2025. Both four-slot historical stress scenarios are therefore **unavailable**, although their annual selection statistics are computable. Do not advertise them as complete live comparisons.
 
----
+For `average`, calculate each four-slot exposure for each complete anchor in 2016–2025, exclude anchors missing any required date, then take the arithmetic mean of those per-anchor totals. Do not calculate exposure on mean temperatures: thresholding and averaging do not commute. For the current cross-year windows the complete anchors are **2016–2023 (eight)**; this is not ten complete two-year rotations. Keep `scenario_year=null` and disclose anchors and count in assumptions. Calendar-year climate summaries can still cover all ten complete years, but they are different statistics. Preserve fractions in the calculated mean; approve any UI rounding explicitly.
 
-## 4. Benchmark Verification Test Cases (Zankalon Pilot)
+## 4. Independently reproduced raw-cache checks
 
-The Comparison Engine and UI must independently reproduce the following benchmark calculations:
+Run `python scripts/check_research_benchmarks.py`. It reads the retained raw NASA response directly, does not import generator/ingestion calculation functions, does not rewrite data, and does not declare scientific approval. It verifies parameter coverage/fill values and independently calculates annual selections and the following example:
 
-### Test Case 1: Baseline Plan (Traditional Intensive Delta Rotation)
-- **Sequence:** `maize` (`y1_summer`) $\to$ `wheat` (`y1_winter`) $\to$ `rice` (`y2_summer`) $\to$ `wheat` (`y2_winter`)
-- **Indicative Water Demand:**
-  - `maize`: [500, 800] mm
-  - `wheat`: [450, 650] mm
-  - `rice`: [900, 1400] mm (consumptive; add ~300 mm if accounting for puddling percolation)
-  - `wheat`: [450, 650] mm
-  - **Expected Sum:** **[2300, 3500] mm** (Highest water intensity)
-- **Soil & Diversity Note:** Contains **zero legumes** (`is_legume: false`). Heavy cereal repetition (3 slots of `Poaceae`), resulting in severe nitrogen depletion and chronic stem-borer / rust pest carryover risk.
-- **Regulatory Warning:** Includes `rice`, which is subject to annual MWRI canal command quotas in Sharkia; conditional/restricted in non-permitted canal reaches.
+- Maize full-month window 2024-05-01 through 2024-09-30: **153 dates**, **135 days with Tmax >=35 C**.
+- The candidate legacy baseline `maize, wheat, rice, wheat` has per-anchor crop-day exposure **302, 324, 329, 327, 328, 315, 308, 317** for anchors 2016–2023; arithmetic mean **318.75**. These are diagnostic numbers only: the month-based baseline has **31 overlap days** (May/October), so it is not an approved field rotation.
+- Anchors 2024 and 2025 yield unavailable exposure because coverage is missing; no fabricated zero or substituted year.
+- Wheat sown November 2023 includes February 29, 2024. Equal scenario scores select the earliest year.
 
-### Test Case 2: Water-Conscious & Policy-Compliant Alternative
-- **Sequence:** `maize` (`y1_summer`) $\to$ `faba_bean` (`y1_winter`) $\to$ `soybean` (`y2_summer`) $\to$ `wheat` (`y2_winter`)
-- **Indicative Water Demand:**
-  - `maize`: [500, 800] mm
-  - `faba_bean`: [350, 500] mm
-  - `soybean`: [450, 700] mm
-  - `wheat`: [450, 650] mm
-  - **Expected Sum:** **[1750, 2650] mm**
-  - **Net Indicative Water Saving:** Saves **550 mm (min) to 850 mm (max)** compared to Baseline!
-- **Soil & Diversity Note:** Rotates cereals (`Poaceae`) with two distinct food legumes (`Fabaceae`: `faba_bean`, `soybean`), delivering biological nitrogen fixation and eliminating rice quota compliance penalties.
+The cached catalog arithmetic, retained only to make the review reproducible, is:
 
-### Test Case 3: Diverse Soil-Building & Cash Crop Alternative
-- **Sequence:** `cotton` (`y1_summer`) $\to$ `berseem` (`y1_winter`) $\to$ `soybean` (`y2_summer`) $\to$ `sugar_beet` (`y2_winter`)
-- **Indicative Water Demand:**
-  - `cotton`: [700, 1300] mm
-  - `berseem`: [550, 800] mm
-  - `soybean`: [450, 700] mm
-  - `sugar_beet`: [500, 700] mm
-  - **Expected Sum:** **[2200, 3500] mm**
-- **Soil & Diversity Note:** Maximum rotational biodiversity across **three botanical families** (`Malvaceae`, `Fabaceae`, `Amaranthaceae`). Incorporates full-season multi-cut Berseem clover for heavy organic matter restoration and deep-rooting sugar beet for salt management. Zero grass cereal monoculture.
+| Candidate sequence | Sum of candidate water endpoints (mm) |
+|---|---|
+| maize, wheat, rice, wheat | 2300–3500 |
+| maize, faba_bean, soybean, wheat | 1750–2650 |
+| cotton, berseem, soybean, sugar_beet | 2200–3500 |
 
----
+These totals inherit unresolved crop-range evidence and calendar overlaps. They are **not approved live outputs**. Rice's conditional catalog flag does not prove the sample farm's legal eligibility. The proposed shortlist and evidence review must establish that before any rice recommendation.
 
-## 5. Explicit Limitations & Boundaries
+## 5. Language and acceptance limits
 
-1. **Indicative Ranges vs. Field Delivery:** Sourced FAO ranges represent crop evapotranspirative demand under standard management. They do not represent flood basin distribution losses (~30–40% in unimproved delta ditches) or convey canal delivery scheduling.
-2. **Reanalysis Grid Scale:** NASA POWER data represents a 0.5° x 0.625° atmospheric assimilation cell (~55 x 60 km). It does not reflect microclimate variations within shaded canal banks or parcel-level soil moisture without high-resolution sensor integration (e.g., HLS 30m).
-3. **Historical Climate Stress Test, Not Weather Forecast:** Historical scenarios (`2024` heat, `2025` drought) demonstrate resilience under observed past meteorological extremes. They are not future climate projections or seasonal forecasts.
-4. **Soil Health Claims:** Soil benefits are qualitative agronomic descriptions of biological nitrogen fixation and botanical pest interruption. No laboratory-measured soil organic carbon or nutrient concentration is simulated.
+Say only that crop families and legume presence differ. Avoid claims of severe nitrogen depletion, guaranteed organic-matter restoration, salt management, compliance, or quantified soil improvement without direct applicable evidence. Qualitative diversification principles do not establish outcomes on this farm.
+
+The annual climate statistics and independent arithmetic do not complete the Research role: exact source page/table support, crop scope approval, chronological rotation validity, reviewed ET0/Kc calculations, real service outputs, App screens, and presentation claims still require review. No scientific decision is approved by running this checker.

@@ -88,7 +88,7 @@
     },
     "driest_year": {
       "year": 2025,
-      "total_rain_mm": 39.80,
+      "total_rain_mm": 39.81,
       "annual_total_et0_mm": 1996.3,
       "rule": "min annual total PRECTOTCORR over complete calendar years 2016-2025"
     },
@@ -113,5 +113,8 @@
       "soybean",
       "sugar_beet"
     ]
-  }
+  },
+  "research_status": "pending_evidence_review",
+  "eligible_for_live": false,
+  "review_note": "Candidate research configuration, not a GET /api/config payload. Final 4-6 crop scope, evidence and calendar semantics require Research and Lead approval. Annual scenario anchors do not guarantee four-slot coverage."
 }

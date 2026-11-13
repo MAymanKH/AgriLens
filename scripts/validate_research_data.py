@@ -84,7 +84,7 @@ def main() -> int:
     check(region["region_id"] == REGION_ID, "region id", region["region_id"])
     check(
         region["coordinates"] == {"lat": 30.58057, "lon": 31.43332},
-        "approved Zankalon representative coordinates",
+        "candidate Zankalon representative coordinates",
         str(region["coordinates"]),
     )
     check(region["slot_order"] == SLOT_ORDER, "region slot_order")
@@ -94,13 +94,13 @@ def main() -> int:
     check(
         region["climate"]["period"]
         == {"start": f"{FIRST_YEAR}-01-01", "end": f"{LAST_YEAR}-12-31"},
-        "approved climate period",
+        "candidate climate period",
         str(region["climate"]["period"]),
     )
     params = region["climate"]["parameters"]
     check(
         params["T2M_MAX"]["unit"] == "C" and params["PRECTOTCORR"]["unit"] == "mm/day",
-        "approved parameter units",
+        "candidate parameter units",
     )
     check(region["climate"]["missing_days"] == 0, "zero missing days")
 
@@ -109,7 +109,7 @@ def main() -> int:
     check(sel["hottest_year"]["year"] == 2024, "hottest year 2024")
     check(sel["hottest_year"]["mean_tmax_c"] == 31.79, "hottest mean 31.79 C")
     check(sel["driest_year"]["year"] == 2025, "driest year 2025")
-    check(sel["driest_year"]["total_rain_mm"] == 39.80, "driest rain 39.80 mm")
+    check(sel["driest_year"]["total_rain_mm"] == 39.81, "driest rain 39.81 mm")
 
     # sample baseline: 4 valid crop ids in slot order
     baseline = region["sample_baseline"]
@@ -131,7 +131,7 @@ def main() -> int:
     crop_ids = [c["id"] for c in crops]
     check(len(crops) == len(EXPECTED_CROPS), f"{len(EXPECTED_CROPS)} crops", str(len(crops)))
     check(len(set(crop_ids)) == len(crop_ids), "crop ids unique", str(crop_ids))
-    check(set(crop_ids) == set(EXPECTED_CROPS), "crop id set matches approved list")
+    check(set(crop_ids) == set(EXPECTED_CROPS), "crop id set matches candidate list")
 
     source_ids = {s["id"] for s in catalog["sources"]}
     for crop in crops:
@@ -296,7 +296,7 @@ def main() -> int:
             print(f"  ... and {len(failures) - 50} more")
         return 1
 
-    print("\nRESULT: PASS - research data matches the shared contracts")
+    print("\nRESULT: PASS - structural/cache checks only; scientific approval remains pending")
     return 0
 
 
