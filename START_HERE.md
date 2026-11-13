@@ -36,6 +36,21 @@ Research review status (2026-11-13): PR #1 identified unsupported source mapping
 
 **Decision update template:** `Decision | New approved value/rule | Evidence/source | Owner | Affected endpoints/screens | Approved at T+N`. Put each approved change in the table or its linked method note. Record changes in a dated commit; if a decision is unsettled at T+3, mark it Pending with an owner and a safe workaround, rather than leaving team members to assume.
 
+### Comparison implementation decision, 2026-11-13
+
+The project owner instructed implementation to proceed without approval workflow.
+The Lead's [Comparison service](services/comparison/README.md) implements the current
+public contract and the whole-month >=35°C prototype convention in `docs/METHOD.md`.
+This instruction does not constitute Research sign-off or change the Pending evidence
+statuses above. Comparison accepts successful internal HTTP responses without an
+additional approval gate; Crop and Climate retain their existing dataset-serving rules.
+
+Rotation windows must not overlap. Average heat exposure uses common complete anchors
+across all valid offered rotations. Historical stress years are selected before testing
+four-slot coverage; incomplete selections are unavailable. Alternatives use deterministic
+priority ranking and a second descriptive-diversity selection, as documented in the
+service README. No shared API field or scientific approval status changes here.
+
 ## 3. Shared API contracts (authoritative)
 
 These are the common field names and meanings. **Examples are structural, not real agricultural results.** No service may change these silently. Additional optional fields are allowed only if consumers can ignore them safely.

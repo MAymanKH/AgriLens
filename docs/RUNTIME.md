@@ -115,11 +115,18 @@ Node services through `tools/dev.py`, and checks HTTP approval gates, error code
 response projection, health, and shutdown. Its invented approval records and
 synthetic crop records exist only in disposable test databases.
 
-These checks verify the internal services and development tools. The repository
-has no Comparison service implementation yet, so they do not prove the public
-comparison journey. Research must approve the region, final crop catalog, and
-scientific methods before the Lead selects live revisions and connects Comparison
-through the internal HTTP APIs.
+The [Comparison service](../services/comparison/README.md) now implements the public
+API and consumes both internal services over HTTP. Run its checks with
+`npm test --prefix services/comparison`. Those checks exercise the real engine through
+the launcher against separate synthetic HTTP services, including dependency shutdown.
+They do not prove an app journey or a live scientific release.
+
+To develop the public API now, start only the Crop and Climate fixture servers in
+separate terminals, then start the real engine with
+`DATA_MODE=fixture python3 tools/dev.py run comparison`. Its responses remain labelled
+synthetic. In live mode, start it with `python3 tools/dev.py run comparison`.
+Comparison adds no approval lookup; it propagates errors from the internal services,
+which still reject the checked-in staging revisions.
 
 ## Configuration and timeouts
 
