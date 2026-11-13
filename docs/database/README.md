@@ -4,6 +4,8 @@ Status: Technical Lead implementation defaults, 2026-11-13. No separate service-
 
 This design supports the existing one-region prototype. It makes approved data replaceable and reproducible without changing the public API or making services share database internals.
 
+[Prepare the candidate research import](research-staging.md) describes the reproducible staging files and their validation commands. These files do not grant scientific approval or write to MongoDB.
+
 ## Consumer experience
 
 The App calls `GET /api/config` and `POST /api/compare`. Comparison obtains crop and climate inputs from the two internal APIs. Neither consumer needs MongoDB credentials or knowledge of these collections.

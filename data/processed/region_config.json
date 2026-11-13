@@ -1,0 +1,120 @@
+{
+  "region_id": "zankalon_sharkia",
+  "name": "Zankalon, Sharkia Governorate, Egypt (East Nile Delta)",
+  "name_ar": "زنكلون - محافظة الشرقية",
+  "country": "Egypt",
+  "coordinates": {
+    "lat": 30.58057,
+    "lon": 31.43332
+  },
+  "coordinate_basis": "Exact coordinates of the Zankalon Water Research Station eddy covariance flux tower (EG-ZAN), benchmarked in Sugita et al. (2017) and FAO WaPOR Phase 2 crop mapping.",
+  "elevation_m": 10.0,
+  "slot_order": [
+    "y1_summer",
+    "y1_winter",
+    "y2_summer",
+    "y2_winter"
+  ],
+  "priorities": [
+    "water",
+    "heat",
+    "soil"
+  ],
+  "scenarios": [
+    "average",
+    "hottest_year",
+    "driest_year"
+  ],
+  "heat_threshold_c": 35.0,
+  "extreme_heat_threshold_c": 38.0,
+  "climate": {
+    "provider": "NASA POWER",
+    "endpoint": "api/temporal/daily/point",
+    "community": "AG",
+    "parameters": {
+      "T2M_MAX": {
+        "label": "Maximum temperature at 2 m",
+        "unit": "C"
+      },
+      "T2M_MIN": {
+        "label": "Minimum temperature at 2 m",
+        "unit": "C"
+      },
+      "RH2M": {
+        "label": "Relative humidity at 2 m",
+        "unit": "%"
+      },
+      "PRECTOTCORR": {
+        "label": "Corrected precipitation",
+        "unit": "mm/day"
+      },
+      "ALLSKY_SFC_SW_DWN": {
+        "label": "All Sky Surface Shortwave Downward Irradiance",
+        "unit": "MJ/m^2/day"
+      },
+      "WS2M": {
+        "label": "Wind speed at 2 m",
+        "unit": "m/s"
+      },
+      "ET0_FAO56": {
+        "label": "Derived FAO-56 Penman-Monteith Reference Evapotranspiration",
+        "unit": "mm/day"
+      }
+    },
+    "period": {
+      "start": "2016-01-01",
+      "end": "2025-12-31"
+    },
+    "complete_years": {
+      "first": 2016,
+      "last": 2025,
+      "count": 10
+    },
+    "missing_days": 0,
+    "spatial_resolution": "MERRA-2 0.5 deg x 0.625 deg (~55 x 60 km)",
+    "time_standard": "LST",
+    "observed_mean_daily_tmax_c": 31.14,
+    "observed_mean_annual_rain_mm": 111.43,
+    "observed_mean_annual_et0_mm": 1964.33
+  },
+  "scenario_selection": {
+    "unit": "one complete calendar year (2016-2025)",
+    "hottest_year": {
+      "year": 2024,
+      "mean_tmax_c": 31.79,
+      "hot_days_gte_38c": 117,
+      "hot_days_gte_35c": 146,
+      "rule": "max annual mean daily T2M_MAX over complete calendar years 2016-2025"
+    },
+    "driest_year": {
+      "year": 2025,
+      "total_rain_mm": 39.81,
+      "annual_total_et0_mm": 1996.3,
+      "rule": "min annual total PRECTOTCORR over complete calendar years 2016-2025"
+    },
+    "average": "10-year mean historical exposure across baseline 2016-2025, scenario_year = null."
+  },
+  "sample_baseline": [
+    "maize",
+    "wheat",
+    "rice",
+    "wheat"
+  ],
+  "sample_alternatives": {
+    "water_conscious": [
+      "maize",
+      "faba_bean",
+      "soybean",
+      "wheat"
+    ],
+    "diverse": [
+      "cotton",
+      "berseem",
+      "soybean",
+      "sugar_beet"
+    ]
+  },
+  "research_status": "pending_evidence_review",
+  "eligible_for_live": false,
+  "review_note": "Candidate research configuration, not a GET /api/config payload. Final 4-6 crop scope, evidence and calendar semantics require Research and Lead approval. Annual scenario anchors do not guarantee four-slot coverage."
+}

@@ -1,0 +1,30 @@
+{
+  "decision_revision": "aae933bb097d22d97dc615a9b8185ca304b16a4c",
+  "scientific_approval": false,
+  "integrity_checks": "passed",
+  "expected_days": 3653,
+  "record_count": 3653,
+  "absent_dates": [],
+  "invalid_parameters": [],
+  "complete_years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "raw_sha256": "7c36f877a91df648116f600079ec02fb47183b070257717f0257f2704c5b6fcc",
+  "normalized_sha256": "dce9cdedba4877bfe4e8f2175bfca5455ca9c7f8fcc3bba15c0310a143571010",
+  "normalized_serialization": "UTF-8 JSON, sorted keys, compact separators, ensure_ascii=False, allow_nan=False",
+  "normalized_content": "metadata and daily from climate_daily_clean.json, parameters and method_ref from climate manifest validation",
+  "warnings": [
+    "Research evidence and method review remains open on PR #1.",
+    "Scenario selection integrity does not establish four-slot cross-year eligibility.",
+    "8 candidate crops are outside the published 4–6 crop scope."
+  ]
+}

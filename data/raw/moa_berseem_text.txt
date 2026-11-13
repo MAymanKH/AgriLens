@@ -1,0 +1,883 @@
+Env. Biodiv. Soil Security Vol. 2, pp. 193 - 203 (2018)
+*Corresponding author e-mail: r_darwesh82@yahoo.com
+DOI:10.21608/jenvbs.2019.6775.1043
+©2017 National Information and Documentation Center (NIDOC)
+A 
+FIELD experiment was conducted in the two successive winter seasons ( 2016-17 and 
+2017-18) to investigate the impact of cultivation method; dry cultivation ( dry seed on dry 
+soil) and traditional one (wet seed on wet soil) and irrigation regime; five different irrigation 
+regimes as follows, irrigation till 5 cm above soil surface, (traditional, I 1), using soil moisture 
+depletion (I2), irrigation with 0.8 from pan evaporation (I3), irrigation with Hargreaves equation, 
+1981 (I4) and irrigation till 2.5 cm above soil surface (I5). 
+The obtained results showed that decreasing amount of irrigation water from traditional 
+method (I1) to 2.5 cm above soil surface (I5) reduced fresh yield by 5.49 and 6.75 ton fed.-1 with 
+water saving ≈14.5% (≈ 336.0 m3fed.-1,) for dry seeds cultivation method, and the corresponding 
+values 4.87 and 7.34 ton fed.-1 with water saving 10.75% (≈ 280.0 m3fed.-1,) for wet cultivation 
+one in the overall seasons. Meaningfully, an average of ≈ 700-840 million m 3 water could 
+be saved at the national level (≈2.5 million fed.). Moreover, mean reduction in dry yield by 
+24.62 kg fed. -1, (6.35 %) and 13.00 kg fed -1 (3.51 %) could be resulted from dry cultivation 
+method, and by 36.45 kg fed-1 (8.68 %) and 10.91 kg fed-1 (2.60 %) could be resulted from wet 
+cultivation method in the first and second seasons respectively. 
+The highest overall mean values of water consumptive use (CU) and consumptive use 
+efficiency (Ecu, %) were recorded irrigation without any stress during the growing season 
+(I1). Productivity of irrigation water (PIW kgm -3) and water productivity (WP kgm -3) for fresh 
+yield was the highest values recorded under I 5 (the lowest water consumed) for dry and wet 
+cultivation methods. 
+Keywords: Irrigation regime, Cultivation methods, Crop water productivity; Egyptian clover 
+crop. 
+15
+Water Productivity for Egyptian Clover as Affected by Different 
+Irrigation Regimes and Cultivation Methods in The North Middle 
+Nile Delta Region
+R. Kh. Darwesh 
+Soils, Water & Environment, Res. Inst.(SWERI), A.R.C., Egypt.
+Introduction                                                          
+Water is one of the most fundamental important 
+inputs for the production of crops. Maximizing 
+productivity of irrigation water by crops is the 
+main issue in the agriculture sector to increase 
+crop production in order to narrow the food gap. 
+Water affects the achievement of crops not only 
+directly but also indirectly by influencing the 
+availability of nutrients, the timing of cultural 
+operating….etc. The Egyptian water share from 
+the main water source, River Nile, is limited 
+by 55.5 x 10 9 m3 year-1, which is not enough to 
+meet the water demands of all sectors. About 
+80-85% of the national water equipping is used 
+in agricultural sector. Rationalize the use of 
+irrigation water through maximizing productivity 
+of irrigation water by crops becomes a must. 
+Geerts and Raes (2009) investigate the concept 
+of water productivity to be an important issue 
+and warned that due to the current development 
+policy adopted in the world, the pressure on water 
+resources for food production will increase, and 
+water consumption will reach 5.600 km 3 year -
+1 in 2050, represents three times the amount of 
+water currently used for irrigation worldwide. 
+Crop-water requirements vary during the growing 
+period, mainly due to variation in crop canopy 
+and climatic conditions, and are governed by 
+crop evapotranspiration (ET). Thus, an accurate 
+194
+R. KH. DARWESH
+Env. Biodiv. Soil Security Vol. 2 (2018)
+estimation of crop ET is a very important factor 
+for efficient water management (Tyagi et al., 
+2000). 
+Egyptian clover ( Trifoliumalexandrinum L.) 
+considers one of the most important leguminous 
+forages in the Mediterranean region and Middle 
+East, with a fast growth rate, high quality forage 
+and very low bloating potential. Growing these 
+legumes with grass improves the nutritive value 
+and qualitative characteristics of the forage 
+mixture compared with grass alone (Zemenchik 
+et al., 2002).
+A fast-growing summer annual, Egyptian 
+clover can produce high forage under irrigation. 
+It’s a heavy Nitrogen (N) producer and the least 
+winter hardy of all true annual clovers. This 
+makes it an ideal winter cover before all summer 
+crops nitrogen-demanding crops. Berseem clover 
+draws down soil N early in its cycle.
+Irrigation water management could be 
+achieved via a grate determination of the amount 
+and timing of applied irrigation water in a planned 
+and efficient manner. With good irrigation 
+management, a Berseem hay crop can have high 
+yield and quality potential. Berseem is a high 
+water use forage crop because it generates a 
+substantial amount of above ground biomass, and 
+has a longer growing season comparing with other 
+irrigated crops.
+Water productivity points are also useful for 
+looking at the potential increase in crop yield 
+that may result from increased water availability 
+(Singh et al., 2006). Nyati (1996) suggested that 
+the greatest benefit from limited water can be 
+obtained from early application prior to all canopy 
+cover. They provide a proper vision of where and 
+when water could be saved. 
+Under water deficiency conditions, reduction 
+of the cultivated area yielded higher water 
+productivity values as compared to deficit 
+irrigation (Vazifedoust 2008 )
+Abbas et al. (1995) studied the impact of the 
+planting method and the irrigation management 
+(one, two and three irrigations between cuttings) 
+on fresh and dry yield of berseem. The results 
+revealed that the optimum yield was obtained 
+from the two methods of planting, i.e. the El-
+Lamaa method and the dry method with three 
+irrigation between cuttings. In addition, El-Bably 
+(2002) revealed that three irrigation between 
+cuttings significantly increased fresh and dry 
+yields, however, it decreased water use efficiency, 
+indicated also water consumed values were 
+59.62, 48.98 and 37.98 cm, over both seasons, 
+for three, two and one irrigation between cuttings 
+treatments, respectively. Moreover, Kassab (2006) 
+stated that dry cultivation is an effective method 
+for irrigating Egyptian clover in North Nile Delta 
+region as a result of saving an amount of irrigation 
+water. 
+Kassab et al., (2012) found that average 
+values were 32.81, 34.01and 34.62 ton fed -1 
+for dry, semi-dry and the common cultivation, 
+respectively, and higher values of yield per unit 
+applied water (WUtE) as well as consumed water 
+(WUE) averaging 15.52, 15.68 kg/m 3 and 20.06, 
+19.74 kg/m 3 for dry and semi-dry cultivation, 
+respectively comparing with 15.07 kg/m 3 applied 
+and 18.47 kg/m 3 consumed, respectively under 
+the wet cultivation method.  Din SI et al., (2014) 
+found that the seed yield for Egyptian clover was 
+severely reduced about 47% when the irrigation 
+was decreased from ten to four waterings; this 
+could be, because of flowers and head abscission 
+under moisture stress. Shah Jahan Leghari et 
+al., (2018) studied that irrigation with 15 days 
+interval, 8 irrigations with 18 days interval and 4 
+irrigations with 21 days interval and found that 
+12 irrigations with 15 days interval produced 
+significant green fodder and seed yield.
+The main objectives for this current investigation 
+are to determine the effect of different cultivation 
+methods and the studied irrigation water regime on 
+improving irrigation performance and optimizing 
+water productivity, yield, some yield attributes and 
+some water relations.
+Materials and Methods                                                 
+A field experiment was conducted at Sakha 
+Agricultural Research Station The site lies at Kafr 
+EL Sheikh Governorate, the North Middle of the 
+Nile Delta region, during the two growing seasons 
+2016/17 and 2017/18. The aim of this study was 
+to find out the impact of cultivation method 
+and irrigation regime on yield and some water 
+relationships of Egyptian clover (Berseem) crop.
+Soil samples and irrigation water were taken 
+and analyzed at Soil, Water and Environment 
+Research Institute (SWERI) Lab, Agricultural 
+Research Center (ARC).
+Soil samples were taken from the experimental 
+site at four depths; 0-15, 15-30, 30-45 and 45-60 
+cm, and prepared, to determine some physical 
+195
+Env. Biodiv. Soil Security Vol. 2 (2018)
+WATER PRODUCTIVITY FOR EGYPTIAN CLOVER AS AFFECTED BY DIFFERENT ...
+and chemical characteristics of the soil before 
+cultivation. According to Black (1965) and Jakson 
+(1967), respectively. Where, SO4 was calculated 
+by the difference between soluble cations and 
+anions.
+Irrigation and drainage water was also 
+analyzed and the obtained data are presented in 
+Table 2
+While, the climatological parameters during the 
+studied period, were obtained from Sakha Agro-
+meteorological Station. The parameters, include; air 
+temperature (T.,C°), relative humidity (RH.,%), wind 
+speed (U2,km/day at 2 m height) and evaporation 
+pan (Ep, mm). as tabulated in Table 3
+Experimental design and treatments: 
+A field trial was conducted during the above 
+mentioned seasons. The experimental design for 
+this present work was a factorial; split plot design 
+with three replications, involving two factors i.e. 
+cultivation methods and irrigation regime. Main 
+plots were assigned to the cultivation methods as 
+follows:
+A. Dry cultivation method (Dry seeds broadcasting 
+over dry soil).
+B.Wet cultivation (presoaked seeds broadcasting 
+over wet soil or traditional).
+The subplots were assigned to the irrigation 
+regime as follows:
+TABLE 1. Soil physical and chemical properties as well soil-water constants:
+Soil physical characteristics
+Soil 
+depth
+Cm
+Particle size distribution
+Texture class
+Bulk 
+Density, 
+Mg/m3
+F.C. 
+%* P.W.P %** Available 
+water %Sand% Silt% Clay%
+0-15 11.60 33.80 54.60 Clayey 1.04 43.53 23.66 19.87
+15-30 19.30 34.40 46.30 Clayey 1.05 38.41 20.88 17.53
+30-45 21.10 40.70 38.20 Clay loam 1.09 36.06 19.60 16.46
+45-60 21.10 40.65 38.25 Clay loam 1.14 34.65 18.83 15.82
+Mean 18.30 37.38 44.32 Clay loam 1.08 38.16 20.74 17.42
+Chemical  characteristics
+Soil 
+depth
+cm
+pH
+1:2.5
+S.w.S***
+EC
+ds m-1
+Soluble cations, meq/l Soluble anions meq/l
+Ca++ Mg++ Na+ K+ CO3
+= HCO3
+- Cl- SO4
+=
+0-15 8.45 2.85 4.85 3.99 19.38 0.29 - 4.40 16.15 7.96
+15-30 8.36 3.42 5.81 4.79 23.26 0.34 - 4.10 16.05 14.05
+3045- 8.37 3.54 6.02 4.96 24.07 0.35 - 4.10 12.09 19.31
+45-60 8.35 3.99 6.78 5.59 27.13 0.40 - 4.00 16.10 19.80
+Mean --- 3.45 5.87 4.83 23.46 0.35 - 4.15 15.10 15.26
+*F.C.: Field capacity, **P.W.P: Permanent wilting point and *** S.w.S soil water suspension  
+TABLE 2. Chemical properties of irrigation and drainage water:
+Water 
+type
+SAR E.C
+ds/m
+Soluble cations meq/l Soluble anions meq/l
+Ca++ Mg++ Na+ K+ CO3
+- HCO3
+= Cl- SO4
+=
+IW* 5.73 0.64 1.09 0.90 4.35 0.06 0.00 2.5 3.05 0.85
+D** 8.30 1.34 2.28 1.88 9.11 0.13 0.00 5.5 6.38 1.52
+*IW: Irrigation water ** D: Drainage water
+196
+R. KH. DARWESH
+Env. Biodiv. Soil Security Vol. 2 (2018)
+TABLE 3. Some meteorological parameters during the two growing seasons of Berseem 2016-2017 and 2017-2018.
+Months 
+T (c°) RH(%) U2
+ km d-1
+Pan
+Evap. (mm/
+day)
+R.F
+mm/ 
+monthMax. Min. Mean Max. Min. Mean
+2016-2017
+Oct. 29.80 21.70 25.75 82.40 55.30 68.85 92.20 3.57 ---
+Nov. 24.93 17.93 21.43 77.87 56.79 67.42 56.00 1.98 ---
+Dec. 19.66 10.72 15.19 85.42 65.31 75.37 64.70 1.57 25.84
+Jun. 18.17 5.71 11.94 87.81 62.42 75.11 51.90 1.36 9.60
+Feb. 19.61 9.79 14.70 86.00 59.93 72.96 58.30 2.15 25.20
+March 22.45 17.99 20.22 84.90 60.32 72.61 83.52 2.97 ---
+Apr. 26.51 21.59 24.05 79.37 50.83 65.10 89.30 4.64 10.60
+2016-2017
+Oct. 28.70 24.00 26.35 81.10 54.70 67.90 73.20 3.27 ---
+Nov. 23.70 19.90 21.80 84.70 58.60 71.65 53.50 2.06 9.3
+Dec. 21.30 18.40 19.85 88.20 64.80 76.50 42.90 1.47 5.60
+Jun. 18.90 13.60 16.25 89.40 64.40 76.90 44.90 2.63 36.40
+Feb. 21.60 14.60 18.10 87.60 63.40 75.50 34.70 2.78 16.60
+March 25.40 16.60 21.00 82.30 48.30 65.30 46.40 4.22 ---
+Apr. 27.80 20.00 23.90 80.90 43.90 62.40 74.00 5.32 ---
+*Source: meteorological station at Sakha 31° 07¯ N Latitude, 30° 57¯ longitude with an elevation of 6 metres above mean sea level. 
+1: irrigation till 5.0 cm above soil surface 
+(traditional), I1
+2: irrigation based on soil moisture depletion 
+(SMD), I2 
+3: irrigation with 0.8 pan evaporation (Ep), I3
+4: Irrigation according to Hargreaves et al., 
+equation (1985), I4 
+ET0 = 0.0023 Ra.TD0.5 (Ta +17.8) as: 
+ET0 = reference evapotranspiration, mm, 
+Ra = extraterrestrial radiation 
+TD = difference of temperature (Tmax - Tmin) 
+Ta = mean temperature.
+5: irrigation till 2.5 cm above soil, I5.
+Irrigation water (I.W):
+Applied water was controlled and measured by 
+orifice with fixed dimension. The amount of water 
+delivered through the spile tube was calculated 
+according to Majumdar (2002) by the equation;
+q=CA√2gh
+Where:
+q = Discharge of irrigation water (cm3/s),
+C= Coefficient of discharge = 0.61 (determined 
+by experiment),
+A = Inner cross section area of the irrigation spile 
+(cm2),
+g = Gravity acceleration (cm/s2) and
+h = Average effective head (cm).
+The volume of water delivered for each plot 
+(6m×7m = 42 m 2) was calculated by substituting 
+Q in the following equation:
+Q= q × T × n 
+Where: 
+Q = volume of water m3/ plot,
+q = discharge (m3/min),
+T = total irrigation time (min) and
+n = number of spiles tube per each plot.
+Water consumptive use, cm:
+Water consumptive use was calculated as soil 
+moisture depletion (SMD) according to Hansen et 
+al. (1979). 
+Where: 
+CU = Water consumptive use in the effective root 
+zone, cm, 
+Ө2 = Gravimetric soil moisture percentage 48 
+hours after irrigation, 
+Ө1 = Gravimetric soil moisture percentage before 
+irrigation, 
+Dbi = soil bulk density (Mg m -3) for the given 
+depth, 
+Di = soil layer depth (20 cm),
+i = number of soil layers each (15 cm) depth and
+Crop- water relations:
+Water productivity WP kg m-3:
+Water productivity is generally defined as crop 
+yield per cubic metre of water consumption. It 
+was calculated according to (Ali et al., 2007) 
+197
+Env. Biodiv. Soil Security Vol. 2 (2018)
+WATER PRODUCTIVITY FOR EGYPTIAN CLOVER AS AFFECTED BY DIFFERENT ...
+                                      
+Where: 
+WP = water productivity (kg m-3),
+GY = yield (kg fed-1) and 
+ET = Total water consumption of the growing 
+season (m3 fed-1.).
+ Productivity of irrigation water PIW kg m-3:
+Productivity of irrigation water (PIW) was 
+calculated according to (Ali et al., 2007). 
+ 
+Where: 
+PIW = productivity of irrigation water (kg m-3
+),
+Gy = yield kg/fed and 
+Wa = Water applied (m3/fed.). (Irrigation water + 
+effective rainfall)
+Note: effect rainfall = rianfall*0.7  (Novica, 1979) 
+Consumptive use efficiency (Ecu%):
+The consumptive use efficiency (Ecu) was 
+calculated as described by Doornbos and Pruitt 
+(1977) as follows:
+    
+Where:
+Ecu = Consumptive use efficiency% 
+ETc = Total evapotranspiration ~ consumptive use 
+(m3fed-1).
+TABLE 4. Seasonal applied water (m3, cm /Fed) Consumptive use (cm) and consumptive use efficiency (Ecu) in the 
+two growing seasons.
+Cultivation 
+methods 
+Irrigation 
+Treatments
+AW, m-3 AW, cm CU, cm Ecu, %
+1st 
+Season
+2nd 
+Season
+1st 
+Season
+2nd 
+Season
+1st 
+Season
+2nd 
+Season
+1st 
+Season
+2nd
+Season
+C1
+I 1 2342.5 2295.0 55.77 54.64 48.70 47.40 87.32 86.75
+I 2 2315.5 2180.0 55.13 51.90 47.50 45.10 86.16 86.90
+I 3 2290.0 2065.0 54.52 49.16 47.00 42.60 86.21 86.70
+I 4 2195.0 1964.5 52.26 46.77 43.45 38.90 83.14 83.18
+I 5 2075.0 1890.0 49.40 45.00 42.85 37.20 86.74 82.87
+Mean C1 2243.6 2078.9 53.42 49.49 45.90 42.23 85.92 85.53
+C 2
+I 1 2665.0 2520.0 63.45 60.00 57.47 54.15 90.57 90.25
+I 2 2600.0 2408.0 61.90 57.33 55.45 50.45 89.57 88.00
+I 3 2504.0 2330.0 59.62 55.48 54.00 48.90 90.56 88.14
+I 4 2431.0 2270.0 57.88 54.05 51.05 47.20 88.20 87.32
+I 5 2388.0 2240.0 56.85 53.33 48.50 44.45 85.31 83.35
+Mean C 2 2517.6 2353.6 59.94 56.04 53.70 49.54 89.58 88.40
+Mean C 2380.6 2216.3 56.68 52.77 49.80 45.88 87.86 87.05
+* Growing season 1 = 161 days, growing season 2 = 165 days, mean = 163 days
+AW =  Applied water  to the field (m3fed-1).
+Statistical analysis:
+All data were statistically analyzed according 
+to the technique of analysis of variance (ANOV A) 
+as published by Gomez and Gomez (1984). 
+Means of the treatment were compared by the 
+least significant difference (LSD) at 5% level and 
+1 % level of significance which developed by 
+Waller and Duncan (1979).
+Results and Discussion                                                     
+Irrigation applied water and water productivities. 
+Irrigation applied water 
+Water delivered by the Egyptian clover 
+(Berseem) consists of two items, irrigation water 
+(I W) and rainfall (RF) (299.2 and 285 m 3 during 
+the two growing seasons of 2016/17 and 2017/18 
+respectively).as shown in Table 4. 
+Table 4 illustrated also the seasonal values of 
+applied irrigation water (AW) for Berseem crop. 
+The highest values 2665.0 m 3 fed -1 (63.45 cm) 
+and 2520.0 m3 fed-1 (60.0 cm), were recorded for 
+C2I1 in the first and second seasons, respectively. 
+While, the lowest values were recorded under 
+C1I5 in the two seasons with values 2075.0 m3 fed-
+1  (49.4 cm) and 1890.0 m 3 fed-1 (45.0 cm) in the 
+first and second seasons, respectively. This result 
+is in agreement with Shah Jahan Leghari et al., 
+(2018) they illustrated that 12 irrigations in the 
+
+198
+R. KH. DARWESH
+Env. Biodiv. Soil Security Vol. 2 (2018)
+seasons with 15 days interval produced significant 
+green fodder and seed yield.  
+Applied irrigation water for different 
+treatments during both seasons presented given in 
+Table 4. Comparing with dry seeds (C1) irrigation 
+water applied was about 10.0-12.0% less than that 
+in wet seeds (C2) under the same irrigation applied 
+regime. While, the irrigation treatment I5, applied 
+water was less 11-17% compare with I1 under the 
+same cultivation methods. 
+Water consumptive use (cm)
+Crop consumptive use (CU) was computed 
+directly on the basis of water extracted by the 
+growing plants (from the effective root zone) 
+during the successive irrigation intervals plus that 
+withdrawn from the last watering till harvesting. 
+The actual soil moisture depleted considered as 
+a direct method for determining crop water use 
+“crop evapotranspiration, ETc”. 
+Berseem water consumptive use as affected 
+by cultivation methods and irrigation regimes 
+which were tabulated in Table 4. Data illustrated 
+that the highest CU value was observed under 
+wet cultivation method (C2) and comprised 53.70 
+and 49.54 cm, for 1 st season and 2 nd season, 
+respectively. Dry seeds cultivation methods (C 1) 
+exhibited Cu values reached mean rates 14.5-
+15 % lowers than that recorded under wet seeds 
+cultivation method. 
+The mean values of  seasonal CU, cm in 
+the two growing seasons for different irrigation 
+regime treatments can be descended in order as: 
+48.70> 47.50> 47.0> 43.45 and 42.85 cm for I1, I2, 
+I3, I4 and  I5 treatments respectively. While, for the 
+second season, values are 47.40> 45.10> 43.05> 
+38.90 and 37.20 cm for treatments I1, I2, I3, I4 and 
+I5 for dry cultivation methods (C1), the same trend 
+for wet cultivation methods (C2) (Table 4).
+The linear regression equations between 
+applied irrigation water, cm  overall cultivation 
+methods on consumptive use, cm shown in Fig. 
+1, these equations showed that, the relationship 
+between applied irrigation water and consumed 
+water by plants, cm is more reliable in the two 
+seasons.   
+Consumptive use efficiency (Ecu), %
+Consumptive use efficiency (Ecu) is a 
+parameter which indicates the capability of plants 
+to utilize the soil moisture stored in the effective 
+root zone. Presented values of Ecu in Table 4 
+showed that the highest mean values 89.58 and 
+88.40% were obtained under wet cultivation 
+method (C 2) in the first and second seasons 
+respectively.  For irrigation regime treatment data 
+revealed that the highest Ecu values were noticed 
+under irrigation treatments (I 1) with values 90.57 
+and 90.25% in the first and second seasons 
+respectively, for wet cultivation methods (C 2), 
+the same trend for dry seeds cultivation methods.  
+Therefore, by decreasing the applied water, higher 
+amount of irrigation water could be beneficially 
+used by the growing plants which resulted in 
+decreasing water losses.
+Productivity of irrigation water PIW, kg m-3.    
+Productivity of irrigation water PIW was 
+computed to evaluate the treatments for maximum 
+Fig. 1. Correlation between irrigation water applied, cm and cultivation method on consumptive use, cm (plant 
+water consumption) in the two growing seasons.
+
+199
+Env. Biodiv. Soil Security Vol. 2 (2018)
+WATER PRODUCTIVITY FOR EGYPTIAN CLOVER AS AFFECTED BY DIFFERENT ...
+yield per unit of applied water in the field. In this 
+case, the highest PIW for Berseem was observed 
+under the condition of irrigation treatment I 5 
+(19.60 and 21.24 kg m −3) but the lowest values 
+were noticed under I3 (17.85 and 19.95 kg m−3) in 
+the first and second seasons respectively for dry 
+cultivation methods (C 1). On the other hand for 
+wet cultivation methods (C 2) the corresponding 
+values were I 1 (18.16 and 19.57 kg m −3), and 
+lowest values I 4 (16.75 and 18.24 kg m −3) (Table 
+5). So, under this study in both seasons it could 
+be noticed that productivity of irrigation water is 
+might be affected by; irrigation regime, cultivation 
+methods. This result is in agreement with 
+(Bandyopadhyay and Mallick, 2003) they found 
+that productivity of irrigation water increased 
+when irrigation intervals increased. Data in the 
+same table illustrated that; the interaction among 
+both of cultivation methods and irrigation regime 
+have a significant effect on productivity of 
+irrigation water. 
+ For cultivation methods, cubic metre of 
+irrigation water under C 1 produced 18.83 and 
+20.60 kg in first and second growing seasons, 
+respectively. Otherwise, cubic meter of irrigation 
+water under C 2 produced 17.55 and 19.77 kg in 
+TABLE 5. Seasonal productivity of irrigation water (PIW) and irrigation water productivity (WP) for Egyptian 
+clover as affected by cultivation methods and different irrigation treatments in the two growing 
+seasons.
+Cultivation 
+methods 
+Irrigation 
+treatments 
+PIW, kg m-3 WP, kg m-3
+1st Season 2nd Season Mean 1st Season 2nd Season Mean
+C1
+I 1 19.48 20.44 20.02 22.44 23.56 23.00
+I 2 19.27 21.08 20.18 23.74 24.32 24.03
+I 3 17.97 19.95 18.96 20.85 22.79 21.82
+I 4 17.85 20.27 19.06 21.46 24.38 22.92
+I 5 19.60 21.24 20.36 22.48 25.60 24.04
+Mean C1 18.83 20.60 19.72 22.19 24.14 23.16
+C 2
+I 1 18.16 19.57 18.87 19.15 22.10 20.63
+I 2 18.06 19.85 18.96 20.17 22.13 21.15
+I 3 17.02 18.24 17.63 18.64 21.43 20.04
+I 4 16.75 18.25 17.50 19.20 20.89 20.05
+I 5 17.77 18.75 18.26 20.83 22.49 21.66
+Mean C 2 17.55 18.93 18.24 19.22 21.62 20.42
+Mean C 18.19 19.77 18.97 20.71 22.88 21.79
+L S D 0.05 0.265 0.545 --- 0.720 0.603 ---
+F test
+I *** ** --- ** ** ---
+C * * --- ** ** ---
+I*C ** * --- NS * ---
+first and second growing seasons, respectively.
+Water productivity (WP , kg m-3).    
+Data in Table 5 revealed that the values of WP, 
+were significantly affected by cultivation methods 
+and irrigation water regime, the highest values of 
+WP resulted from I2 compared to other treatments 
+with other cultivation methods treatments as mean 
+of the two growing seasons, this may be due to 
+the higher fresh yield with low applied irrigation 
+water compared to the other treatments, While 
+the lowest values of WP resulted from I3 overall 
+cultivation methods treatments. 
+Significant effect also for cultivation methods, 
+Hence, cubic metre of irrigation water under C 1 
+(dry seeds) produced 24.14 and 23.16 kg in first 
+and second growing seasons, respectively, while 
+for wet seeds produced 21.62 and 20.42 kg in 
+first and second growing seasons, respectively. 
+Table 5 showed that; irrigation regime-cultivation 
+methods interactions significantly affect water 
+productivity in the second season only. This 
+result is in agreement with Kassab et al. (2012) 
+they revealed that under dry berseem cultivation, 
+the highest mean WP (16.51 kg m -3) was noticed 
+irrigation water with 80% calculated based on 
+Ibrahim equation. Also Abdolrahman Barzegar  et 
+200
+R. KH. DARWESH
+Env. Biodiv. Soil Security Vol. 2 (2018)
+al., 2016 illustrated Water use efficiencies are 0.32 
+and 0.20 g l -1 for 100% and 60% field capacities, 
+respectively.
+Egyptian clover yield
+ Fresh yield of Egyptian clover, ton fed-1
+The highest values of fresh yield were 
+obtained under I 1 C2 with significant differences 
+between them over both two growing seasons. 
+Data in Table 6 cleared out that total fresh yield of 
+berseem seemed to reduce under dry cultivation 
+in 2016/2017 and 2017/2018 seasons and overall 
+mean as well. The reduction in total fresh yield, due 
+to dry cultivation, comprised mean 4% less than 
+those recorded under wet cultivation, respectively, 
+in 2016/2017 and 2017/2018 seasons. 
+Convenient irrigation (control) resulted in 
+higher berseem fresh yield than those obtained as 
+irrigation water quantities were applied based on 
+other treatments and such findings were noticed 
+in 2016/2017 and 2017/2018 seasons besides 
+the overall mean. Data in Table 6 showed that 
+irrigation treatments significantly affected on fresh 
+yield. The highest mean values 47.31 and 49.34 
+ton fed-1 are obtained under traditional irrigation 
+(the highest applied water) in the first and second 
+seasons, respectively. While, the corresponding 
+lowest values were recorded under I4 (Hargreaves 
+equation) with values 40.73 and 41.41 ton fed-1 in 
+the first and second seasons, respectively for wet 
+cultivation C2, the same trend for dry cultivation 
+C1. Decreasing watering level from traditional 
+method I1 by implementing Hargreaves equation 
+I4 instated that trend it irrigation a decreasing of 
+≈ 6.64 ton fed-1 fresh yield and mean water saving 
+of ≈ 8.17% (≈ 190.68 m3 fed-1.,) could be resulted 
+for dry cultivation method, but for wet cultivation 
+method irrigation a decreasing of ≈ 7.5 ton fed -1 
+fresh yield and mean water saving of ≈ 11.12% 
+(≈ 290.22 m 3 fed-1.,). The results are in the same 
+fine with by El-Bably (2002), indicated that three 
+irrigation events between cuttings significantly 
+increased total  cuttings of Egyptian clover fresh 
+yields, also; Kassab et al. (2012) reported  that 
+traditional or convenient irrigation resulted higher 
+Berseem fresh yield with this obtained under 
+100,80 and 60% from Ibrahim eqution.  
+The linear regression equations between 
+irrigation applied water, cm  and cultivation 
+methods on Berseem fresh yield, ton fed -1 are 
+shown in Fig. 2. These equations showed that, 
+the relationship between applied irrigation water 
+quantities and fresh yield, ton fed-1 is more reliable 
+TABLE 6. Seasonal fresh yield (ton fed -1) for Egyptian clover as affected by cultivation methods and different 
+irrigation treatments in the two growing seasons.
+Cultivation 
+methods
+Irrigation 
+treatments
+Seasonal fresh yield, ton fed-1
+1st Season 2nd Season
+1st cut 2nd cut  3rd cut Total I 1st cut 2nd cut  3rd cut Total I
+C1
+I 1 17.55 14.98 13.38 45.91 16.83 16.07 14.00 46.90
+I 2 16.88 14.61 13.13 44.62 16.93 16.17 12.86 45.96
+I 3 16.45 12.44 12.26 41.15 15.92 12.36 12.92 41.20
+I 4 15.75 11.93 11.49 39.17 15.08 12.96 11.80 39.84
+I 5 15.00 12.98 12.44 40.42 14.15 13.87 12.13 40.15
+Mean C1 16.33 13.39 12.54 42.26 15.78 14.29 12.74 42.81
+C 2
+I 1 18.06 15.25 14.00 47.31 17.79 16.85 14.70 49.34
+I 2 17.64 15.74 13.58 46.96 17.57 16.8 13.44 47.81
+I 3 17.00 12.74 12.88 42.62 16.45 12.74 13.30 42.49
+I 4 16.44 12.32 11.97 40.73 15.37 13.72 12.32 41.41
+I 5 15.54 13.95 12.95 42.44 14.91 14.28 12.81 42.00
+Mean C 2 16.94 14.00 13.08 44.02 16.42 14.88 13.31 44.61
+Mean C 16.64 13.70 12.81 43.14 16.10 14.59 13.03 43.72
+LSD 0.05 0.453 0.313 0.539 --- 0.423 0.652 0.442 ---
+F test
+I ** ** * --- * ** * ---
+C ** ** ** --- ** ** ** ---
+I*C NS * NS --- NS NS NS ---
+201
+Env. Biodiv. Soil Security Vol. 2 (2018)
+WATER PRODUCTIVITY FOR EGYPTIAN CLOVER AS AFFECTED BY DIFFERENT ...
+in the two seasons.
+Dry yield of Egyptian clover
+For dry yield of Egyptian clover, the three 
+cuttings were considered as the total yield. Data 
+presented in Table 7 revealed that increasing 
+irrigation water treatment caused significant effect 
+on weight of dry yield in the two seasons. 
+Irrigation with I1 maximized dry yield with the 
+highest value 388.0 and 370.0 kg. fed -1, for dry 
+cultivation method and 419.89 and 419.23 kg. fed-
+1, for wet cultivation method weight in the first and 
+second seasons respectively. On the other hand, the 
+lowest value 354.34 and 350.16 kg. fed-1., for dry 
+cultivation method and 374.84 and 399.33 kg. fed-
+1, for wet cultivation method weight in the first and 
+Fig. 2. Correlation between irrigation water applied, cm and cultivation methods on seasonal berseem clover dry 
+yield, kg fed-1 in the two growing seasons.
+TABLE 7. Seasonal dry yield ( kg fed-1) for Egyptian clover as affected by cultivation methods and different 
+irrigation treatments in the two growing seasons.
+Cultivation 
+methods
+Irrigation 
+treatments
+Seasonal dry yield, kg fed-1
+1st Season 2nd Season
+1st cut 2nd cut  3rd cut Total I 1st cut 2nd cut  3rd cut Total I
+C1
+I 1 90.63 131.33 166.16 388.12 103.00 122.00 145.00 370.00
+I 2 103.00 127.33 139.83 370.16 101.40 125.66 131.33 358.39
+I 3 94.52 132.90 140.00 367.42 91.40 125.33 141.66 358.39
+I 4 94.68 103.00 156.66 354.34 84.83 117.33 148.00 350.16
+I 5 97.00 122.00 144.50 363.50 86.50 134.50 136.00 357.00
+Mean C1 93.97 123.31 149.43 368.71 93.43 124.96 140.40 358.79
+C 2
+I 1 94.10 146.79 179.00 419.89 96.67 148.23 174.33 419.23
+I 2 107.13 135.36 160.55 403.04 99.30 152.20 160.00 411.5
+I 3 98.4 144.60 157.21 400.21 107.66 141.00 162.50 411.16
+I 4 76.40 136.90 161.55 374.84 92.67 129.33 177.33 399.33
+I 5 90.80 117.00 175.64 383.44 109.00 139.00 160.33 408.33
+Mean C 2 93.37 136.13 166.79 396.29 101.06 141.95 166.90 409.91
+Mean C 93.67 129.72 158.11 382.50 97.25 133.46 153.65 384.36
+LSD 0.05 6.540 2.522 4.951 --- 4.585 4.001 4.486 ---
+F test
+I * * * --- ** ** * ---
+C ** ** ** --- ** ** ** ---
+I*C * NS NS --- * * * ---
+
+202
+R. KH. DARWESH
+Env. Biodiv. Soil Security Vol. 2 (2018)
+second seasons respectively which yielded from 
+the irrigation water applied of I4.  
+The results obtained from this study showed 
+that when Berseem crop is given its full water 
+requirement, 577.7 and 546.4 mm of water 
+is required for dry cultivation and 634.5 and 
+600.0mm is required for wet cultivation in first 
+and second seasons respectively, but a figure 
+of 494.0 and 450.0 mm is required for dry 
+cultivation and 568.5 and 533.3mm is required for 
+wet cultivation when deficit irrigation resulted in 
+saving water of ≈ 19.10 % (≈ 442.8 m3 fed-1.,)  for 
+dry cultivation and ≈ 7.00% (≈ 181.45 m 3 fed-1.,)  
+for wet cultivation of the crop water requirement 
+is applied in the two seasons with a reduction in 
+dry yield (≈4.95% and 5.64%)  for dry and wet 
+cultivation compared with the local or traditional 
+irrigation.  These findings are in agreement with 
+those of  Lazaridou, Martha and  Koutroubas 
+(2004), at Drama, Macedonia, Greece, indicated 
+that stated that water stress resulted in a reduction 
+of the above ground dry biomass to one third of 
+irrigated berseem clover plants,  Kassab  et al., 
+(2012) stated that total dry yield of berseem clover 
+tended to reduce under both dry and semi – dry 
+cultivation methods in the two seasons and overall 
+mean as well and also illustrated that reduction 
+in total dry yield due to dry and semi - dry 
+cultivation methods, comprised 7.63 and 2.08% 
+and 4.56 and 2.68% lesser than those recorded 
+under wet cultivation method, respectively, in 
+two seasons. Also Abdolrahman Barzegar  et al., 
+2016 illustrated that   the highest (0.47 g pot -1) 
+and lowest (0.33 g pot -1) total dry masses were 
+observed at 80% and 60% field capacities.
+Fig. 3. Correlation between irrigation water applied, cm and cultivation methods on seasonal berseem clover dry 
+yield, kg fed-1.
+The linear regression equations between 
+irrigation water applied, cm  and cultivation 
+methods on berseem clover dry yield, kg fed-1 are 
+shown in Fig. 3, is reliable in the two seasons.  
+Conclusion                                                                               
+Although the traditional (full irrigation 
+method, till 5 cm above soil surface) offers 
+considerable advantage for fresh and dry yield 
+to Egyptian clover crop under the arid climate 
+conditions, I5 (till 2.5 cm above soil surface) saved 
+about ≈ 14.50% (336.0 m 3 fed1) for dry method 
+and ≈ 10.75%( 280.0 m 3 fed 1)for wet method 
+of IW with the highest WP values for yield to 
+berseem clover. Investigation should focus on this 
+issue and evaluates the efficiency of the irrigation 
+water regime and cultivation methods for berseem 
+production.
+References                                                                                            
+Abbas, F.A., A.A. Rayan, K.A. Mohamed and N.G. 
+Ainer (1995). Evaluation of water management 
+system for clover in Egypt. Proc. of The 2Nd Conf. of 
+On-Farm Irrigation and Agroclimatology, Egypt.  
+P. 265-276.
+Abdolrahman Barzegar, Abdolamir Yousefi and 
+Nazanin Zargoosh (2016). Water stress and soil 
+compaction impacts on clover growth and nutrient 
+
+203
+Env. Biodiv. Soil Security Vol. 2 (2018)
+WATER PRODUCTIVITY FOR EGYPTIAN CLOVER AS AFFECTED BY DIFFERENT ...
+concentration. Eurasian J. of Soil Science  5(2): 
+139.145.
+Ali M.H., Hoque M.R., Hassan A.A. and Khair A. 
+(2007). Effect of deficit irrigation on yield water 
+productivity, and economic returns of wheat. Agric. 
+Water Manag., 92(3): 151-161.
+Bandyopadhyay, P.K. and S. Mallick (2003). Actual 
+evapotranspiration and crop coefficients of wheat 
+(Triticum aestivum) under varying moisture levels 
+of humid tropical canal command area. Agric. 
+Water Manag. 59: 33–47.
+Black, C. A. (1965). Method of Soil and Water Analysis. 
+Part 2: Madison, Wisconsin, USA.
+Din SI, Ullah GD, Khan M, et al. (2014) Sowing dates 
+and irrigation schedule influenced on yield and 
+yield components of berseem in district Peshawar. 
+J Nat Sci Res 4: 91–95.
+Doorenbos, J. and W.O.  Pruitt (1977). Guidelines for 
+predicting crop water requirements. F AO Irrig. 
+Drain. Pap. 24.
+El-Bably, A. Z. (2002). Effect of Irrigation and Nutrition 
+of Copper and Molybdenum on Egyptian Clover 
+(Trifolium alexandrnium  L.). Agronomy Journal, 
+94: 1066-1070.
+Geerts, S. and D. Raes, (2009). Deficit irrigation 
+as an on-farm strategy to maximize crop water 
+productivity in dry areas. Agricultural Water 
+Management, 96 (9):1275-1284. 
+Gomez K. A. and Gomez A. (1984). Statistical 
+Procedures for Agricultural Research. 1st ed. John 
+Wiley & Sons, New York, U.S.A.
+Hansen, V .W.; Israelsen D.W. and Stringharm D.E. 
+(1979). Irrigation Principle and Practices , 4 th ed 
+Johns Willey &Sons; New York, USA.
+Hargreaves Gl.; Hargreaves, GH and riley, J. P. (1985). 
+Irrigation water requirement for Senegal River 
+Basin. J Irrigation at Drainage Engr., ASCE,  111 
+(3): 265-275.  
+Jackson, M. T. (1967). Soil Chemical Analysis, 
+Printic Hall of India. Pivate, New York. USA. for 
+a Changing World, 1 – 6 August 2010, Brisbane, 
+Australia. Published on DVD. 
+Kassab, M.M. (2006). Dry cultivation as an effective 
+method for berseem irrigation management. Annals 
+of Agric. Sci., Moshtohor, 44(1).
+Kassab, M.M.; M.A.M. Ibrahim and N.I. Talha (2012). 
+Effect of cultivation method and irrigation  rate on 
+productivity and water efficiency of berseem crop-
+grown in  North Nile Delta. Minufiya J. Agric. Res. 
+V ol. 37 No 4(2): 1019-1033.
+Lazaridou, Martha and S.D. Koutroubas  (2004). 
+Drought effect on water use efficiency of berseem 
+clover at various growth stages. 4th International 
+Crop Science Congress Brisbane, Australia.
+Majumdar, D.K. (2002). Irrigation Water Management: 
+Principles and Practice.  2nd ed. Prentice Hall of 
+India, New Delhi 110001, 487p
+Novica, V(1979) Irrigation of Agriculture Crops. Fac. 
+Agric. Press, Nvia sad, Yugoslavia.
+Nyati, C.T., (1996). Effect of irrigation regime on cane 
+and sugar yields of variety NCo376 in the south-
+east lowveld of Zimbabwe. Proc. South African 
+Sugar Technologists Assn. 70. pp. 59-62.
+Shah Jahan Leghari1, Aijaz Ahmed Soomro2, Ghulam 
+Mustafa Laghari2, Khalid Hussain Talpur2, 
+Farooque Ahmed Soomro2, Mazhar Hussain 
+Mangi1 and Naveed Mahmood (2018) Effect of 
+NPK rates and irrigation frequencies on the growth 
+and yield performance of Trifolium alexandrium L. 
+AIMS Agriculture and Food, 3(4): 397–405.
+Singh, R., van Dam, J.C., Feddes, R.A., (2006). Water 
+productivity analysis of irrigated crops in Sirsa 
+district. India. Agric. Water. Manage. 82: 253–278.
+Tyagi, N. K., D. K. Sharma and S. K. Luthra (2000) 
+Evaporation crop coefficients of wheat and 
+sorghum. Journal of Irrigation and Drainage 
+Engineering. p 215-222. 
+Vazifedoust M., J.C. van Dama; R.A. Feddes and  M. 
+Feizi  (2008) Increasing water productivity of 
+irrigated crops under limited water supply at field 
+scale.  Agricultural Water Management  95: 89 – 
+102.
+Waller, R.A. and Duncan D.B. (1969). Symmetric 
+multiple comparison problem. Amer. Stat. Assoc. 
+Jour., pp1485 – 1503.
+Zemenchik,  R.A., Albrecht, K.A., Shaver, R.D., 
+(2002). Improved nutritive value of kura clover- 
+and  birdsfoot trefoil-grass  mixtures compared 
+with grass ultures. Agron. J. 94 (5), 1131–1138.
+(Received 20/12/2018;
+accepted 12/2/2019)

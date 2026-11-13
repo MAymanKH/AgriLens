@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "decision_revision": "aae933bb097d22d97dc615a9b8185ca304b16a4c",
+  "region": {
+    "id": "zankalon_sharkia",
+    "name": "Zankalon, Sharkia Governorate, Egypt (East Nile Delta)",
+    "coordinates": {
+      "lat": 30.58057,
+      "lon": 31.43332
+    }
+  },
+  "kind": "observed",
+  "status": "staging",
+  "created_at": {
+    "$date": "2026-11-13T12:32:28.780988+00:00"
+  },
+  "approval": null,
+  "limitations": [
+    "Candidate research inputs. Not approved for live comparisons.",
+    "A new database import must record its actual creation timestamp.",
+    "Source titles are copied from the candidate Research ledger; citation review remains open."
+  ],
+  "_id": "climate-zankalon_sharkia-2016_2025-staging-aae933bb097d22d97dc615a9b8185ca304b16a4c",
+  "period": {
+    "first_year": 2016,
+    "last_year": 2025
+  },
+  "units": {
+    "tmax": "C",
+    "tmin": "C",
+    "rh": "%",
+    "rain": "mm/day",
+    "solar_radiation": "MJ/m^2/day",
+    "wind_speed": "m/s",
+    "et0_fao56": "mm/day"
+  },
+  "parameters": {
+    "tmax": "T2M_MAX",
+    "tmin": "T2M_MIN",
+    "rh": "RH2M",
+    "rain": "PRECTOTCORR",
+    "solar_radiation": "ALLSKY_SFC_SW_DWN",
+    "wind_speed": "WS2M"
+  },
+  "provenance": {
+    "source_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX,T2M_MIN,RH2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN,WS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20160101&end=20251231&format=JSON",
+    "retrieved_at": {
+      "$date": "2026-11-13T12:32:28.780988+00:00"
+    },
+    "missing_days": 0,
+    "total_days": 3653,
+    "spatial_resolution": "0.5 x 0.625 degree (MERRA-2 / GEOS-FP)",
+    "time_standard": "LST",
+    "et0_method": "FAO-56 Penman-Monteith equation (Allen et al., 1998)"
+  },
+  "raw_artifact": {
+    "uri": "data/raw/nasa_power_zankalon_2016_2025.json",
+    "sha256": "7c36f877a91df648116f600079ec02fb47183b070257717f0257f2704c5b6fcc"
+  },
+  "validation": {
+    "method_ref": "aae933bb097d22d97dc615a9b8185ca304b16a4c:docs/METHOD.md",
+    "expected_days": 3653,
+    "record_count": 3653,
+    "complete_years": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "report_uri": "data/processed/mongodb/validation_report.json",
+    "normalized_sha256": "dce9cdedba4877bfe4e8f2175bfca5455ca9c7f8fcc3bba15c0310a143571010"
+  },
+  "scenarios": {
+    "hottest_year": {
+      "year": 2024,
+      "rule": "max annual mean daily maximum temp among complete years",
+      "annual_mean_tmax_c": 31.79,
+      "hot_days_gte_35c": 146,
+      "hot_days_gte_38c": 117
+    },
+    "driest_year": {
+      "year": 2025,
+      "rule": "min annual total precipitation among complete years",
+      "annual_total_rain_mm": 39.81,
+      "annual_total_et0_mm": 1996.3
+    },
+    "highest_demand_year": {
+      "year": 2024,
+      "rule": "max annual cumulative FAO-56 Penman-Monteith reference ET (ET0)",
+      "annual_total_et0_mm": 2023.7
+    }
+  }
+}

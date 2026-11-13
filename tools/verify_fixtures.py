@@ -20,7 +20,7 @@ def read(name):
 def verify():
     manifest = read('cases.json')
     cases = manifest['cases']
-    assert {str(p.relative_to(FIXTURES)) for p in FIXTURES.rglob('*.json')} == {'cases.json', *(c['response_file'] for c in cases)}, 'Unreferenced or missing fixture JSON'
+    assert {p.relative_to(FIXTURES).as_posix() for p in FIXTURES.rglob('*.json')} == {'cases.json', *(c['response_file'] for c in cases)}, 'Unreferenced or missing fixture JSON'
     assert 'SYNTHETIC' in manifest['notice']
     crops = read('crops/catalog.json')
     climate = read('climate/daily.json')
