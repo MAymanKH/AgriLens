@@ -6,6 +6,8 @@ It does not require a synthetic HTTP server. Scientific review was waived by the
 project owner; release records and responses remain explicitly unreviewed.
 App integration and public hosting are outside this completion status.
 
+For the GitHub Actions SSH/PM2 deployment, follow [the deployment runbook](../deploy/README.md).
+
 ## Prepare the runtime
 
 Run from the repository root. Use Node.js 22 or newer, Python 3.10 or newer, and

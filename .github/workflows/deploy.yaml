@@ -1,0 +1,58 @@
+name: Deploy backend
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-production
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash deploy/check.sh
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy tested commit over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
+          PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+          DEPLOY_SHA: ${{ github.sha }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          fingerprint: ${{ secrets.SSH_HOST_FINGERPRINT }}
+          envs: PROJECT_PATH,PROJECT_NAME,DEPLOY_SHA
+          command_timeout: 30m
+          script: |
+            set -eu
+            test -n "$PROJECT_PATH"
+            test -n "$PROJECT_NAME"
+            cd "$PROJECT_PATH"
+            git fetch origin main
+            git cat-file -e "$DEPLOY_SHA^{commit}"
+            script=$(mktemp)
+            trap 'rm -f "$script"' EXIT
+            git show "$DEPLOY_SHA:deploy/server.sh" > "$script"
+            bash "$script" "$DEPLOY_SHA"
