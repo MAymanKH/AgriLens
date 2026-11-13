@@ -61,6 +61,29 @@ The command verifies the source package before connecting. Stale generated files
 
 Local imports are serialized with an OS lock for the port/database pair, including across checkouts. The OS releases the lock after an interrupted process. A crash can leave staging records, which the next import checks before resuming. Existing incompatible collection validators or indexes cause a failure; the importer does not rewrite schema definitions. Scientific publication and live adapters remain separate work under [the implementation handoff](implementation-handoff.md).
 
+## Validate and publish a Climate revision
+
+The Climate service rejects any dataset that is not `kind: observed`, `status: approved`, schema version 1, and accompanied by both Research and technical validation references. Importing files only creates a `staging` revision.
+
+After `import-data` completes and all import processes have stopped, validate the exact dataset ID printed by the importer:
+
+```sh
+.local/mongo-venv/bin/python scripts/publish_climate_dataset.py \
+  --dataset-id 'climate-zankalon_sharkia-2016_2025-staging-<decision-commit>'
+```
+
+This command takes the same local import lock, conditionally seals the staging revision, then checks the MongoDB validators/index, exact manifest and daily-record match against the checked-in bundle, every expected calendar date (including February 29), finite measurements, NASA fill markers (`<= -900`), nonnegative precipitation, complete-year metadata, raw artifact SHA-256 and source validation report. It writes a durable report under `data/processed/mongodb/reports/`. A failed sealed revision is marked `rejected`; corrections require a new revision ID.
+
+Have Research review that exact report and record the approval reference for this exact dataset revision. Then publish with the reference they provide:
+
+```sh
+.local/mongo-venv/bin/python scripts/publish_climate_dataset.py \
+  --dataset-id 'climate-zankalon_sharkia-2016_2025-staging-<decision-commit>' \
+  --research-record '<Research approval record for this dataset revision>'
+```
+
+The command revalidates the sealed data and conditionally changes that exact manifest from `sealed` to `approved`, attaching the Research reference and the validation-report path plus checksum. Do not fabricate the Research reference or mark a dataset approved manually. After approval, pin the exact ID in local/deployment configuration as `CLIMATE_DATASET_ID`; the service never chooses a revision automatically. Re-running against an approved revision is read-only and verifies its report checksum.
+
 ## Run the storage regression checks
 
 With MongoDB running:
