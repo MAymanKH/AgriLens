@@ -47,8 +47,9 @@ additional approval gate. Crop and Climate now also support the explicitly selec
 `unreviewed` mode described below; default live mode retains its approval requirements.
 
 Rotation windows must not overlap. Average heat exposure uses common complete anchors
-across all valid offered rotations. Historical stress years are selected before testing
-four-slot coverage; incomplete selections are unavailable. Alternatives use deterministic
+across all valid offered rotations. In live and fixture modes, historical stress years are selected before testing
+four-slot coverage; incomplete selections are unavailable. The unreviewed prototype
+uses the complete-anchor selection described in the release section below. Alternatives use deterministic
 priority ranking and a second descriptive-diversity selection, as documented in the
 service README. No shared API field or scientific approval status changes here.
 
@@ -64,14 +65,23 @@ snapshots. Neither mode uses synthetic data as an outage fallback.
 The prototype catalog selects maize, soybean, wheat and faba bean from
 `data/processed/four_crop_proposal.json`, using its proposed nonoverlapping month
 windows. Faba-bean water stays null. The pinned demo baseline is
-`maize,wheat,maize,wheat`. Only `average` is advertised with the retained 2016–2025
-coverage. Every public comparison discloses its unreviewed status.
+`maize,wheat,maize,wheat`. The retained 2016–2025 coverage supports all three scenarios in unreviewed mode.
+For this prototype only, Comparison selects annual extremes from complete calendar
+years that also have four-slot coverage for every offered rotation: anchors 2016–2023.
+This yields hottest eligible anchor 2023 and driest eligible anchor 2019, with earliest
+year tie-breaks. The historical year anchors the first summer; subsequent slots use
+actual consecutive dates. The internal Climate API retains full-record annual extremes
+2024/2025. Public stress responses disclose the eligible anchors, selected rule,
+full-record extreme and unreviewed status. They must be labelled hottest/driest
+**eligible rotation anchor**, never hottest/driest of the entire 2016–2025 record.
+This explicitly supersedes the previous average-only prototype release; it does not
+change live-mode science rules or approve the pending scientific decisions.
 
 [The pinned release manifest](releases/prototype.json) records exact input and runtime
 hashes, snapshot IDs and the sample baseline. [The backend runbook](docs/BACKEND.md)
 provides repeatable build, start, check, backup, restore and rollback commands.
 Acceptance includes real MongoDB and all three HTTP services, all 16 supported
-baselines, independent raw-series heat and water arithmetic, invalid inputs,
+baselines across all three priorities and scenarios (144 comparisons), independent raw-series heat and water arithmetic, invalid inputs,
 service/database outages and recovery, interrupted-import recovery, immutable retry
 checks, restore into fresh databases, and selection of a previous release.
 The executable acceptance check is `scripts/test_prototype_backend.py`.

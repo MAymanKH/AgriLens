@@ -111,15 +111,19 @@ class PrototypeBackendTests(unittest.TestCase):
                         self.assertEqual(first['baseline_water_mm'],{'min':1900,'max':2900})
                         self.assertEqual(first['baseline_hot_days'],279.125)
                         self.assertEqual(first['valid_baselines_checked'],16)
+                        self.assertEqual(first['comparisons_checked'],144)
+                        self.assertEqual(first['scenario_years'],{'hottest_year':2023,'driest_year':2019})
                         with self.assertRaisesRegex(ValueError, 'already in use'):
                             with Stack(self.bundle,env,folder/'conflicting-services'):
                                 self.fail('Occupied ports must not be adopted as this process stack')
                         before=request(stack.urls['comparison'],'/api/config')[1]
-                        stack.stop('climate')
                         payload={'region_id':before['region']['id'],'baseline':before['sample_baseline'],'priority':'water','scenario':'average'}
-                        code,error,_=request(stack.urls['comparison'],'/api/compare',payload)
-                        self.assertEqual((code,error['error']['code']),(503,'SERVICE_UNAVAILABLE'))
-                        stack.start('climate');stack.ready('climate');stack.ready('comparison')
+                        for owner in ('climate','crops'):
+                            stack.stop(owner)
+                            for scenario in before['scenarios']:
+                                code,error,_=request(stack.urls['comparison'],'/api/compare',{**payload,'scenario':scenario})
+                                self.assertEqual((code,error['error']['code']),(503,'SERVICE_UNAVAILABLE'))
+                            stack.start(owner);stack.ready(owner);stack.ready('comparison')
                         self.assertEqual(check(stack),first,'Service restart changed the selected result')
                         stop_mongo(mongo);mongo=None
                         code,error,_=request(stack.urls['comparison'],'/api/compare',payload)

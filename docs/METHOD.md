@@ -33,6 +33,8 @@ Require every date in every requested crop window to exist with valid non-sentin
 
 ## 3. Scenario selection and availability
 
+### Live-mode and full-record annual statistics
+
 Calculate annual mean daily Tmax and annual precipitation totals from complete calendar years only. Select greatest mean Tmax for hottest; select least precipitation for driest. On exact ties, choose the earliest year. Select first, then check all four slot windows: do not select a different year merely because it has enough following winter data.
 
 The retained raw cache independently gives hottest **2024**, driest **2025**, and **2025 rain 39.81 mm**. The older 39.80 mm statement is a rounding/transcription discrepancy: summing the retained decimal daily values gives 39.81. This is a raw-cache correction, not a new measurement.
@@ -40,6 +42,31 @@ The retained raw cache independently gives hottest **2024**, driest **2025**, an
 With the proposed four-slot year mapping, a 2024 anchor's last winter ends in **2026**, and a 2025 anchor's last winter ends in **2027**; even the first 2025 winter needs 2026. The cache ends in 2025. Both four-slot historical stress scenarios are therefore **unavailable**, although their annual selection statistics are computable. Do not advertise them as complete live comparisons.
 
 For `average`, calculate each four-slot exposure for each complete anchor in 2016–2025, exclude anchors missing any required date, then take the arithmetic mean of those per-anchor totals. Do not calculate exposure on mean temperatures: thresholding and averaging do not commute. For the current cross-year windows the complete anchors are **2016–2023 (eight)**; this is not ten complete two-year rotations. Keep `scenario_year=null` and disclose anchors and count in assumptions. Calendar-year climate summaries can still cover all ten complete years, but they are different statistics. Preserve fractions in the calculated mean; approve any UI rounding explicitly.
+
+### Unreviewed prototype complete-anchor stress tests
+
+The project owner's backend-completion instruction is implemented under the existing
+unreviewed prototype exception in `START_HERE.md`. This is a disclosed prototype
+convention, not Research approval or a change to the live-mode rule above.
+
+Before selecting a stress year, intersect complete calendar years with anchors whose
+four crop windows are covered for **every offered valid rotation**, independently of
+the user's baseline or priority. Rank only those eligible anchors by greatest annual
+mean Tmax or least annual rain, with earliest-year ties. With retained records and the
+four-crop release, eligible anchors are 2016–2023, hottest is 2023 and driest is 2019.
+The selected annual extreme anchors the first summer; the four slots use actual dates
+in that year and the following years. This does not repeat a single year's weather.
+
+Climate still publishes full-record annual extremes 2024/2025, which Comparison
+independently verifies. Public stress responses disclose both full-record and eligible
+selections, the exact eligible set and the selection rule. Label these as hottest/driest
+**eligible rotation anchors**, not absolute record years. Null internal declarations
+remain unavailable; no eligible anchor means `INSUFFICIENT_DATA`. No missing weather
+is filled, water ranges are unchanged, and observed data never receives approval metadata.
+
+`tools/backend.py check` independently selects eligible extremes and reproduces every
+returned plan from the raw artifact for all 16 baselines, three priorities and three
+scenarios. The legacy diagnostics below intentionally keep their full-record semantics.
 
 ## 4. Independently reproduced raw-cache checks
 

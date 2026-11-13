@@ -142,6 +142,15 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
   for (let year = climate.period.first_year; year <= climate.period.last_year; year++) {
     if (rotations.every(crops => exposure(crops, year) !== null)) anchors.push(year);
   }
+  const annualSelected = { ...selected };
+  if (unreviewed) {
+    const eligible = years.filter(row => anchors.includes(row.year));
+    for (const scenario of ['hottest_year', 'driest_year']) {
+      if (selected[scenario] === undefined) continue;
+      selected[scenario] = [...eligible].sort((a, b) =>
+        (scenario === 'hottest_year' ? b.heat - a.heat : a.rain - b.rain) || a.year - b.year)[0]?.year;
+    }
+  }
   function available(scenario) {
     return scenario === 'average' ? anchors.length > 0 : selected[scenario] !== undefined && rotations.every(crops => exposure(crops, selected[scenario]) !== null);
   }
@@ -193,6 +202,9 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
     if (remaining.length) chosen.push(remaining[0]);
     const warnings = [];
     if (unreviewed) warnings.push('UNREVIEWED PROTOTYPE: retained research inputs and proposed crop calendars. Scientific review was waived; these results are not validated agricultural recommendations.');
+    if (unreviewed && input.scenario !== 'average') warnings.push(
+      `Historical stress year selected among years with complete rotation coverage, not the entire climate record. ` +
+      `Full-record ${input.scenario} year: ${annualSelected[input.scenario]}; eligible-anchor selection: ${selected[input.scenario]}.`);
     if (fixture) warnings.push('SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or agricultural recommendations.');
     if (chosen.length < 3) warnings.push(`Only ${chosen.length - 1} distinct valid alternatives are available.`);
     if (chosen.some(m => m.water.min === null)) warnings.push('Water need is Not evaluated where any crop range is incomplete.');
@@ -214,7 +226,11 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
         sources: [...catalog.sources.map(s => ({ id: s.id, title: s.supports, url: s.url })),
           { id: 'climate_power', title: fixture ? 'Synthetic climate fixture' : 'Historical daily climate input', url: climate.provenance.source_url }],
         assumptions: ['Inclusive whole months; winter harvest crosses into the next year when its end month precedes its start month.',
-          input.scenario === 'average' ? `Common complete anchors: ${anchors.join(', ')}; arithmetic mean of per-anchor crop-day counts.` : climate.scenarios[input.scenario].rule,
+          input.scenario === 'average' ? `Common complete anchors: ${anchors.join(', ')}; arithmetic mean of per-anchor crop-day counts.` : unreviewed
+            ? `Eligible complete calendar-year and rotation anchors: ${years.filter(row => anchors.includes(row.year)).map(row => row.year).join(', ')}; ` +
+              `${input.scenario === 'hottest_year' ? 'greatest annual mean daily Tmax' : 'least annual total precipitation'}; earliest year wins exact ties. ` +
+              'The selected year anchors the first summer; following slots use their actual consecutive historical dates.'
+            : climate.scenarios[input.scenario].rule,
           'Water ranking uses range midpoints, then heat exposure; soil priority uses botanical family count, then distinct crop count. Remaining ties use water, heat and crop IDs.',
           `Climate retrieved ${climate.provenance.retrieved_at}; ${climate.provenance.time_standard}; ${climate.provenance.spatial_resolution}.`],
         limitations: ['Historical exposure is not a forecast or observed crop damage.', 'Indicative crop-water ranges are not measured irrigation savings.',

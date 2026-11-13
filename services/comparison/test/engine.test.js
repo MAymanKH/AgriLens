@@ -127,7 +127,7 @@ test('malformed dependency data and inconsistent annual scenario rules fail clos
 });
 
 
-test('retained research inputs reproduce independent whole-window arithmetic without approving data', () => {
+function researchInputs() {
   const processed = name => JSON.parse(fs.readFileSync(new URL(`../../../data/processed/${name}`, import.meta.url)));
   const catalog = processed('crop_catalog.json');
   const proposal = processed('four_crop_proposal.json');
@@ -138,6 +138,11 @@ test('retained research inputs reproduce independent whole-window arithmetic wit
     source_ids: [proposed.water_evidence.source_id, proposed.calendar_evidence.source_id].filter(Boolean),
   }));
   for (const source of proposal.sources) if (!catalog.sources.some(s => s.id === source.id)) catalog.sources.push({...source, supports:source.location});
+  return {catalog, climate, proposal};
+}
+
+test('retained research inputs reproduce independent whole-window arithmetic without approving data', () => {
+  const {catalog, climate, proposal} = researchInputs();
   const engine = createEngine(catalog,climate,{regionId:proposal.region_id,regionName:'Zankalon'});
   assert.deepEqual(engine.config().scenarios,['average']);
   const baseline = ['maize','faba_bean','maize','wheat'];
@@ -162,6 +167,42 @@ test('heat priority selects lower exposure and complete-year ties choose the ear
   assert.ok(result.plans[1].hot_days<result.plans[0].hot_days);
   const tied=setup((_c,cl)=>{
     cl.daily.forEach(row=>{row.tmax_c=35;row.rain_mm=0;});
+    cl.scenarios.hottest_year.year=2020;cl.scenarios.driest_year.year=2020;
+  });
+  for(const scenario of ['hottest_year','driest_year']) assert.equal(tied.compare({...input,scenario}).meta.scenario_year,2020);
+});
+
+
+test('unreviewed stress scenarios select extremes only among fully covered rotation anchors', () => {
+  const {catalog, climate, proposal} = researchInputs();
+  const engine = createEngine(catalog, climate, {regionId:proposal.region_id, regionName:'Zankalon', unreviewed:true});
+  assert.deepEqual(engine.config().scenarios, ['average','hottest_year','driest_year']);
+  for (const [scenario, expected] of [['hottest_year',2023],['driest_year',2019]]) {
+    const result = engine.compare({...input,region_id:proposal.region_id,baseline:['maize','wheat','maize','wheat'],scenario});
+    assert.equal(result.meta.scenario_year, expected);
+    assert.ok(result.meta.assumptions.some(s => s.includes('2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023')));
+    assert.ok(result.meta.warnings.some(s => s.includes('complete rotation coverage')));
+    const raw = JSON.parse(fs.readFileSync(new URL('../../../data/raw/nasa_power_zankalon_2016_2025.json',import.meta.url)));
+    const bounds = [[`${expected}0501`,`${expected}0930`],[`${expected}1101`,`${expected+1}0430`],
+      [`${expected+1}0501`,`${expected+1}0930`],[`${expected+1}1101`,`${expected+2}0430`]];
+    const days = bounds.reduce((n,[start,end]) => n + Object.entries(raw.properties.parameter.T2M_MAX)
+      .filter(([date,t]) => date >= start && date <= end && t >= 35).length,0);
+    assert.equal(result.plans[0].hot_days,days);
+  }
+});
+
+test('unreviewed eligible anchors respect gaps, null declarations and earliest-year ties', () => {
+  const build = (edit) => {
+    const catalog = structuredClone(originalCatalog), climate = structuredClone(originalClimate);
+    edit(climate);
+    return createEngine(catalog,climate,{...settings,fixture:false,unreviewed:true});
+  };
+  const gaps=build(cl => { cl.daily = cl.daily.filter(r => r.date !== '2024-02-29'); });
+  assert.equal(gaps.compare({...input,scenario:'driest_year'}).meta.scenario_year,2021);
+  const disabled=build(cl => {cl.scenarios.hottest_year.year=null;});
+  assert.throws(()=>disabled.compare({...input,scenario:'hottest_year'}),code('INSUFFICIENT_DATA'));
+  const tied=build(cl => {
+    cl.daily.forEach(r=>{r.tmax_c=35;r.rain_mm=0;});
     cl.scenarios.hottest_year.year=2020;cl.scenarios.driest_year.year=2020;
   });
   for(const scenario of ['hottest_year','driest_year']) assert.equal(tied.compare({...input,scenario}).meta.scenario_year,2020);

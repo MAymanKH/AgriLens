@@ -124,14 +124,14 @@ class Stack:
         self.close()
 
 
-def independent_heat(bundle, crop_ids):
+def independent_exposures(bundle, crop_ids):
     import base64
     raw_path = bundle['package'][1]['raw_artifact']['uri']
     raw = json.loads(base64.b64decode(bundle['artifacts'][raw_path]))
     temperatures = raw['properties']['parameter']['T2M_MAX']
     crops = {crop['id']: crop for crop in bundle['package'][0]['crops']}
     period = bundle['package'][1]['period']
-    totals = []
+    totals = {}
     for anchor in range(period['first_year'], period['last_year'] + 1):
         total = 0
         complete = True
@@ -150,9 +150,31 @@ def independent_heat(bundle, crop_ids):
                 total += value >= 35
                 date += dt.timedelta(days=1)
         if complete:
-            totals.append(total)
+            totals[anchor] = total
     require(bool(totals), 'Independent example has no complete anchors')
-    return sum(totals) / len(totals)
+    return totals
+
+
+def independent_scenarios(bundle, exposures):
+    import base64
+    from decimal import Decimal
+    raw = json.loads(base64.b64decode(bundle['artifacts'][bundle['package'][1]['raw_artifact']['uri']]),
+                     parse_float=Decimal)['properties']['parameter']
+    eligible = set.intersection(*(set(values) for values in exposures.values()))
+    annual = {}
+    for year in sorted(eligible):
+        date, end = dt.date(year, 1, 1), dt.date(year + 1, 1, 1)
+        heat, rain, count = Decimal(0), Decimal(0), 0
+        while date < end:
+            key = date.strftime('%Y%m%d')
+            heat += raw['T2M_MAX'][key]
+            rain += raw['PRECTOTCORR'][key]
+            count += 1
+            date += dt.timedelta(days=1)
+        annual[year] = (heat / count, rain)
+    require(bool(annual), 'No independent complete stress anchors')
+    return {'hottest_year': min(annual, key=lambda y: (-annual[y][0], y)),
+            'driest_year': min(annual, key=lambda y: (annual[y][1], y))}
 
 
 def check(stack):
@@ -160,46 +182,55 @@ def check(stack):
     region = manifest['identity']['region_id']
     base = stack.urls['comparison']
     status, config, headers = request(base, '/api/config')
-    require(status == 200 and config['scenarios'] == ['average'], 'Only complete average scenario should be advertised')
+    require(status == 200 and config['scenarios'] == ['average', 'hottest_year', 'driest_year'],
+            'All three complete prototype scenarios should be advertised')
     require(headers['X-AgriLens-Data-Mode'] == 'unreviewed' and 'unreviewed' in config['region']['name'], 'Unreviewed disclosure missing')
     baseline = manifest['identity']['sample_baseline']
     require(config['sample_baseline'] == baseline, 'Pinned baseline mismatch')
     crop_by_id = {c['id']: c for c in stack.bundle['package'][0]['crops']}
-    result = None
-    for priority in ('water', 'heat', 'soil'):
-        body = {'region_id': region, 'baseline': baseline, 'priority': priority, 'scenario': 'average'}
+    sequences = list(itertools.product(*[
+        [crop['id'] for crop in config['crops_by_season'][season]]
+        for season in ('summer', 'winter', 'summer', 'winter')]))
+    exposures = {sequence: independent_exposures(stack.bundle, sequence) for sequence in sequences}
+    years = independent_scenarios(stack.bundle, exposures)
+    common = set.intersection(*(set(values) for values in exposures.values()))
+    comparisons = 0
+    baseline_heat = {}
+    for sequence, priority, scenario in itertools.product(sequences, ('water', 'heat', 'soil'), config['scenarios']):
+        body = {'region_id': region, 'baseline': list(sequence), 'priority': priority, 'scenario': scenario}
         status, result, headers = request(base, '/api/compare', body)
         require(status == 200 and headers['X-AgriLens-Data-Mode'] == 'unreviewed', 'Real comparison failed or lost disclosure')
         require(len(result['plans']) == 3 and len({tuple(p['crops']) for p in result['plans']}) == 3, 'Demo needs three distinct plans')
-        require(result['plans'][0]['crops'] == baseline, 'Baseline changed')
+        require(result['plans'][0]['crops'] == list(sequence), 'Baseline changed')
         require(any('UNREVIEWED PROTOTYPE' in w for w in result['meta']['warnings']), 'Result must disclose unreviewed evidence')
-        sources = {s['id'] for s in result['meta']['sources']}
+        require(result['meta']['scenario_year'] == years.get(scenario), 'Independent scenario selection differs')
+        if scenario != 'average':
+            require(any('complete rotation coverage' in w for w in result['meta']['warnings']), 'Eligible-anchor disclosure missing')
+        sources = {source['id'] for source in result['meta']['sources']}
         for plan in result['plans']:
             require(set(plan['source_ids']) <= sources, 'Source reference does not resolve')
-            require(plan['hot_days'] == independent_heat(stack.bundle, plan['crops']), 'Independent raw-series heat calculation differs')
+            counts = exposures[tuple(plan['crops'])]
+            expected_heat = sum(counts[y] for y in common) / len(common) if scenario == 'average' else counts[years[scenario]]
+            require(plan['hot_days'] == expected_heat, 'Independent raw-series heat calculation differs')
             known = all(crop_by_id[c]['water_need_mm'][key] is not None for c in plan['crops'] for key in ('min', 'max'))
             water = {key: sum(crop_by_id[c]['water_need_mm'][key] for c in plan['crops']) if known else None for key in ('min', 'max')}
             require(plan['water_need_mm'] == water, 'Independent water sum differs')
             for i, crop in enumerate(plan['crops']):
                 require(('winter' if i % 2 else 'summer') in crop_by_id[crop]['valid_seasons'], 'Season-incompatible rotation')
-    for changes, expected in [({'scenario': 'hottest_year'}, 422), ({'scenario': 'driest_year'}, 422),
+        if list(sequence) == baseline:
+            baseline_heat[scenario] = result['plans'][0]['hot_days']
+        comparisons += 1
+    for changes, expected in [({'scenario': 'future'}, 422),
                               ({'region_id': 'unknown'}, 404), ({'baseline': ['missing'] * 4}, 400),
-                              ({'baseline': ['wheat'] * 4}, 400), ({'priority': 'profit'}, 400)]:
+                              ({'baseline': ['wheat'] * 4}, 400), ({'baseline': []}, 400), ({'priority': 'profit'}, 400)]:
         status, error, _ = request(base, '/api/compare', {**body, **changes})
-        require(status == expected and 'error' in error, 'Invalid input or incomplete scenario was accepted')
-    # Exercise every possible four-crop input from this catalog without fixture responses.
-    count = 0
-    for sequence in itertools.product(['maize', 'soybean'], ['wheat', 'faba_bean'], ['maize', 'soybean'], ['wheat', 'faba_bean']):
-        status, response, _ = request(base, '/api/compare', {**body, 'baseline': list(sequence)})
-        require(status == 200 and response['plans'][0]['crops'] == list(sequence), 'Valid baseline failed integration')
-        if 'faba_bean' in sequence:
-            require(response['plans'][0]['water_need_mm'] == {'min': None, 'max': None}, 'Unknown faba water was filled')
-        count += 1
+        require(status == expected and 'error' in error, 'Invalid input was accepted')
     require(all(process.poll() is None for process in stack.processes.values()), 'A backend process exited during verification')
     return {'status': 'passed', 'release_id': manifest['release_id'], 'data_mode': 'unreviewed',
-            'valid_baselines_checked': count, 'priorities_checked': 3, 'scenario_availability': config['scenarios'],
+            'valid_baselines_checked': len(sequences), 'priorities_checked': 3,
+            'comparisons_checked': comparisons, 'scenario_availability': config['scenarios'], 'scenario_years': years,
             'baseline_water_mm': {key: sum(crop_by_id[c]['water_need_mm'][key] for c in baseline) if all(crop_by_id[c]['water_need_mm'][key] is not None for c in baseline) else None for key in ('min', 'max')},
-            'baseline_hot_days': independent_heat(stack.bundle, baseline)}
+            'baseline_hot_days': baseline_heat['average'], 'baseline_scenario_hot_days': baseline_heat}
 
 
 def interrupt(*_args):

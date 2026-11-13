@@ -102,3 +102,15 @@ Do not build extra features (accounts, forecasts, profit/yield or numerical soil
 ## Local development handoff
 
 Use [the runtime defaults](../docs/RUNTIME.md) and [synthetic HTTP fixtures](../fixtures/README.md) now. No additional implementation agreement is required to start. Owners may change private code/storage while preserving the shared APIs. The Lead owns integration and ranking; Research owns scientific evidence and methods.
+
+## Unreviewed prototype scenario handoff, 2026-11-13
+
+The backend-completion instruction extends only the unreviewed prototype convention.
+Comparison now offers average plus hottest/driest **eligible rotation anchors** from
+complete calendar years with complete four-slot coverage across every offered rotation.
+Retained data gives eligible anchors 2016–2023, hottest 2023 and driest 2019. Climate's
+internal full-record annual extremes remain 2024/2025. Public stress responses disclose
+the eligible set, selection rule and full-record extremes in assumptions/warnings.
+Consumers must display that scope rather than describe these as absolute record years.
+No JSON fields change. Live-mode rules and pending scientific review remain unchanged.
+See `START_HERE.md` and `docs/METHOD.md` for the authoritative exception.

@@ -84,7 +84,12 @@ it does not establish scientific validation of the inputs.
   selecting the earliest tied year. Check the internal scenario declarations against
   those results. Require complete four-slot coverage after selecting the year.
 - Advertise only scenarios that can evaluate every offered rotation. The retained
-  2016–2025 data cannot cover the final winter of the 2024 or 2025 selected scenarios.
+  2016–2025 data cannot cover the final winter of the full-record 2024/2025 extremes.
+- In `unreviewed` mode only, select stress extremes among complete calendar years
+  that also have complete four-slot coverage for every offered rotation. Retained
+  inputs give eligible anchors 2016–2023, hottest 2023, driest 2019. Responses disclose
+  this scope and the original annual extremes. A null internal declaration remains
+  unavailable. Live/fixture selection semantics above are unchanged.
 - Keep the baseline first. Choose the first distinct alternative by the requested
   priority. Choose the second from remaining rotations by descriptive diversity.
   Return fewer alternatives with a warning when necessary.

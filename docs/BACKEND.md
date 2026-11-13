@@ -84,8 +84,15 @@ values from crop endpoints and the retained raw NASA temperatures.
 These are prototype calculations over declared assumptions, not measured irrigation
 savings, crop damage, forecasts or scientific acceptance evidence.
 
-Only `average` is offered. The hottest 2024 and driest 2025 anchors lack the final
-winter coverage and return `INSUFFICIENT_DATA`. Any plan containing faba bean has
+All three scenarios are offered in unreviewed mode. Stress tests select the hottest
+and driest **eligible rotation anchors** among 2016–2023: 2023 and 2019 respectively.
+These are not the entire record's annual extremes, which remain 2024 and 2025 in the
+Climate API. Those absolute extremes lack final-winter coverage. Public stress
+responses explain the eligible period and both selections. The selected year anchors
+the first summer; later slots use actual consecutive dates, without repeating weather.
+For a stress request, use the same example JSON with `"scenario":"hottest_year"`
+or `"scenario":"driest_year"`; `meta.scenario_year` returns 2023 or 2019.
+Default live-mode selection is unchanged. Any plan containing faba bean has
 `water_need_mm: {"min": null, "max": null}`. The response explains missing metrics.
 
 ## Back up and restore
@@ -146,9 +153,10 @@ python3 tools/verify_runtime.py
 
 `scripts/test_prototype_backend.py` starts its own MongoDB process on a private port
 with a temporary data directory. It launches all three real services, checks all
-16 supported baselines and all priorities, independently checks each selected plan's
-water and heat, and verifies incomplete scenarios and invalid inputs. It stops and
-restarts Climate, then its own MongoDB instance, proving errors and recovery without
+16 supported baselines across all priorities and scenarios (144 comparisons), independently checks each selected plan's
+water and heat, and verifies unsupported scenarios and invalid inputs. Unit regressions cover missing
+coverage, null scenario declarations, ties and unchanged live-mode behavior. It stops and
+restarts Climate and Crop, then its own MongoDB instance, proving errors and recovery without
 fixture fallback. It restores a backup into fresh databases, checks HTTP results,
 switches releases and rolls back, rejects checksum corruption and conflicting sealed
 snapshots, and resumes a simulated partial import. It stops its own processes and

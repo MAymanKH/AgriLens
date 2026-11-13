@@ -1,11 +1,11 @@
 {
-  "climate_dataset_id": "prototype-fd609377ab4ebb0aa63d5bbe-climate",
-  "crop_catalog_id": "prototype-fd609377ab4ebb0aa63d5bbe-crops",
+  "climate_dataset_id": "prototype-52667e8f57e3c8342c1b164c-climate",
+  "crop_catalog_id": "prototype-52667e8f57e3c8342c1b164c-crops",
   "identity": {
     "data_mode": "unreviewed",
     "format_version": 1,
     "inputs": {
-      "START_HERE.md": "8eade318ebf747ae8bb92fc48c0b71b82f7fe595288d18bdc74fb0fbfd07a63e",
+      "START_HERE.md": "d6fe71e6c8c0656cedc8bb0570147f7b3b7a55244e083f54858290555cceaf76",
       "data/fixtures/mock_climate_response.json": "a0000ec32045cf238426fa9e170995a336f62ed1eb27a68faf69b346e58b16b0",
       "data/fixtures/mock_crop_catalog.json": "af08f2d9b88823452f9521b3c2f9741350286229503010272c998d273511d3f2",
       "data/processed/climate_daily_clean.json": "a0000ec32045cf238426fa9e170995a336f62ed1eb27a68faf69b346e58b16b0",
@@ -19,10 +19,10 @@
       "data/raw/fao_crop_calendar_EG_delta.json": "69d8c6815389133eea1587bf79ada8edfbf1b08296c664bce1ae7c4e49d3f303",
       "data/raw/nasa_power_zankalon_2016_2025.json": "7c36f877a91df648116f600079ec02fb47183b070257717f0257f2704c5b6fcc",
       "docs/FOUR_CROP_EVIDENCE.md": "df217a302e8abb2ce75259ddd11e906247e272f0e0bc0b78755d097030448d31",
-      "docs/METHOD.md": "4924344533480dba5635aa744afcba4fd00f283733a09a982fe099782f59aa64",
+      "docs/METHOD.md": "51dcd92e0575182249580e665068e6ae108e502fea7ee56741cf637b4dbd9deb",
       "docs/SOURCES.md": "47b3d515e731f3bb6d4903dcf7ca69b0d6304e872f45a719e99fe6f23b9dbfc8"
     },
-    "method": "docs/METHOD.md: whole-month >=35 C; common complete anchors; deterministic ranking",
+    "method": "docs/METHOD.md: whole-month >=35 C; common complete anchors; eligible-anchor stress extremes; deterministic ranking",
     "region_id": "zankalon_sharkia",
     "runtime": {
       ".env.example": "d13991c56a7a060cbf0f3344bf0838f35dfbc83fd13324a36f88396907fe5991",
@@ -30,7 +30,7 @@
       "scripts/build_research_data.py": "c930b7bce3805932c8b240f85a2dee39f7f8de5bf8bf39d22994b66fe1a9554b",
       "scripts/fetch_and_process_zankalon.py": "6d8e16b94265b9df137f527490d97080ee5192344f94f73fabd2b51c5a15f9d9",
       "scripts/import_research_data.py": "4ec11fdbb6481328c41e3866ed5f75a3bb4a278b88c4bed083fd3f6580416e96",
-      "scripts/prototype_release.py": "192f1e6cade69d498d9c32b13660640f743e51e9235976d776ad13dbe11b7f3b",
+      "scripts/prototype_release.py": "ac95d0780d6d309fee145ddb32f194ab5d416d83e919329f9c801a47ff26acd9",
       "services/climate/index.js": "45a03ccf998a072750bc415b58798ade452e94ad47fedc1e9f5e31055364bc46",
       "services/climate/package-lock.json": "e864613cbc06e5d2ad6ede54ad44fbdcf5ac39cd67df391e71ad7b28cbb07fbe",
       "services/climate/package.json": "ac6c0280e4be2167523bb711e361fc1338e29a1e80d2df4beb80275e61f757fc",
@@ -44,7 +44,7 @@
       "services/comparison/src/app.js": "0ce57c0d11ecf82d5d46356db9effd5a8b5b5e081087923b5b23cdb4999bc57a",
       "services/comparison/src/client.js": "58dc27d33251e7e54011874eb3611dae0215e354d364dbf66b906edaff501000",
       "services/comparison/src/config.js": "4fb9b92850f0a9d649fe311c1e360a1adfc351886ddd0f65ec0a8feee9f939f0",
-      "services/comparison/src/engine.js": "2b6f650a53ce43acf3266c4c29c86eba6de5b3d12a5f63c8e027f24814f3c82e",
+      "services/comparison/src/engine.js": "39ab1f7bdc59f83ebfa1b72228efbec49e6a27565f02cc2eca3e8196ef1b25de",
       "services/comparison/src/errors.js": "e62d76dd4512abe071615e6e25a430c4a2e3690a45bfc1963d2b9995ecaafa2b",
       "services/comparison/src/server.js": "4df23ade9bcdbea8ce87323beedf6895fbd9f78a30890673833694fd28f9f20f",
       "services/comparison/start.json": "14f58b415462acdcd0e567e9cda7a76245dc09b6f8d206f42fcbe512563770c8",
@@ -57,7 +57,7 @@
       "services/crops/src/repository.js": "7d3113324bfa6f5335c3b40444b982d3b99680bf48ef990ffd4acc0c84a56a19",
       "services/crops/src/server.js": "6728fb9600da135ff01a9773690d0aff25f8cbaaeef42d1b10163533509cd6df",
       "services/crops/start.json": "a485913d682b7c34d1da090613dbebbab416c00d3f335d2996e21e6d4bcd5a3a",
-      "tools/backend.py": "25cdd170efff89b60a797fe2c409d4041508e76d3a466ad201bc4edf03826317",
+      "tools/backend.py": "99cea544cb9383e2fb83069d3d5455a7800f0b0375b39ac27b5699f17867f93f",
       "tools/dev.py": "2e515103906f4d2bd8c659e10e5f02a5d739342639922f44984198e6380b09b6"
     },
     "sample_baseline": [
@@ -68,6 +68,6 @@
     ],
     "scientific_status": "unreviewed; workflow waived, not Research approved"
   },
-  "package_sha256": "47a025a9ff960c5429dffe3d275e987f92186306bfd796876a383ed7ee9ad217",
-  "release_id": "prototype-fd609377ab4ebb0aa63d5bbe"
+  "package_sha256": "ec53e25bd28ea561a2f06f5344843d58f08da8dcfbff2ca3f3996271fb44e618",
+  "release_id": "prototype-52667e8f57e3c8342c1b164c"
 }

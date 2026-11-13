@@ -95,7 +95,7 @@ def build(sample_baseline=None):
         'sample_baseline': sample_baseline or BASELINE,
         'inputs': {name: file_digest((ROOT / name).read_bytes()) for name in inputs},
         'runtime': {name: file_digest((ROOT / name).read_bytes()) for name in runtime_paths()},
-        'method': 'docs/METHOD.md: whole-month >=35 C; common complete anchors; deterministic ranking',
+        'method': 'docs/METHOD.md: whole-month >=35 C; common complete anchors; eligible-anchor stress extremes; deterministic ranking',
         'scientific_status': 'unreviewed; workflow waived, not Research approved',
     }
     release_id = 'prototype-' + digest(identity)[:24]
