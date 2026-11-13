@@ -85,7 +85,9 @@ def prepare(root, revision, retrieved_at=None):
                     for v in row.values()) for row in climate["daily"]), "Nonfinite derived measurement")
 
     ledger = (root / "docs/SOURCES.md").read_text()
-    titles = dict(re.findall(r"### `(.*?)`\s*\n- \*\*Title:\*\* (.+)", ledger))
+    titles = dict(re.findall(
+        r"^### `([^`\r\n]+)`[ \t]*\r?\n(?:[ \t]*\r?\n)*"
+        r"- (?:\*\*Title:\*\*|Title:)[ \t]+([^\r\n]+)", ledger, re.MULTILINE))
     sources = catalog["sources"]
     ids = {s["id"] for s in sources}
     require(len(ids) == len(sources), "Duplicate source IDs")

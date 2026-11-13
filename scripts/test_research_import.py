@@ -60,6 +60,25 @@ class ResearchImportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "dates"):
             prepare(self.root, REVISION)
 
+    def test_plain_source_titles_with_optional_blank_lines(self):
+        ledger_path = self.root / "docs/SOURCES.md"
+        original = ledger_path.read_text()
+        expected = prepare(self.root, REVISION)
+        plain = original.replace("- **Title:**", "- Title:")
+        for ledger in (plain, plain.replace("`\n- Title:", "`\n\n- Title:")):
+            with self.subTest(blank_line="`\n\n- Title:" in ledger):
+                ledger_path.write_text(ledger)
+                self.assertEqual(prepare(self.root, REVISION), expected)
+
+    def test_missing_title_does_not_use_next_sources_title(self):
+        ledger_path = self.root / "docs/SOURCES.md"
+        lines = ledger_path.read_text().splitlines(keepends=True)
+        first_title = next(i for i, line in enumerate(lines) if line.startswith("- **Title:**"))
+        del lines[first_title]
+        ledger_path.write_text("".join(lines))
+        with self.assertRaisesRegex(ValueError, "Missing ledger title for SRC-NASA-POWER-DAILY"):
+            prepare(self.root, REVISION)
+
     def test_sentinel_rejected(self):
         self.edit(RAW_PATH, lambda x: x["properties"]["parameter"]["RH2M"].update({"20240229": -999}))
         with self.assertRaisesRegex(ValueError, "measurement"):
