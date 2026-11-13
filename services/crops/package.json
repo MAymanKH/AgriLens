@@ -1,0 +1,23 @@
+{
+  "name": "agrilens-crops",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AgriLens Crop & Agriculture service using Express and Mongoose",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "fixture": "node src/server.js --fixture",
+    "import:data": "node scripts/catalog.js import",
+    "verify:data": "node scripts/catalog.js verify",
+    "inspect:data": "node scripts/catalog.js inspect",
+    "test": "node --test test/unit.test.js",
+    "test:mongodb": "node --test test/mongodb.test.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "mongoose": "^9.12.1"
+  }
+}
