@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createClimateHandlers } from "../src/bootstrap.js";
+import { createClimateController } from "../src/modules/climate/climate.controller.js";
+import { createClimateService } from "../src/modules/climate/climate.service.js";
+import { createHealthController } from "../src/modules/health/health.controller.js";
+import { errorHandler } from "../src/utils/error.handel.js";
 import { validateClimateData } from "../src/climate/validateClimateData.js";
 
 const makeDataset = () => {
@@ -45,7 +48,11 @@ const makeDataset = () => {
 
 const makeHandlers = (dataset, repositoryOverride, datasetId = "test-dataset") => {
   const repository = repositoryOverride || { getClimateData: async () => dataset };
-  return createClimateHandlers({ repository, getDatasetId: () => datasetId });
+  const service = createClimateService({ repository, getDatasetId: () => datasetId });
+  return {
+    health: createHealthController(service),
+    climate: createClimateController(service),
+  };
 };
 
 const response = () => ({
@@ -55,11 +62,20 @@ const response = () => ({
   json(body) { this.body = body; return this; },
 });
 
+const invoke = async (handler, req) => {
+  const res = response();
+  try {
+    await handler(req, res);
+  } catch (error) {
+    errorHandler(error, req, res, () => {});
+  }
+  return res;
+};
+
 test("health is ready only when the selected approved dataset passes validation", async () => {
   const dataset = makeDataset();
   assert.equal(validateClimateData(dataset).ok, true);
-  const result = response();
-  await makeHandlers(dataset).health({}, result);
+  const result = await invoke(makeHandlers(dataset).health, {});
   assert.equal(result.statusCode, 200);
   assert.deepEqual(result.body, { status: "ok" });
 });
@@ -67,8 +83,7 @@ test("health is ready only when the selected approved dataset passes validation"
 test("health is unavailable when no dataset revision is selected", async () => {
   let calls = 0;
   const handlers = makeHandlers(null, { getClimateData: async () => { calls += 1; return null; } }, null);
-  const result = response();
-  await handlers.health({}, result);
+  const result = await invoke(handlers.health, {});
   assert.equal(result.statusCode, 503);
   assert.equal(result.body.error.code, "SERVICE_UNAVAILABLE");
   assert.equal(calls, 0);
@@ -76,16 +91,14 @@ test("health is unavailable when no dataset revision is selected", async () => {
 
 test("climate endpoint projects the internal contract and rejects unknown regions", async () => {
   const handlers = makeHandlers(makeDataset());
-  const result = response();
-  await handlers.climate({ query: { region_id: "test_region" } }, result);
+  const result = await invoke(handlers.climate, { query: { region_id: "test_region" } });
   assert.equal(result.statusCode, 200);
   const body = result.body;
   assert.equal(body.daily.length, 366);
   assert.deepEqual(body.daily[59], { date: "2020-02-29", tmax_c: 24.5, rain_mm: 0 });
   assert.deepEqual(body.units, { tmax: "C", rain: "mm/day" });
 
-  const unknown = response();
-  await handlers.climate({ query: { region_id: "other_region" } }, unknown);
+  const unknown = await invoke(handlers.climate, { query: { region_id: "other_region" } });
   assert.equal(unknown.statusCode, 404);
   assert.deepEqual(unknown.body, {
     error: { code: "UNKNOWN_REGION", message: "This region is not supported." },
@@ -96,10 +109,8 @@ test("health and climate endpoint reject staging or rejected datasets", async ()
   const dataset = makeDataset();
   dataset.manifest.status = "rejected";
   const handlers = makeHandlers(dataset);
-  const health = response();
-  const climate = response();
-  await handlers.health({}, health);
-  await handlers.climate({ query: { region_id: "test_region" } }, climate);
+  const health = await invoke(handlers.health, {});
+  const climate = await invoke(handlers.climate, { query: { region_id: "test_region" } });
   assert.equal(health.statusCode, 503);
   assert.equal(climate.statusCode, 422);
   assert.equal(climate.body.error.code, "INSUFFICIENT_DATA");
@@ -114,8 +125,7 @@ test("same record count cannot hide a missing leap day", async () => {
   assert.equal(result.ok, false);
   assert.ok(result.issues.some((issue) => issue.includes("2020-02-29")));
 
-  const health = response();
-  await makeHandlers(dataset).health({}, health);
+  const health = await invoke(makeHandlers(dataset).health, {});
   assert.equal(health.statusCode, 503);
 });
 
@@ -145,18 +155,15 @@ test("NASA fill markers, invalid numbers, and missing measurements fail readines
   const missing = makeDataset();
   missing.daily[0].rain_mm = null;
   missing.manifest.validation.complete_years = [];
-  const health = response();
-  await makeHandlers(missing).health({}, health);
+  const health = await invoke(makeHandlers(missing).health, {});
   assert.equal(health.statusCode, 503);
 });
 
 test("database outage returns service unavailable from health and climate endpoints", async () => {
   const repository = { getClimateData: async () => { throw new Error("database unavailable"); } };
   const handlers = makeHandlers(null, repository);
-  const health = response();
-  const climate = response();
-  await handlers.health({}, health);
-  await handlers.climate({ query: { region_id: "test_region" } }, climate);
+  const health = await invoke(handlers.health, {});
+  const climate = await invoke(handlers.climate, { query: { region_id: "test_region" } });
   assert.equal(health.statusCode, 503);
   assert.equal(climate.statusCode, 503);
   assert.equal(climate.body.error.code, "SERVICE_UNAVAILABLE");

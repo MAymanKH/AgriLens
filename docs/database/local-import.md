@@ -59,7 +59,7 @@ Run `import-data` again after cloning, pulling updates, or restarting MongoDB. M
 
 The command verifies the source package before connecting. Stale generated files fail with a rebuild instruction; see [the staging procedure](research-staging.md). The separate four-crop proposal remains in Git and is not silently substituted for the eight-crop catalog. Its faba water requirement is unknown, and the retained candidate ranges are not approved live estimates.
 
-Local imports are serialized with an OS lock for the port/database pair, including across checkouts. The OS releases the lock after an interrupted process. A crash can leave staging records, which the next import checks before resuming. Existing incompatible collection validators or indexes cause a failure; the importer does not rewrite schema definitions. Scientific publication and live adapters remain separate work under [the implementation handoff](implementation-handoff.md).
+Local imports are serialized with an OS lock for the port/database pair, including across checkouts. The OS releases the lock after an interrupted process. A crash can leave staging records, which the next import checks before resuming. Existing incompatible collection validators or indexes cause a failure; the importer does not rewrite schema definitions. Dataset publication is separate from import and is documented below; release selection remains part of [the implementation handoff](implementation-handoff.md).
 
 ## Validate and publish a Climate revision
 
