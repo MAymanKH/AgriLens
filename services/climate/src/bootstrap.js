@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
-import { closeDatabase, getClimateData, getDatasetManifest, pingDatabase } from "./DB/DB.connection.js";
+import { closeDatabase, getClimateData } from "./DB/DB.connection.js";
+import { validateClimateData } from "./climate/validateClimateData.js";
 
 const statusByCode = {
   INVALID_INPUT: 400,
@@ -45,43 +46,62 @@ const toClimateResponse = ({ manifest, daily }) => ({
   },
 });
 
-export const bootstrap = async () => {
-  if ((process.env.DATA_MODE || "live") !== "live") {
-    throw new Error("Climate live service only supports DATA_MODE=live; use `python3 tools/dev.py fixtures climate` for fixtures.");
+const datasetIssue = (data) => {
+  if (!data) return "The configured climate dataset is unavailable.";
+  const { manifest, daily } = data;
+  if (manifest.schema_version !== 1) return "The climate dataset uses an unsupported schema version.";
+  if (manifest.kind !== "observed" || manifest.status !== "approved") {
+    return "The selected climate dataset has not been approved for live use.";
   }
+  if (!manifest.approval?.research_record || !manifest.approval?.technical_record) {
+    return "The selected climate dataset is missing required approval records.";
+  }
+  const { lat, lon } = manifest.region?.coordinates || {};
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90 ||
+      !Number.isFinite(lon) || lon < -180 || lon > 180 ||
+      manifest.units?.tmax !== "C" || manifest.units?.rain !== "mm/day" ||
+      typeof manifest.parameters?.tmax !== "string" || typeof manifest.parameters?.rain !== "string" ||
+      !manifest.validation?.method_ref || !manifest.validation?.report_uri ||
+      !manifest.period || !manifest.provenance?.source_url ||
+      !manifest.provenance?.retrieved_at || manifest.provenance.missing_days == null ||
+      !manifest.provenance.spatial_resolution || !manifest.provenance.time_standard) {
+    return "The selected climate dataset is missing required provenance or validation metadata.";
+  }
+  const validation = validateClimateData({ manifest, daily });
+  return validation.ok ? null : validation.issues[0];
+};
 
-  const app = express();
-  app.use(cors());
-  app.use(express.json());
-
-  app.get("/health", async (_req, res) => {
+export const createClimateHandlers = ({
+  repository = { getClimateData },
+  getDatasetId = () => process.env.CLIMATE_DATASET_ID,
+} = {}) => {
+  const health = async (_req, res) => {
     try {
-      await pingDatabase();
-      if (!process.env.CLIMATE_DATASET_ID) {
+      const datasetId = getDatasetId();
+      if (!datasetId) {
         return errorResponse(res, "SERVICE_UNAVAILABLE", "No climate dataset is configured.");
       }
-      const manifest = await getDatasetManifest(process.env.CLIMATE_DATASET_ID);
-      if (!manifest || manifest.kind !== "observed" || manifest.status !== "approved" ||
-          !manifest.approval?.research_record || !manifest.approval?.technical_record) {
-        return errorResponse(res, "SERVICE_UNAVAILABLE", "No approved climate dataset is ready to serve.");
-      }
+      const data = await repository.getClimateData(datasetId);
+      const issue = datasetIssue(data);
+      if (issue) return errorResponse(res, "SERVICE_UNAVAILABLE", "No selected climate dataset is ready to serve.");
       return res.status(200).json({ status: "ok" });
     } catch {
       return errorResponse(res, "SERVICE_UNAVAILABLE", "Climate storage is unavailable. Retry shortly.");
     }
-  });
+  };
 
-  app.get("/internal/climate", async (req, res) => {
+  const climate = async (req, res) => {
     const regionId = req.query.region_id;
     if (typeof regionId !== "string" || !regionId.trim()) {
       return errorResponse(res, "INVALID_INPUT", "Provide a non-empty region_id query parameter.");
     }
-    if (!process.env.CLIMATE_DATASET_ID) {
+    const datasetId = getDatasetId();
+    if (!datasetId) {
       return errorResponse(res, "SERVICE_UNAVAILABLE", "No climate dataset is configured.");
     }
 
     try {
-      const data = await getClimateData(process.env.CLIMATE_DATASET_ID);
+      const data = await repository.getClimateData(datasetId);
       if (!data) {
         return errorResponse(res, "INSUFFICIENT_DATA", "The configured climate dataset is unavailable.");
       }
@@ -90,33 +110,25 @@ export const bootstrap = async () => {
       if (manifest.region?.id !== regionId) {
         return errorResponse(res, "UNKNOWN_REGION", "This region is not supported.");
       }
-      if (manifest.schema_version !== 1) {
-        return errorResponse(res, "INSUFFICIENT_DATA", "The climate dataset uses an unsupported schema version.");
-      }
-      if (manifest.kind !== "observed" || manifest.status !== "approved") {
-        return errorResponse(res, "INSUFFICIENT_DATA", "The selected climate dataset has not been approved for live use.");
-      }
-      if (!manifest.approval?.research_record || !manifest.approval?.technical_record ||
-          !manifest.validation?.method_ref || !manifest.validation?.complete_years?.length ||
-          data.daily.length === 0) {
-        return errorResponse(res, "INSUFFICIENT_DATA", "The selected climate dataset is missing required approval or validation records.");
-      }
-      if (!manifest.region?.coordinates || !manifest.period || !manifest.units?.tmax ||
-          !manifest.units?.rain || !manifest.provenance?.source_url ||
-          !manifest.provenance?.retrieved_at || manifest.provenance.missing_days == null ||
-          !manifest.provenance.spatial_resolution || !manifest.provenance.time_standard) {
-        return errorResponse(res, "INSUFFICIENT_DATA", "The selected climate dataset is missing required provenance or units.");
-      }
-      if (manifest.validation.record_count !== data.daily.length ||
-          manifest.validation.expected_days !== data.daily.length) {
-        return errorResponse(res, "INSUFFICIENT_DATA", "The selected climate dataset does not match its validated record count.");
-      }
+      const issue = datasetIssue(data);
+      if (issue) return errorResponse(res, "INSUFFICIENT_DATA", issue);
 
       return res.status(200).json(toClimateResponse(data));
     } catch {
       return errorResponse(res, "SERVICE_UNAVAILABLE", "Climate storage is unavailable. Retry shortly.");
     }
-  });
+  };
+
+  return { health, climate };
+};
+
+export const createApp = (options) => {
+  const app = express();
+  const handlers = createClimateHandlers(options);
+  app.use(cors());
+  app.use(express.json());
+  app.get("/health", handlers.health);
+  app.get("/internal/climate", handlers.climate);
 
   app.use((error, _req, res, _next) => {
     if (error?.type === "entity.parse.failed") {
@@ -125,6 +137,14 @@ export const bootstrap = async () => {
     return errorResponse(res, "SERVICE_UNAVAILABLE", "The climate service could not complete the request.");
   });
 
+  return app;
+};
+
+export const bootstrap = async () => {
+  if ((process.env.DATA_MODE || "live") !== "live") {
+    throw new Error("Climate live service only supports DATA_MODE=live; use `python3 tools/dev.py fixtures climate` for fixtures.");
+  }
+  const app = createApp();
   const port = Number(process.env.PORT || process.env.CLIMATE_PORT || 8001);
   const host = process.env.HOST || "127.0.0.1";
   const server = app.listen(port, host, () => {
