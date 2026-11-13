@@ -1,7 +1,6 @@
 {
-  "_id": "catalog-zankalon_sharkia-v1",
   "schema_version": 1,
-  "decision_revision": "HEAD",
+  "decision_revision": "6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
   "region": {
     "id": "zankalon_sharkia",
     "name": "Zankalon, Sharkia Governorate, Egypt (East Nile Delta)",
@@ -11,19 +10,17 @@
     }
   },
   "kind": "observed",
-  "status": "approved",
+  "status": "staging",
   "created_at": {
-    "$date": "2026-11-13T12:48:18.837644+00:00"
+    "$date": "2026-11-13T12:32:28.780988+00:00"
   },
-  "approval": {
-    "research_record": "docs/AUDIT_AND_DECISION_RECORD.md",
-    "technical_record": "scripts/validate_research_data.py",
-    "approved_at": "2026-11-13T12:48:18.837670+00:00"
-  },
+  "approval": null,
   "limitations": [
-    "Water ranges are indicative crop requirements from FAO Paper 24/33/56, not measured on-farm irrigation delivery.",
-    "Rice cultivation is subject to annual MWRI canal command quotas in Sharkia Governorate."
+    "Candidate research inputs. Not approved for live comparisons.",
+    "A new database import must record its actual creation timestamp.",
+    "Source titles are copied from the candidate Research ledger; citation review remains open."
   ],
+  "_id": "catalog-zankalon_sharkia-staging-6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
   "slot_order": [
     "y1_summer",
     "y1_winter",
@@ -33,7 +30,7 @@
   "crops": [
     {
       "id": "maize",
-      "name": "Grain Maize / \u0630\u0631\u0629 \u0634\u0627\u0645\u064a\u0629",
+      "name": "Grain Maize / ذرة شامية",
       "valid_seasons": [
         "summer"
       ],
@@ -63,7 +60,7 @@
     },
     {
       "id": "rice",
-      "name": "Paddy Rice / \u0623\u0631\u0632 \u0634\u0639\u064a\u0631",
+      "name": "Paddy Rice / أرز شعير",
       "valid_seasons": [
         "summer"
       ],
@@ -94,7 +91,7 @@
     },
     {
       "id": "cotton",
-      "name": "Egyptian Cotton / \u0642\u0637\u0646 \u0645\u0635\u0631\u064a",
+      "name": "Egyptian Cotton / قطن مصري",
       "valid_seasons": [
         "summer"
       ],
@@ -124,7 +121,7 @@
     },
     {
       "id": "soybean",
-      "name": "Soybean / \u0641\u0648\u0644 \u0635\u0648\u064a\u0627",
+      "name": "Soybean / فول صويا",
       "valid_seasons": [
         "summer"
       ],
@@ -154,7 +151,7 @@
     },
     {
       "id": "wheat",
-      "name": "Bread Wheat / \u0642\u0645\u062d",
+      "name": "Bread Wheat / قمح",
       "valid_seasons": [
         "winter"
       ],
@@ -184,7 +181,7 @@
     },
     {
       "id": "berseem",
-      "name": "Egyptian Clover (Berseem Miskawi) / \u0628\u0631\u0633\u064a\u0645 \u0645\u0633\u0642\u0627\u0648\u064a",
+      "name": "Egyptian Clover (Berseem Miskawi) / برسيم مسقاوي",
       "valid_seasons": [
         "winter"
       ],
@@ -214,7 +211,7 @@
     },
     {
       "id": "faba_bean",
-      "name": "Broad Bean (Faba Bean) / \u0641\u0648\u0644 \u0628\u0644\u062f\u064a",
+      "name": "Broad Bean (Faba Bean) / فول بلدي",
       "valid_seasons": [
         "winter"
       ],
@@ -244,7 +241,7 @@
     },
     {
       "id": "sugar_beet",
-      "name": "Sugar Beet / \u0628\u0646\u062c\u0631 \u0627\u0644\u0633\u0643\u0631",
+      "name": "Sugar Beet / بنجر السكر",
       "valid_seasons": [
         "winter"
       ],
@@ -276,47 +273,56 @@
     {
       "id": "SRC-NASA-POWER-DAILY",
       "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
-      "supports": "NASA POWER daily meteorological series: T2M_MAX, T2M_MIN, RH2M, PRECTOTCORR, ALLSKY_SFC_SW_DWN, WS2M (2016-2025)."
+      "supports": "NASA POWER daily meteorological series: T2M_MAX, T2M_MIN, RH2M, PRECTOTCORR, ALLSKY_SFC_SW_DWN, WS2M (2016-2025).",
+      "title": "NASA Prediction Of Worldwide Energy Resources (POWER) Daily Temporal API"
     },
     {
       "id": "SRC-FAO-CROPWATER",
       "url": "https://www.fao.org/4/s2022e/s2022e07.htm",
-      "supports": "FAO Paper 24/33/56 indicative crop water requirement ranges (mm/growing period) and stage coefficients."
+      "supports": "FAO Paper 24/33/56 indicative crop water requirement ranges (mm/growing period) and stage coefficients.",
+      "title": "FAO Irrigation and Drainage Paper No. 24, 33 & 56 (Crop Evapotranspiration & Indicative Needs)"
     },
     {
       "id": "SRC-ZANKALON-SUGITA-2017",
       "url": "https://tsukuba.repo.nii.ac.jp/record/41521/files/HydrologicalSciencesJournal_20170314.pdf",
-      "supports": "Sugita et al. (2017) continuous eddy covariance evapotranspiration measurements at Zankalon (30.58057 N, 31.43332 E) for maize, rice, cotton, and wheat."
+      "supports": "Sugita et al. (2017) continuous eddy covariance evapotranspiration measurements at Zankalon (30.58057 N, 31.43332 E) for maize, rice, cotton, and wheat.",
+      "title": "Crop Evapotranspiration in the Nile Delta under Different Irrigation Methods (Sugita et al., 2017)"
     },
     {
       "id": "SRC-SPRINGER-WATER-PROD-2024",
       "url": "https://link.springer.com/article/10.1007/s42106-024-00301-7",
-      "supports": "Zankalon four-crop water-productivity evaluation (2024), remote sensing calibration and crop coefficients."
+      "supports": "Zankalon four-crop water-productivity evaluation (2024), remote sensing calibration and crop coefficients.",
+      "title": "Evaluation of Water Productivity of Major Crops in the Nile Delta, Egypt Using Remote Sensing and Field Measurements"
     },
     {
       "id": "SRC-FAO-CALENDAR-EG-DELTA",
       "url": "https://api-cropcalendar.apps.fao.org/api/v1/countries/EG/cropCalendar?language=en&aez=001",
-      "supports": "FAO Crop Calendar for Nile Delta agro-ecological zone: sowing and harvest windows for wheat, faba bean, soybean, and maize."
+      "supports": "FAO Crop Calendar for Nile Delta agro-ecological zone: sowing and harvest windows for wheat, faba bean, soybean, and maize.",
+      "title": "FAO Crop Calendar: Egypt Nile Delta Agro-ecological Zone (AEZ 001)"
     },
     {
       "id": "SRC-FAO-SPECIES-DIVERSIFICATION",
       "url": "https://www.fao.org/conservation-agriculture/in-practice/species-diversification/en/",
-      "supports": "Qualitative agronomic principles for rotation diversity, legume nitrogen fixation, and pest life-cycle interruption."
+      "supports": "Qualitative agronomic principles for rotation diversity, legume nitrogen fixation, and pest life-cycle interruption.",
+      "title": "FAO Conservation Agriculture: Species Diversification & Crop Rotation Principles"
     },
     {
       "id": "SRC-USDA-COTTON-EG",
       "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Cotton%20and%20Products%20Annual_Cairo_Egypt_EG2026-0003.pdf",
-      "supports": "USDA FAS Cotton and Products Annual: Delta cotton sowing, thermal tolerance, and cultivation cycles."
+      "supports": "USDA FAS Cotton and Products Annual: Delta cotton sowing, thermal tolerance, and cultivation cycles.",
+      "title": "USDA FAS Cotton and Products Annual: Egypt (Report EG2026-0003)"
     },
     {
       "id": "SRC-MWRI-RICE-REGULATION",
       "url": "https://www.mwri.gov.eg/",
-      "supports": "Ministry of Water Resources and Irrigation annual decrees on rice cultivation zoning in Sharkia Governorate."
+      "supports": "Ministry of Water Resources and Irrigation annual decrees on rice cultivation zoning in Sharkia Governorate.",
+      "title": "Egyptian Ministry of Water Resources and Irrigation (MWRI) - Annual Rice Cultivation Zoning Decrees"
     },
     {
       "id": "SRC-ICARDA-LEGUMES-MENA",
       "url": "https://www.icarda.org/research/crop-improvement/grain-legumes",
-      "supports": "ICARDA dryland grain legume water requirements and thermal tolerance for faba bean in Egypt."
+      "supports": "ICARDA dryland grain legume water requirements and thermal tolerance for faba bean in Egypt.",
+      "title": "ICARDA Food Legume Program: Dryland Grain Legumes in Egypt and the MENA Region"
     }
   ]
 }

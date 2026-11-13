@@ -1,93 +1,233 @@
 {
   "region_id": "zankalon_sharkia",
-  "slot_order": ["y1_summer", "y1_winter", "y2_summer", "y2_winter"],
+  "slot_order": [
+    "y1_summer",
+    "y1_winter",
+    "y2_summer",
+    "y2_winter"
+  ],
   "crops": [
     {
       "id": "maize",
       "name": "Grain Maize / ذرة شامية",
-      "valid_seasons": ["summer"],
-      "grow_window": {"start_month": 5, "end_month": 9},
-      "water_need_mm": {"min": 500, "max": 800},
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 5,
+        "end_month": 9
+      },
+      "water_need_mm": {
+        "min": 500,
+        "max": 800
+      },
       "family": "Poaceae",
       "is_legume": false,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-ZANKALON-SUGITA-2017"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-ZANKALON-SUGITA-2017",
+        "SRC-SPRINGER-WATER-PROD-2024"
+      ]
     },
     {
       "id": "rice",
       "name": "Paddy Rice / أرز شعير",
-      "valid_seasons": ["summer"],
-      "grow_window": {"start_month": 5, "end_month": 10},
-      "water_need_mm": {"min": 900, "max": 1400},
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 5,
+        "end_month": 10
+      },
+      "water_need_mm": {
+        "min": 900,
+        "max": 1400
+      },
       "family": "Poaceae",
       "is_legume": false,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-MWRI-RICE-REGULATION"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-ZANKALON-SUGITA-2017",
+        "SRC-MWRI-RICE-REGULATION"
+      ]
     },
     {
       "id": "cotton",
       "name": "Egyptian Cotton / قطن مصري",
-      "valid_seasons": ["summer"],
-      "grow_window": {"start_month": 4, "end_month": 10},
-      "water_need_mm": {"min": 700, "max": 1300},
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 4,
+        "end_month": 10
+      },
+      "water_need_mm": {
+        "min": 700,
+        "max": 1300
+      },
       "family": "Malvaceae",
       "is_legume": false,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-USDA-COTTON-EG"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-USDA-COTTON-EG",
+        "SRC-ZANKALON-SUGITA-2017"
+      ]
     },
     {
       "id": "soybean",
       "name": "Soybean / فول صويا",
-      "valid_seasons": ["summer"],
-      "grow_window": {"start_month": 5, "end_month": 9},
-      "water_need_mm": {"min": 450, "max": 700},
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 5,
+        "end_month": 9
+      },
+      "water_need_mm": {
+        "min": 450,
+        "max": 700
+      },
       "family": "Fabaceae",
       "is_legume": true,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-FAO-SPECIES-DIVERSIFICATION"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-FAO-CALENDAR-EG-DELTA",
+        "SRC-FAO-SPECIES-DIVERSIFICATION"
+      ]
     },
     {
       "id": "wheat",
       "name": "Bread Wheat / قمح",
-      "valid_seasons": ["winter"],
-      "grow_window": {"start_month": 11, "end_month": 5},
-      "water_need_mm": {"min": 450, "max": 650},
+      "valid_seasons": [
+        "winter"
+      ],
+      "grow_window": {
+        "start_month": 11,
+        "end_month": 5
+      },
+      "water_need_mm": {
+        "min": 450,
+        "max": 650
+      },
       "family": "Poaceae",
       "is_legume": false,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-ZANKALON-SUGITA-2017"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-ZANKALON-SUGITA-2017",
+        "SRC-SPRINGER-WATER-PROD-2024"
+      ]
     },
     {
       "id": "berseem",
       "name": "Egyptian Clover (Berseem Miskawi) / برسيم مسقاوي",
-      "valid_seasons": ["winter"],
-      "grow_window": {"start_month": 10, "end_month": 5},
-      "water_need_mm": {"min": 550, "max": 800},
+      "valid_seasons": [
+        "winter"
+      ],
+      "grow_window": {
+        "start_month": 10,
+        "end_month": 5
+      },
+      "water_need_mm": {
+        "min": 550,
+        "max": 800
+      },
       "family": "Fabaceae",
       "is_legume": true,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-FAO-SPECIES-DIVERSIFICATION"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-ZANKALON-SUGITA-2017",
+        "SRC-FAO-SPECIES-DIVERSIFICATION"
+      ]
     },
     {
       "id": "faba_bean",
       "name": "Broad Bean (Faba Bean) / فول بلدي",
-      "valid_seasons": ["winter"],
-      "grow_window": {"start_month": 10, "end_month": 4},
-      "water_need_mm": {"min": 350, "max": 500},
+      "valid_seasons": [
+        "winter"
+      ],
+      "grow_window": {
+        "start_month": 10,
+        "end_month": 4
+      },
+      "water_need_mm": {
+        "min": 350,
+        "max": 500
+      },
       "family": "Fabaceae",
       "is_legume": true,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-ICARDA-LEGUMES-MENA"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-FAO-CALENDAR-EG-DELTA",
+        "SRC-ICARDA-LEGUMES-MENA"
+      ]
     },
     {
       "id": "sugar_beet",
       "name": "Sugar Beet / بنجر السكر",
-      "valid_seasons": ["winter"],
-      "grow_window": {"start_month": 10, "end_month": 4},
-      "water_need_mm": {"min": 500, "max": 700},
+      "valid_seasons": [
+        "winter"
+      ],
+      "grow_window": {
+        "start_month": 10,
+        "end_month": 4
+      },
+      "water_need_mm": {
+        "min": 500,
+        "max": 700
+      },
       "family": "Amaranthaceae",
       "is_legume": false,
-      "source_ids": ["SRC-FAO-CROPWATER", "SRC-SPRINGER-WATER-PROD-2024"]
+      "source_ids": [
+        "SRC-FAO-CROPWATER",
+        "SRC-SPRINGER-WATER-PROD-2024"
+      ]
     }
   ],
   "sources": [
     {
+      "id": "SRC-NASA-POWER-DAILY",
+      "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+      "supports": "NASA POWER daily meteorological series: T2M_MAX, T2M_MIN, RH2M, PRECTOTCORR, ALLSKY_SFC_SW_DWN, WS2M (2016-2025)."
+    },
+    {
       "id": "SRC-FAO-CROPWATER",
       "url": "https://www.fao.org/4/s2022e/s2022e07.htm",
-      "supports": "FAO Paper 24/33/56 indicative crop water requirement ranges"
+      "supports": "FAO Paper 24/33/56 indicative crop water requirement ranges (mm/growing period) and stage coefficients."
+    },
+    {
+      "id": "SRC-ZANKALON-SUGITA-2017",
+      "url": "https://tsukuba.repo.nii.ac.jp/record/41521/files/HydrologicalSciencesJournal_20170314.pdf",
+      "supports": "Sugita et al. (2017) continuous eddy covariance evapotranspiration measurements at Zankalon (30.58057 N, 31.43332 E) for maize, rice, cotton, and wheat."
+    },
+    {
+      "id": "SRC-SPRINGER-WATER-PROD-2024",
+      "url": "https://link.springer.com/article/10.1007/s42106-024-00301-7",
+      "supports": "Zankalon four-crop water-productivity evaluation (2024), remote sensing calibration and crop coefficients."
+    },
+    {
+      "id": "SRC-FAO-CALENDAR-EG-DELTA",
+      "url": "https://api-cropcalendar.apps.fao.org/api/v1/countries/EG/cropCalendar?language=en&aez=001",
+      "supports": "FAO Crop Calendar for Nile Delta agro-ecological zone: sowing and harvest windows for wheat, faba bean, soybean, and maize."
+    },
+    {
+      "id": "SRC-FAO-SPECIES-DIVERSIFICATION",
+      "url": "https://www.fao.org/conservation-agriculture/in-practice/species-diversification/en/",
+      "supports": "Qualitative agronomic principles for rotation diversity, legume nitrogen fixation, and pest life-cycle interruption."
+    },
+    {
+      "id": "SRC-USDA-COTTON-EG",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Cotton%20and%20Products%20Annual_Cairo_Egypt_EG2026-0003.pdf",
+      "supports": "USDA FAS Cotton and Products Annual: Delta cotton sowing, thermal tolerance, and cultivation cycles."
+    },
+    {
+      "id": "SRC-MWRI-RICE-REGULATION",
+      "url": "https://www.mwri.gov.eg/",
+      "supports": "Ministry of Water Resources and Irrigation annual decrees on rice cultivation zoning in Sharkia Governorate."
+    },
+    {
+      "id": "SRC-ICARDA-LEGUMES-MENA",
+      "url": "https://www.icarda.org/research/crop-improvement/grain-legumes",
+      "supports": "ICARDA dryland grain legume water requirements and thermal tolerance for faba bean in Egypt."
     }
   ]
 }

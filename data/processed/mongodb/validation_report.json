@@ -1,0 +1,31 @@
+{
+  "decision_revision": "6777af9a0e6b12c9f328d102b63d6cf87f0eadb1",
+  "scientific_approval": false,
+  "integrity_checks": "passed",
+  "expected_days": 3653,
+  "record_count": 3653,
+  "absent_dates": [],
+  "invalid_parameters": [],
+  "complete_years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "raw_sha256": "7c36f877a91df648116f600079ec02fb47183b070257717f0257f2704c5b6fcc",
+  "normalized_sha256": "59748bfab32c058db53d7ab3c33bd76558d63585597aa270721b85da9adecea7",
+  "normalized_serialization": "UTF-8 JSON, sorted keys, compact separators, ensure_ascii=False, allow_nan=False",
+  "normalized_content": "metadata and daily from climate_daily_clean.json, parameters and method_ref from climate manifest validation",
+  "warnings": [
+    "Research evidence and method review remains open on PR #1.",
+    "Scenario selection integrity does not establish four-slot cross-year eligibility.",
+    "8 candidate crops are outside the published 4–6 crop scope.",
+    "Region configuration says 2025 rain is 39.80 mm; retained daily records sum to 39.81 mm."
+  ]
+}

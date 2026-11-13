@@ -72,7 +72,7 @@
     },
     "missing_days": 0,
     "spatial_resolution": "MERRA-2 0.5 deg x 0.625 deg (~55 x 60 km)",
-    "time_standard": "UTC/LST",
+    "time_standard": "LST",
     "observed_mean_daily_tmax_c": 31.14,
     "observed_mean_annual_rain_mm": 111.43,
     "observed_mean_annual_et0_mm": 1964.33
@@ -88,7 +88,7 @@
     },
     "driest_year": {
       "year": 2025,
-      "total_rain_mm": 39.80,
+      "total_rain_mm": 39.8,
       "annual_total_et0_mm": 1996.3,
       "rule": "min annual total PRECTOTCORR over complete calendar years 2016-2025"
     },

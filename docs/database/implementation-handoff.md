@@ -67,4 +67,4 @@ A larger crop catalog can later split into per-crop documents behind the Crop AP
 
 Read the database documents and `START_HERE.md` for storage rules. Use `fixtures/cases.json` for complete runnable HTTP examples. All development fixture values are synthetic, not scientific acceptance evidence.
 
-Next action: Climate and Crop owners implement validators, importers, and adapters using the established defaults. Research owns source IDs/titles and scientific methods. The Lead implements ranking/integration and maintains release configuration. Native MongoDB startup is supplied in `tools/dev.py`; no live scientific dataset is included.
+Next action: Climate and Crop owners implement validators, importers, and adapters using the established defaults. Research owns source IDs/titles and scientific methods. The Lead implements ranking/integration and maintains release configuration. Native MongoDB startup is supplied in `tools/dev.py`. [Candidate research staging files](research-staging.md) are available, but no scientific dataset is approved for live use.

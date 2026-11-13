@@ -45,7 +45,7 @@
     "missing_days": 0,
     "total_days": 3653,
     "spatial_resolution": "0.5 x 0.625 degree (MERRA-2 / GEOS-FP)",
-    "time_standard": "UTC/LST",
+    "time_standard": "LST",
     "et0_method": "FAO-56 Penman-Monteith equation (Allen et al., 1998)"
   },
   "daily": [

@@ -36,8 +36,6 @@ URL = (
 )
 
 RAW_OUT_PATH = Path("data/raw/nasa_power_zankalon_2016_2025.json")
-PROCESSED_OUT_PATH = Path("data/processed/climate_daily_clean.json")
-FIXTURE_OUT_PATH = Path("data/fixtures/mock_climate_response.json")
 
 def fao56_penman_monteith(tmax, tmin, rh, rs, ws, doy, lat_deg, elev_m):
     """
@@ -128,7 +126,7 @@ def fetch_data():
     print(f"Saved raw NASA POWER response to {RAW_OUT_PATH}")
     return data
 
-def process_zankalon(raw_data):
+def process_zankalon(raw_data, retrieved_at):
     params = raw_data.get("properties", {}).get("parameter", {})
     tmax_dict = params.get("T2M_MAX", {})
     tmin_dict = params.get("T2M_MIN", {})
@@ -223,8 +221,6 @@ def process_zankalon(raw_data):
     driest = min(complete_years, key=lambda x: x["total_rain"])
     highest_et0 = max(complete_years, key=lambda x: x["total_et0"])
 
-    retrieved_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
-
     climate_payload = {
         "region_id": REGION_ID,
         "region_name": REGION_NAME,
@@ -266,26 +262,15 @@ def process_zankalon(raw_data):
             "missing_days": missing_days,
             "total_days": len(daily_list),
             "spatial_resolution": "0.5 x 0.625 degree (MERRA-2 / GEOS-FP)",
-            "time_standard": "UTC/LST",
+            "time_standard": raw_data["header"]["time_standard"],
             "et0_method": "FAO-56 Penman-Monteith equation (Allen et al., 1998)"
         },
         "daily": daily_list
     }
 
-    PROCESSED_OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(PROCESSED_OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(climate_payload, f, indent=2)
-    print(f"Saved processed clean climate dataset to {PROCESSED_OUT_PATH}")
-
-    # Generate lightweight fixture for backend tests (first 60 days + full metadata)
-    fixture_payload = dict(climate_payload)
-    fixture_payload["daily"] = daily_list[:60]
-    with open(FIXTURE_OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(fixture_payload, f, indent=2)
-    print(f"Saved lightweight fixture to {FIXTURE_OUT_PATH}")
-
     return climate_payload
 
 if __name__ == "__main__":
     raw = fetch_data()
-    process_zankalon(raw)
+    print("Raw response saved. Rebuild staging files with:")
+    print("python scripts/build_research_data.py --retrieved-at " + datetime.datetime.now(datetime.timezone.utc).isoformat())
