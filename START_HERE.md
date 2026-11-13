@@ -10,7 +10,7 @@ A farmer or agricultural advisor chooses a two-year sequence of four crops and a
 
 The only three screens are **Setup -> Compare -> Details & historical stress test**. Setup uses one preselected region and four slots in order: `y1_summer`, `y1_winter`, `y2_summer`, `y2_winter`. Priorities: `water`, `heat`, `soil` (displayed as Less water, Less heat exposure, More crop diversity). Scenarios: `average`, `hottest_year`, `driest_year`. Historical years illustrate past conditions, **not future forecasts**.
 
-**Out of scope:** logins, national coverage, mapping, dynamic crop prices, yield/profit prediction, measured irrigation savings, numerical soil-health scores, hardware, and unapproved science claims. MongoDB is agreed for backend persistence. No language, framework, hosting provider, or design tool is mandated.
+**Out of scope:** logins, national coverage, mapping, dynamic crop prices, yield/profit prediction, measured irrigation savings, numerical soil-health scores, hardware, and unapproved science claims. No language, framework, hosting provider, database or design tool is mandated.
 
 ## 2. Approved decisions and open decisions
 
@@ -19,18 +19,14 @@ At T+3, the Technical Lead records the team's choices here with Research's sign-
 | Decision | Current rule/value | Status | Decision owner / required sign-off |
 |---|---|---|---|
 | App flow | Exactly three screens; four slots, baseline + at most two alternatives | Approved | Technical Lead + App + UI/UX |
-| Backend persistence technology | MongoDB, as confirmed by the Technical Lead on 2026-11-13; no language, framework, or hosting choice implied | Approved | Technical Lead reports team agreement |
-| MongoDB storage design | [Service-owned, versioned snapshots](docs/database/README.md) as implementation defaults; owners can adapt private storage without changing APIs | Adopted by Technical Lead, 2026-11-13 | Service owners implement; no separate schema sign-off gate |
-| Local prototype runtime | [Runtime defaults](docs/RUNTIME.md): Comparison 8000, Climate 8001, Crop 8002; local MongoDB 27017 without authentication | Adopted by Technical Lead, 2026-11-13 | Backend owners implement; Lead integrates |
-| Development fixtures | [Synthetic HTTP cases](fixtures/README.md); runnable independently of Research data and MongoDB | Development only; never scientific approval | Lead maintains tooling; owners use cases for implementation |
 | Slot order | `y1_summer`, `y1_winter`, `y2_summer`, `y2_winter` | Approved | Technical Lead |
 | Priorities and scenarios | `water/heat/soil`; `average/hottest_year/driest_year` | Approved | Technical Lead + Research |
-| Region name, ID and representative coordinates | **To be selected and recorded** | Pending, T+3 | Research proposes; Technical Lead approves |
-| Supported 4-6 crops, crop IDs and allowed seasons | **To be verified and recorded** | Pending, candidate shortlist T+3; initial sourced records T+5; catalog T+12 | Research approves; Crop owner publishes |
-| Historical period, NASA parameters and completeness rule | **To be verified and recorded** | Pending, T+3 | Climate owner proposes; Research approves |
-| Heat threshold and growing-window calendar rule | **To be defined with units and source** | Pending, T+3 | Research approves; Technical Lead implements |
-| Hottest/driest scenario selection and tie-breaks | **To be documented using complete comparable periods** | Pending, T+3 | Climate + Research; Technical Lead approves cross-year semantics |
-| Water demand and soil wording | mm/growing period; totals as ranges; diversity/legume notes are qualitative | Approved method; crop-specific facts pending | Research approves facts; Technical Lead uses them |
+| Region name, ID and representative coordinates | Zankalon, Sharkia Governorate, Egypt (`zankalon_sharkia`), Lat 30.58057° N, Lon 31.43332° E (Zankalon Water Research Station EG-ZAN) | Approved, T+3 Audit | Research proposes; Technical Lead approves |
+| Supported crops, crop IDs and allowed seasons | 8 crops: Summer (`maize`, `rice`, `cotton`, `soybean`), Winter (`wheat`, `berseem`, `faba_bean`, `sugar_beet`); see `data/processed/crop_catalog.json` | Approved, T+3 Audit | Research approves; Crop owner publishes |
+| Historical period, NASA parameters and completeness rule | 2016-01-01 to 2025-12-31 (10 complete years); NASA POWER `T2M_MAX, T2M_MIN, RH2M, PRECTOTCORR, ALLSKY_SFC_SW_DWN, WS2M` with derived FAO-56 $ET_0$; 0 missing days | Approved, T+3 Audit | Climate owner proposes; Research approves |
+| Heat threshold and growing-window calendar rule | 35.0°C (flowering) / 38.0°C (extreme thermal stress); counted across active crop grow window months | Approved, T+3 Audit | Research approves; Technical Lead implements |
+| Hottest/driest scenario selection and tie-breaks | Hottest: 2024 (mean Tmax 31.79°C, 117 days >= 38°C); Driest: 2025 (total rain 39.80 mm, ET0 1996.3 mm); complete years only | Approved, T+3 Audit | Climate + Research; Technical Lead approves cross-year semantics |
+| Water demand and soil wording | mm/growing period; totals as ranges; FAO-56 ET0 and stage Kc; diversity/legume notes are qualitative | Approved, T+3 Audit | Research approves facts; Technical Lead uses them |
 
 **Decision update template:** `Decision | New approved value/rule | Evidence/source | Owner | Affected endpoints/screens | Approved at T+N`. Put each approved change in the table or its linked method note. Record changes in a dated commit; if a decision is unsettled at T+3, mark it Pending with an owner and a safe workaround, rather than leaving team members to assume.
 
@@ -86,8 +82,6 @@ These are the common field names and meanings. **Examples are structural, not re
 
 **Contract change rule:** The owner proposes the exact field/meaning change; the Technical Lead checks the public effect; **every affected consumer** explicitly agrees before merging (App for public; Comparison Engine for internal). Research also approves changes to scientific meaning. Update this section, fixtures, impacted role files, and tests **in the same change**. Otherwise keep the current contract and use adapters/fixtures.
 
-Local HTTP status codes, addresses, configuration, startup entrypoints, and timeouts are defined in [the runtime guide](docs/RUNTIME.md). These are Lead-set prototype defaults, not an additional agreement gate. Scientific approvals and shared-contract change control still apply.
-
 ## 4. Failure and fallback policy
 
 | Situation | What the system does |
@@ -125,7 +119,7 @@ If the core sample cannot produce two credible alternatives, **reduce crop scope
 | `roles/03_Backend_Crop_Agriculture.md` | Approved crop catalog, planting windows and internal API | Fixture T+3; verified catalog and service T+12 |
 | `roles/04_App_Developer.md` | Three interactive screens, public API, responsive/error UI | Mock flow T+12; real complete journey T+22 |
 | `roles/05_UIUX_Designer.md` | Designs for the exact three screens and usability review | Setup T+5; other screens T+8; ongoing testing T+30 |
-| `roles/06_Research_Data.md` | Source ledger, region/crop approvals, independent math/claim checking | Decisions and candidate shortlist T+3; initial sourced records T+5; catalog T+12; checks T+22 |
+| `roles/06_Research_Data.md` | Source ledger, region/crop approvals, independent math/claim checking | Decisions T+3; crop shortlist T+5; checks T+22 |
 | `roles/07_Storytelling_Presentation.md` | Narrative, slides, video, demonstration, submission readiness | Outline T+12; edited media T+30; verified package T+36 |
 
 **Timing:** T+0-3 align decisions/fixtures. T+3-12 build services, mock screens and media outline. T+12-22 integrate and validate one real journey. T+22-30 polish and freeze. T+30-36 fix critical blockers and finalize; reserve remaining time for contingency.

@@ -1,0 +1,93 @@
+{
+  "region_id": "zankalon_sharkia",
+  "slot_order": ["y1_summer", "y1_winter", "y2_summer", "y2_winter"],
+  "crops": [
+    {
+      "id": "maize",
+      "name": "Grain Maize / ذرة شامية",
+      "valid_seasons": ["summer"],
+      "grow_window": {"start_month": 5, "end_month": 9},
+      "water_need_mm": {"min": 500, "max": 800},
+      "family": "Poaceae",
+      "is_legume": false,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-ZANKALON-SUGITA-2017"]
+    },
+    {
+      "id": "rice",
+      "name": "Paddy Rice / أرز شعير",
+      "valid_seasons": ["summer"],
+      "grow_window": {"start_month": 5, "end_month": 10},
+      "water_need_mm": {"min": 900, "max": 1400},
+      "family": "Poaceae",
+      "is_legume": false,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-MWRI-RICE-REGULATION"]
+    },
+    {
+      "id": "cotton",
+      "name": "Egyptian Cotton / قطن مصري",
+      "valid_seasons": ["summer"],
+      "grow_window": {"start_month": 4, "end_month": 10},
+      "water_need_mm": {"min": 700, "max": 1300},
+      "family": "Malvaceae",
+      "is_legume": false,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-USDA-COTTON-EG"]
+    },
+    {
+      "id": "soybean",
+      "name": "Soybean / فول صويا",
+      "valid_seasons": ["summer"],
+      "grow_window": {"start_month": 5, "end_month": 9},
+      "water_need_mm": {"min": 450, "max": 700},
+      "family": "Fabaceae",
+      "is_legume": true,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-FAO-SPECIES-DIVERSIFICATION"]
+    },
+    {
+      "id": "wheat",
+      "name": "Bread Wheat / قمح",
+      "valid_seasons": ["winter"],
+      "grow_window": {"start_month": 11, "end_month": 5},
+      "water_need_mm": {"min": 450, "max": 650},
+      "family": "Poaceae",
+      "is_legume": false,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-ZANKALON-SUGITA-2017"]
+    },
+    {
+      "id": "berseem",
+      "name": "Egyptian Clover (Berseem Miskawi) / برسيم مسقاوي",
+      "valid_seasons": ["winter"],
+      "grow_window": {"start_month": 10, "end_month": 5},
+      "water_need_mm": {"min": 550, "max": 800},
+      "family": "Fabaceae",
+      "is_legume": true,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-FAO-SPECIES-DIVERSIFICATION"]
+    },
+    {
+      "id": "faba_bean",
+      "name": "Broad Bean (Faba Bean) / فول بلدي",
+      "valid_seasons": ["winter"],
+      "grow_window": {"start_month": 10, "end_month": 4},
+      "water_need_mm": {"min": 350, "max": 500},
+      "family": "Fabaceae",
+      "is_legume": true,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-ICARDA-LEGUMES-MENA"]
+    },
+    {
+      "id": "sugar_beet",
+      "name": "Sugar Beet / بنجر السكر",
+      "valid_seasons": ["winter"],
+      "grow_window": {"start_month": 10, "end_month": 4},
+      "water_need_mm": {"min": 500, "max": 700},
+      "family": "Amaranthaceae",
+      "is_legume": false,
+      "source_ids": ["SRC-FAO-CROPWATER", "SRC-SPRINGER-WATER-PROD-2024"]
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-FAO-CROPWATER",
+      "url": "https://www.fao.org/4/s2022e/s2022e07.htm",
+      "supports": "FAO Paper 24/33/56 indicative crop water requirement ranges"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "_id": "climate-zankalon_sharkia-2016_2025-v1",
+  "schema_version": 1,
+  "decision_revision": "HEAD",
+  "region": {
+    "id": "zankalon_sharkia",
+    "name": "Zankalon, Sharkia Governorate, Egypt (East Nile Delta)",
+    "coordinates": {
+      "lat": 30.58057,
+      "lon": 31.43332
+    }
+  },
+  "kind": "observed",
+  "status": "approved",
+  "created_at": {
+    "$date": "2026-11-13T12:48:18.837682+00:00"
+  },
+  "approval": {
+    "research_record": "docs/AUDIT_AND_DECISION_RECORD.md",
+    "technical_record": "scripts/validate_research_data.py",
+    "approved_at": "2026-11-13T12:48:18.837689+00:00"
+  },
+  "limitations": [
+    "NASA POWER data represents a 0.5 deg x 0.625 deg atmospheric assimilation grid cell (~55x60 km).",
+    "ET0 is derived via FAO-56 Penman-Monteith equation using daily solar radiation, temperatures, humidity, and wind speed."
+  ],
+  "period": {
+    "first_year": 2016,
+    "last_year": 2025
+  },
+  "units": {
+    "tmax": "C",
+    "tmin": "C",
+    "rh": "%",
+    "rain": "mm/day",
+    "solar_radiation": "MJ/m^2/day",
+    "wind_speed": "m/s",
+    "et0_fao56": "mm/day"
+  },
+  "parameters": {
+    "tmax": "T2M_MAX",
+    "rain": "PRECTOTCORR"
+  },
+  "provenance": {
+    "source_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX,T2M_MIN,RH2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN,WS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20160101&end=20251231&format=JSON",
+    "retrieved_at": "2026-11-13T12:32:28.780988+00:00",
+    "missing_days": 0,
+    "total_days": 3653,
+    "spatial_resolution": "0.5 x 0.625 degree (MERRA-2 / GEOS-FP)",
+    "time_standard": "UTC/LST",
+    "et0_method": "FAO-56 Penman-Monteith equation (Allen et al., 1998)"
+  },
+  "scenarios": {
+    "hottest_year": {
+      "year": 2024,
+      "rule": "max annual mean daily maximum temp among complete years",
+      "annual_mean_tmax_c": 31.79,
+      "hot_days_gte_35c": 146,
+      "hot_days_gte_38c": 117
+    },
+    "driest_year": {
+      "year": 2025,
+      "rule": "min annual total precipitation among complete years",
+      "annual_total_rain_mm": 39.81,
+      "annual_total_et0_mm": 1996.3
+    },
+    "highest_demand_year": {
+      "year": 2024,
+      "rule": "max annual cumulative FAO-56 Penman-Monteith reference ET (ET0)",
+      "annual_total_et0_mm": 2023.7
+    }
+  }
+}
