@@ -65,10 +65,12 @@ class RolloutTests(unittest.TestCase):
             if failure:
                 self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertEqual(current, previous)
+                self.assertIn('diagnose agrilens-test', calls)
                 if failure == 'preflight':
                     self.assertNotIn('pm2 ', calls)
                 else:
                     self.assertIn(f'pm2 start {previous}/.local/ecosystem.json', calls)
+                    self.assertLess(calls.index('diagnose agrilens-test'), calls.index('pm2 delete agrilens-test'))
             else:
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertNotEqual(current, previous)

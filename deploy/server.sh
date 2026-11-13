@@ -27,6 +27,11 @@ python="$release/.local/mongo-venv/bin/python"
 "$python" -m pip install -r requirements-mongo.txt
 npm ci --prefix services/crops
 npm ci --prefix services/climate
+trap '
+  result=$?
+  "$python" deploy/process.py diagnose "$PROJECT_NAME" || true
+  exit "$result"
+' ERR
 "$python" scripts/prototype_release.py build
 "$python" - <<'PY'
 import json
@@ -41,6 +46,7 @@ HOST=127.0.0.1 COMPARISON_PORT=18000 CLIMATE_PORT=18001 CROP_PORT=18002 \
 rollback() {
   result=$?
   trap - ERR
+  "$python" deploy/process.py diagnose "$PROJECT_NAME" || true
   echo 'Deployment failed; restoring the previous process' >&2
   if [[ -n "$previous" ]]; then
     pm2 delete "$PROJECT_NAME" || true
@@ -55,6 +61,7 @@ rollback() {
 trap rollback ERR
 # Delete then start so PM2 always adopts the new cwd and Python interpreter.
 if pm2 describe "$PROJECT_NAME" >/dev/null 2>&1; then pm2 delete "$PROJECT_NAME"; fi
+"$python" deploy/process.py ports "$PROJECT_NAME"
 pm2 start "$release/.local/ecosystem.json"
 "$python" deploy/process.py ready "$PROJECT_NAME"
 pm2 save

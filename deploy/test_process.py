@@ -1,6 +1,8 @@
 import importlib.util
 import io
 import json
+import tempfile
+from contextlib import redirect_stdout
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -18,6 +20,31 @@ class ReadinessTests(unittest.TestCase):
         self.assertEqual(app['args'], ['run'])
         self.assertGreater(app['kill_timeout'], 18000)
         self.assertEqual(app['instances'], 1)
+
+    def test_diagnostics_print_only_selected_process_and_redact_credentials(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            log = root / 'startup.log'
+            log.write_text('Backend failed: port already in use\nmongodb://user:password@localhost/db\nprivate-value\n')
+            listing = [
+                {'name': 'unrelated', 'pm2_env': {'status': 'online', 'pm_cwd': 'unrelated-app'}},
+                {'name': 'agrilens', 'pm2_env': {'status': 'errored', 'exit_code': 1,
+                                               'pm_err_log_path': str(log)}},
+            ]
+            output = io.StringIO()
+            with patch.object(process, 'ROOT', root), \
+                 patch.object(process, 'environment', return_value={'API_TOKEN': 'private-value'}), \
+                 patch.object(process, 'ports'), \
+                 patch.object(process.subprocess, 'check_output', return_value=json.dumps(listing)), \
+                 redirect_stdout(output):
+                process.diagnose('agrilens')
+            text = output.getvalue()
+            self.assertIn('port already in use', text)
+            self.assertIn('errored', text)
+            self.assertIn('<redacted MongoDB URI>', text)
+            self.assertNotIn('password', text)
+            self.assertNotIn('private-value', text)
+            self.assertNotIn('unrelated-app', text)
 
     def ready(self, cwd=None, status='online', mode='unreviewed', http_failure=False):
         listing = [{'name': 'agrilens', 'pm2_env': {'status': status, 'pm_cwd': str(cwd or process.ROOT)}}]
