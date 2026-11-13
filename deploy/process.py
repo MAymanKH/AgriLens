@@ -1,5 +1,7 @@
 """Describe the PM2 supervisor and verify its selected process over real HTTP."""
+from contextlib import ExitStack
 import json
+import os
 import re
 import socket
 from pathlib import Path
@@ -27,6 +29,17 @@ def redact(text, env):
         if value and len(value) >= 4 and any(word in key.upper() for word in ('PASSWORD', 'SECRET', 'TOKEN', 'PRIVATE_KEY', 'MONGODB_URI')):
             text = text.replace(value, '<redacted>')
     return re.sub(r'mongodb(?:\+srv)?://[^\s\'"<>]+', '<redacted MongoDB URI>', text)
+
+
+def preflight():
+    env = {**os.environ, 'HOST': '127.0.0.1'}
+    with ExitStack() as sockets:
+        for key in ('COMPARISON_PORT', 'CLIMATE_PORT', 'CROP_PORT'):
+            probe = sockets.enter_context(socket.socket())
+            probe.bind(('127.0.0.1', 0))
+            env[key] = str(probe.getsockname()[1])
+            print(f'Preflight {key}={env[key]}', flush=True)
+    return subprocess.call([sys.executable, str(ROOT / 'tools/backend.py'), 'check'], env=env)
 
 
 def ports():
@@ -106,7 +119,9 @@ if __name__ == '__main__':
         ready(name)
     elif command == 'diagnose':
         diagnose(name)
+    elif command == 'check':
+        raise SystemExit(preflight())
     elif command == 'ports':
         ports()
     else:
-        raise SystemExit('Expected config, ready, ports or diagnose')
+        raise SystemExit('Expected config, ready, check, ports or diagnose')

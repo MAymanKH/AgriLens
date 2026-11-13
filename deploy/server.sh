@@ -39,9 +39,8 @@ from pathlib import Path
 assert json.loads(Path('.local/backend/release.json').read_text())['manifest'] == json.loads(Path('releases/prototype.json').read_text()), 'Release pin differs from tested code or inputs'
 PY
 "$python" scripts/prototype_release.py import
-# Exercise 144 comparisons on separate loopback ports before interrupting service.
-HOST=127.0.0.1 COMPARISON_PORT=18000 CLIMATE_PORT=18001 CROP_PORT=18002 \
-  "$python" tools/backend.py check
+# Exercise 144 comparisons on unused loopback ports before interrupting service.
+"$python" deploy/process.py check "$PROJECT_NAME"
 "$python" deploy/process.py config "$PROJECT_NAME" > "$release/.local/ecosystem.json"
 rollback() {
   result=$?

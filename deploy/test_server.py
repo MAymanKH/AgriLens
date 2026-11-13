@@ -27,7 +27,7 @@ elif name == 'python3':
 elif name == 'python':
     if args == ['-']:
         sys.stdin.read()
-    if args[-1:] == ['check'] and os.environ.get('FAIL') == 'preflight':
+    if 'check' in args and os.environ.get('FAIL') == 'preflight':
         sys.exit(1)
     if 'ready' in args and os.environ.get('FAIL') == 'ready' and 'previous' not in args[0]:
         sys.exit(1)

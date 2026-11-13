@@ -69,7 +69,7 @@ class Stack:
         self.logs[owner] = log
         try:
             self.processes[owner] = subprocess.Popen(command, cwd=folder, env={**self.env, 'PORT': self.env[port_key]},
-                                                     stdout=log, stderr=subprocess.STDOUT)
+                                                     stdout=log, stderr=subprocess.STDOUT, start_new_session=os.name == 'posix')
         except BaseException:
             self.logs.pop(owner).close()
             raise
@@ -100,14 +100,26 @@ class Stack:
     def stop(self, owner):
         process = self.processes.pop(owner, None)
         if process:
-            if process.poll() is None:
+            if os.name == 'posix':
+                # Command files may launch wrappers such as npm with service children.
+                try:
+                    os.killpg(process.pid, signal.SIGTERM)
+                except ProcessLookupError:
+                    pass
+            elif process.poll() is None:
                 process.terminate()
             try:
                 process.wait(timeout=6)
             except subprocess.TimeoutExpired:
                 process.kill()
                 process.wait()
-            self.logs.pop(owner).close()
+            finally:
+                if os.name == 'posix':
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                self.logs.pop(owner).close()
 
     def close(self):
         for owner in list(reversed(self.processes)):

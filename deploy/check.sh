@@ -11,6 +11,7 @@ npm test --prefix services/comparison
 python3 tools/verify_fixtures.py
 python3 tools/verify_runtime.py
 python3 -m unittest discover -s deploy -p 'test_*.py'
+.local/mongo-venv/bin/python -m unittest discover -s scripts -p 'test_backend_processes.py'
 # Verify that the committed release still describes this code and these inputs.
 .local/mongo-venv/bin/python scripts/prototype_release.py build
 .local/mongo-venv/bin/python - <<'PY'

@@ -1,6 +1,7 @@
 import importlib.util
 import io
 import json
+import socket
 import tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -45,6 +46,19 @@ class ReadinessTests(unittest.TestCase):
             self.assertNotIn('password', text)
             self.assertNotIn('private-value', text)
             self.assertNotIn('unrelated-app', text)
+
+    def test_preflight_uses_distinct_unused_ports_and_returns_failure(self):
+        def run(command, env):
+            selected = [int(env[key]) for key in ('COMPARISON_PORT', 'CLIMATE_PORT', 'CROP_PORT')]
+            self.assertEqual(len(set(selected)), 3)
+            self.assertEqual(env['HOST'], '127.0.0.1')
+            self.assertEqual(command[-1], 'check')
+            for port in selected:
+                with socket.socket() as probe:
+                    probe.bind(('127.0.0.1', port))
+            return 7
+        with patch.object(process.subprocess, 'call', side_effect=run):
+            self.assertEqual(process.preflight(), 7)
 
     def ready(self, cwd=None, status='online', mode='unreviewed', http_failure=False):
         listing = [{'name': 'agrilens', 'pm2_env': {'status': status, 'pm_cwd': str(cwd or process.ROOT)}}]
