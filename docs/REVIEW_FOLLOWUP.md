@@ -42,3 +42,24 @@ The four-crop evidence follow-up is in `docs/FOUR_CROP_EVIDENCE.md`, with explic
 The separate backend fixes are now included. The builder reads the retained Zankalon response, preserves candidate review flags, and produces staging manifests, daily records, checksums, and an integrity report pinned to research revision `aae933bb097d22d97dc615a9b8185ca304b16a4c`. Both validation commands are read-only and cannot approve their inputs. This supersedes the earlier warning about self-approving exports and validators. See [the staging procedure](database/research-staging.md).
 
 The root register retains the agreed MongoDB, storage, runtime, fixture, and milestone decisions. Scientific approval remains pending. Integration checks passed: nine staging regression tests, five benchmark-input test methods covering 20 corrupt-input variants, both independent arithmetic checkers, both staging validation commands, 42 HTTP fixture cases, and the local runtime checks on Linux. The earlier Windows SIGINT limitation is not resolved by this integration.
+
+
+## Research backlog after document cleanup
+
+Document cleanup on 2026-11-13 removed the duplicate `MODEL_CONTEXT.md` handoff and `AgriLens_NASA_Data_Audit_and_Implementation_Brief.md`. This cleanup approves no scientific input, pilot change, or broader implementation task. Read `START_HERE.md`, `AGENTS.md`, and the assigned role guide for current instructions.
+
+### Current evidence and integration checks
+
+- Research supplies the outstanding source extracts and applicability checks in [SOURCES.md](SOURCES.md) and [FOUR_CROP_EVIDENCE.md](FOUR_CROP_EVIDENCE.md). The Lead records final crop scope, calendar, heat convention, scenario availability, and eligible sample rotations in `START_HERE.md` after the required approvals.
+- Research independently checks the FAO-56 derivation, input units, humidity approximation, elevation, and crop-stage coefficients described in [METHOD.md](METHOD.md). Whole-month exposure must not be described as verified flowering-stage damage. Indicative water-range differences must not be presented as measured irrigation savings.
+- Lead and service owners verify actual service integration. The fixture server replays synthetic responses and does not prove a real comparison journey. `DATA_MODE=live` in `.env.example` does not establish that live services work. Use the [runtime guide](RUNTIME.md) and [research staging procedure](database/research-staging.md); validation does not confer scientific approval.
+
+### Deferred NASA audit questions
+
+These are research questions for possible future scope approval, not current demo requirements:
+
+- Reproduce any cross-site POWER or CMR comparison before using it to justify pilot selection. Distinguish reference coordinates from actual farm polygons, weather-grid boundaries from local measurements, and catalog matches from quality-filtered crop-stage observations.
+- Check the official challenge resource list and actual overlap of crop labels, field boundaries, and historical seasons. Three mapped seasons do not verify a four-slot rotation. Check WaPOR footprint and resolution rather than assuming field coverage.
+- Before proposing HLS, ECOSTRESS, or another product, demonstrate usable spatial and temporal support, quality filtering, and a distinct contribution to the comparison. Keep surface temperature, modeled ET, crop demand, and applied irrigation separate; avoid counting shared inputs twice.
+
+Research owns the evidence review. The Technical Lead decides whether to activate a deferred proposal and records approved scope in `START_HERE.md`; service and app owners implement only their assigned areas.
