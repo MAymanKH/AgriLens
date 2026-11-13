@@ -60,7 +60,7 @@ export function createServer(settings) {
         getJson(`${settings.climateUrl.replace(/\/$/, '')}/internal/climate${query}`, settings, controller.signal),
       ]);
       if (controller.signal.aborted) return;
-      const engine = createEngine(catalog, climate, { ...settings, fixture: settings.mode === 'fixture' });
+      const engine = createEngine(catalog, climate, { ...settings, fixture: settings.mode === 'fixture', unreviewed: settings.mode === 'unreviewed' });
       const config = engine.config();
       if (address.pathname === '/health') send(200, { status: 'ok' });
       else if (input) send(200, engine.compare(input));

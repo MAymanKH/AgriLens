@@ -43,13 +43,42 @@ The Lead's [Comparison service](services/comparison/README.md) implements the cu
 public contract and the whole-month >=35°C prototype convention in `docs/METHOD.md`.
 This instruction does not constitute Research sign-off or change the Pending evidence
 statuses above. Comparison accepts successful internal HTTP responses without an
-additional approval gate; Crop and Climate retain their existing dataset-serving rules.
+additional approval gate. Crop and Climate now also support the explicitly selected
+`unreviewed` mode described below; default live mode retains its approval requirements.
 
 Rotation windows must not overlap. Average heat exposure uses common complete anchors
 across all valid offered rotations. Historical stress years are selected before testing
 four-slot coverage; incomplete selections are unavailable. Alternatives use deterministic
 priority ranking and a second descriptive-diversity selection, as documented in the
 service README. No shared API field or scientific approval status changes here.
+
+### Backend prototype release, 2026-11-13
+
+The backend prototype is implemented and verified with retained research inputs in
+**unreviewed mode**. The project owner explicitly waived approval workflow in this
+session. This exception allows pinned, sealed, structurally validated observed
+snapshots to serve through `DATA_MODE=unreviewed`; it does not approve scientific
+claims or change the Pending entries above. `live` mode still rejects unapproved
+snapshots. Neither mode uses synthetic data as an outage fallback.
+
+The prototype catalog selects maize, soybean, wheat and faba bean from
+`data/processed/four_crop_proposal.json`, using its proposed nonoverlapping month
+windows. Faba-bean water stays null. The pinned demo baseline is
+`maize,wheat,maize,wheat`. Only `average` is advertised with the retained 2016–2025
+coverage. Every public comparison discloses its unreviewed status.
+
+[The pinned release manifest](releases/prototype.json) records exact input and runtime
+hashes, snapshot IDs and the sample baseline. [The backend runbook](docs/BACKEND.md)
+provides repeatable build, start, check, backup, restore and rollback commands.
+Acceptance includes real MongoDB and all three HTTP services, all 16 supported
+baselines, independent raw-series heat and water arithmetic, invalid inputs,
+service/database outages and recovery, interrupted-import recovery, immutable retry
+checks, restore into fresh databases, and selection of a previous release.
+The executable acceptance check is `scripts/test_prototype_backend.py`.
+
+**Completion scope:** backend prototype using unreviewed retained data. App integration,
+public hosting, user testing, presentation and scientific acceptance remain separate
+work. This status does not check off the project-wide definition of done.
 
 ## 3. Shared API contracts (authoritative)
 

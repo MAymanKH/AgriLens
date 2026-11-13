@@ -5,7 +5,7 @@ class ApiError extends Error {
   constructor(code, status, message) { super(message); this.code = code; this.status = status; }
 }
 function createApp({mode, catalogId = '', Model, getModel, fixture}) {
-  if (!['live', 'fixture'].includes(mode)) throw new Error('Invalid data mode.');
+  if (!['live', 'fixture', 'unreviewed'].includes(mode)) throw new Error('Invalid data mode.');
   if (mode === 'fixture') validateApi(fixture);
   const app = express();
   app.disable('x-powered-by');
@@ -15,7 +15,7 @@ function createApp({mode, catalogId = '', Model, getModel, fixture}) {
     res.set('X-AgriLens-Data-Mode', mode);
     next();
   });
-  const insufficient = () => new ApiError('INSUFFICIENT_DATA', 422, 'No approved crop catalog is available for this region. Research approval and a pinned catalog revision are required.');
+  const insufficient = () => new ApiError('INSUFFICIENT_DATA', 422, 'The selected crop catalog is unavailable in this mode. Select a complete catalog revision.');
   async function load(regionId) {
     if (mode === 'fixture') return fixture;
     // Check availability first; even with no selected release an outage stays retryable.
@@ -25,13 +25,13 @@ function createApp({mode, catalogId = '', Model, getModel, fixture}) {
     const doc = await selectedModel.findOne({_id: catalogId}).lean().maxTimeMS(1500);
     if (!doc) throw insufficient();
     if (regionId && doc.region?.id !== regionId) throw new ApiError('UNKNOWN_REGION', 404, 'This region is not supported.');
-    try { validateSnapshot(doc, {live: true}); }
+    try { validateSnapshot(doc, {live: mode === 'live', unreviewed: mode === 'unreviewed'}); }
     catch { throw insufficient(); }
     return toApi(doc);
   }
   app.get('/health', async (req, res, next) => {
     try { await load(); res.json({status: 'ok'}); }
-    catch { next(new ApiError('SERVICE_UNAVAILABLE', 503, 'Crop service is not ready. Check MongoDB and the selected approved catalog.')); }
+    catch { next(new ApiError('SERVICE_UNAVAILABLE', 503, 'Crop service is not ready. Check MongoDB and the selected catalog.')); }
   });
   app.get('/internal/crops', async (req, res) => {
     const regionId = req.query.region_id;

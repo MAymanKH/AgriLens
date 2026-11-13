@@ -30,7 +30,7 @@ export function getJson(address, settings, signal) {
             throw unavailable();
           }
           const mode = response.headers['x-agrilens-data-mode'];
-          if ((settings.mode === 'live' && mode === 'fixture') || (settings.mode === 'fixture' && mode !== 'fixture')) throw unavailable();
+          if ((settings.mode === 'live' && mode && mode !== 'live') || (settings.mode !== 'live' && mode !== settings.mode)) throw unavailable();
           resolve(body);
         } catch (error) { reject(error instanceof ApiError ? error : unavailable()); }
       });

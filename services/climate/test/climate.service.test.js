@@ -202,3 +202,17 @@ test("HTTP contract exposes only climate fields and rejects ambiguous queries", 
     await new Promise(resolve => server.close(resolve));
   }
 });
+
+test('explicit unreviewed mode accepts only sealed observed inputs and still checks dates and sentinels', async () => {
+  const data=makeDataset();data.manifest.status='sealed';data.manifest.approval=null;
+  const run=async dataset=>{
+    const result=response();
+    await createClimateHandlers({mode:'unreviewed',repository:{getClimateData:async()=>dataset},getDatasetId:()=> 'pinned'}).climate({query:{region_id:'test_region'}},result);
+    return result;
+  };
+  assert.equal((await run(data)).statusCode,200);
+  assert.equal((await makeHandlers(data).climate({query:{region_id:'test_region'}},response())).statusCode,422);
+  for(const mutate of [d=>{d.manifest.status='staging';},d=>{d.manifest.status='rejected';},d=>{d.manifest.kind='fixture';},d=>{d.manifest.schema_version=2;},d=>{d.daily[0].tmax_c=-999;},d=>{d.daily.splice(59,1);}]){
+    const invalid=structuredClone(data);mutate(invalid);assert.equal((await run(invalid)).statusCode,422);
+  }
+});

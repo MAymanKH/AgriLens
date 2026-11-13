@@ -125,8 +125,10 @@ To develop the public API now, start only the Crop and Climate fixture servers i
 separate terminals, then start the real engine with
 `DATA_MODE=fixture python3 tools/dev.py run comparison`. Its responses remain labelled
 synthetic. In live mode, start it with `python3 tools/dev.py run comparison`.
-Comparison adds no approval lookup; it propagates errors from the internal services,
-which still reject the checked-in staging revisions.
+Comparison propagates errors from the internal services. For the completed retained-data
+prototype, follow [the backend runbook](BACKEND.md): its release runner explicitly selects
+`unreviewed` mode and new sealed snapshot IDs. Default live mode still rejects the
+checked-in staging revisions.
 
 ## Configuration and timeouts
 

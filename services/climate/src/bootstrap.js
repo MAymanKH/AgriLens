@@ -46,15 +46,15 @@ const toClimateResponse = ({ manifest, daily }) => ({
   },
 });
 
-const datasetIssue = (data) => {
+const datasetIssue = (data, mode) => {
   if (!data) return "The configured climate dataset is unavailable.";
   const { manifest, daily } = data;
   if (manifest.schema_version !== 1) return "The climate dataset uses an unsupported schema version.";
-  if (manifest.kind !== "observed" || manifest.status !== "approved") {
-    return "The selected climate dataset has not been approved for live use.";
+  if (manifest.kind !== "observed" || manifest.status !== (mode === "unreviewed" ? "sealed" : "approved")) {
+    return "The selected climate dataset is unavailable in this data mode.";
   }
-  if (!manifest.approval?.research_record || !manifest.approval?.technical_record) {
-    return "The selected climate dataset is missing required approval records.";
+  if (mode === "unreviewed" ? manifest.approval !== null : (!manifest.approval?.research_record || !manifest.approval?.technical_record)) {
+    return "The selected climate dataset approval metadata does not match this data mode.";
   }
   const { lat, lon } = manifest.region?.coordinates || {};
   if (!Number.isFinite(lat) || lat < -90 || lat > 90 ||
@@ -72,6 +72,7 @@ const datasetIssue = (data) => {
 };
 
 export const createClimateHandlers = ({
+  mode = "live",
   repository = { getClimateData },
   getDatasetId = () => process.env.CLIMATE_DATASET_ID,
 } = {}) => {
@@ -82,7 +83,7 @@ export const createClimateHandlers = ({
         return errorResponse(res, "SERVICE_UNAVAILABLE", "No climate dataset is configured.");
       }
       const data = await repository.getClimateData(datasetId);
-      const issue = datasetIssue(data);
+      const issue = datasetIssue(data, mode);
       if (issue) return errorResponse(res, "SERVICE_UNAVAILABLE", "No selected climate dataset is ready to serve.");
       return res.status(200).json({ status: "ok" });
     } catch {
@@ -110,7 +111,7 @@ export const createClimateHandlers = ({
       if (manifest.region?.id !== regionId) {
         return errorResponse(res, "UNKNOWN_REGION", "This region is not supported.");
       }
-      const issue = datasetIssue(data);
+      const issue = datasetIssue(data, mode);
       if (issue) return errorResponse(res, "INSUFFICIENT_DATA", issue);
 
       return res.status(200).json(toClimateResponse(data));
@@ -122,14 +123,16 @@ export const createClimateHandlers = ({
   return { health, climate };
 };
 
-export const createApp = (options) => {
+export const createApp = (options = {}) => {
+  const mode = options.mode || "live";
+  if (!["live", "unreviewed"].includes(mode)) throw new Error("Invalid climate data mode.");
   const app = express();
   const handlers = createClimateHandlers(options);
   app.disable("x-powered-by");
   app.set("query parser", "simple");
   app.use((_req, res, next) => {
     res.set("Cache-Control", "no-store");
-    res.set("X-AgriLens-Data-Mode", "live");
+    res.set("X-AgriLens-Data-Mode", mode);
     next();
   });
   app.use(cors());
@@ -148,10 +151,11 @@ export const createApp = (options) => {
 };
 
 export const bootstrap = async () => {
-  if ((process.env.DATA_MODE || "live") !== "live") {
-    throw new Error("Climate live service only supports DATA_MODE=live; use `python3 tools/dev.py fixtures climate` for fixtures.");
+  const mode = process.env.DATA_MODE || "live";
+  if (!["live", "unreviewed"].includes(mode)) {
+    throw new Error("Climate service supports DATA_MODE=live or unreviewed; use `python3 tools/dev.py fixtures climate` for fixtures.");
   }
-  const app = createApp();
+  const app = createApp({ mode });
   const port = Number(process.env.PORT || process.env.CLIMATE_PORT || 8001);
   const host = process.env.HOST || "127.0.0.1";
   const server = app.listen(port, host, () => {

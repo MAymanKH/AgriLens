@@ -23,6 +23,7 @@ async function main() {
   const server = app.listen(config.port, config.host, () => {
     console.log(`Crop service: http://${config.host}:${config.port} (${config.mode})`);
     if (config.mode === 'fixture') console.log('SYNTHETIC DEVELOPMENT FIXTURES — not agricultural results.');
+    else if (config.mode === 'unreviewed') console.log('UNREVIEWED prototype inputs; scientific review remains pending.');
     else if (!config.catalogId) console.log('Research catalog is staging. Live responses remain unavailable until approval.');
   });
   server.on('error', error => { console.error(error.code === 'EADDRINUSE' ? 'Port is already in use.' : 'Cannot start HTTP server.'); process.exitCode = 1; connection?.close(); });

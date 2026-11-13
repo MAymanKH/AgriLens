@@ -48,7 +48,9 @@ python3 tools/dev.py run comparison
 The default mode is `live`, using region `zankalon_sharkia`. Comparison accepts successful
 internal API responses without a separate scientific approval lookup. It propagates
 unavailable datasets and storage failures from the internal services. Those services
-currently reject staging datasets; this implementation does not alter their release rules.
+reject staging datasets. The [retained-data backend runbook](../../docs/BACKEND.md)
+provides an explicit unreviewed mode using new sealed snapshots. Default live-mode
+approval requirements remain intact.
 Do not change their stored approval metadata to make a successful response.
 
 The launcher supplies configuration from `.env.example`, optional `.env`, then the
@@ -111,6 +113,7 @@ that successful results do not become an outage fallback. Tests use ephemeral po
 and stop their own processes. No MongoDB or third-party Node packages are required.
 
 Next handoff: App can use the public API now with the synthetic internal services.
-Real deployment still requires data the internal services can serve, the three-screen
-app integration, and an end-to-end check of that deployment. Scientific limitations
+The retained-data backend prototype is now verified through all three real services;
+see the backend runbook for its release, backup and recovery checks. App integration
+and public deployment remain separate work. Scientific limitations
 remain in response metadata; these tests do not validate agricultural claims.

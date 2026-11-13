@@ -130,3 +130,11 @@ pending crop evidence and unverified growing windows. No approved catalog or
 real Comparison integration is claimed by the current tests.
 
 For database tooling background, see [Mongoose connection documentation](https://mongoosejs.com/docs/connections.html).
+
+## Retained-data prototype
+
+Use [the backend runbook](../../docs/BACKEND.md) to build and run the pinned four-crop
+prototype. `DATA_MODE=unreviewed` serves only explicitly selected sealed observed
+catalogs with null approval records. It preserves validation and labels the response
+mode. Default live mode still requires scientific approval. Original staging records
+are unchanged. Faba-bean water remains null.

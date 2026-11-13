@@ -79,7 +79,7 @@ function validRotation(crops) {
 const key = crops => JSON.stringify(crops.map(c => c.id));
 const lexical = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 
-export function createEngine(catalog, climate, { regionId, regionName, heatThreshold = 35, fixture = false }) {
+export function createEngine(catalog, climate, { regionId, regionName, heatThreshold = 35, fixture = false, unreviewed = false, sampleBaseline }) {
   validateCatalog(catalog, regionId);
   const daily = validateClimate(climate, regionId);
   dataCheck(finite(heatThreshold));
@@ -92,6 +92,10 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
   }
   generate([]);
   if (!rotations.length) throw new ApiError('INSUFFICIENT_DATA', 'No complete, sourced, nonoverlapping crop rotation is available.');
+
+  if (sampleBaseline && !rotations.some(r => key(r) === JSON.stringify(sampleBaseline))) {
+    throw new ApiError('INSUFFICIENT_DATA', 'The configured sample baseline is not a valid rotation.');
+  }
 
   const years = [];
   for (let year = climate.period.first_year; year <= climate.period.last_year; year++) {
@@ -164,10 +168,10 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
     const supported = scenarios.filter(available);
     if (!supported.includes('average')) throw new ApiError('INSUFFICIENT_DATA', 'No comparable historical rotation windows are complete.');
     return {
-      region: { id: regionId, name: fixture ? `SYNTHETIC fixture: ${regionName}` : regionName },
+      region: { id: regionId, name: fixture ? `SYNTHETIC fixture: ${regionName}` : unreviewed ? `${regionName} (unreviewed prototype)` : regionName },
       slot_order: slots, crops_by_season: Object.fromEntries(['summer', 'winter'].map(season => [season,
         catalog.crops.filter(c => c.valid_seasons.includes(season) && rotations.some(r => r.includes(c))).map(({ id, name }) => ({ id, name }))])),
-      priorities, scenarios: supported, sample_baseline: rotations[0].map(c => c.id),
+      priorities, scenarios: supported, sample_baseline: sampleBaseline || rotations[0].map(c => c.id),
     };
   }
   function compare(input) {
@@ -188,6 +192,7 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
     remaining.sort((a, b) => compareScore(a, b, 'soil'));
     if (remaining.length) chosen.push(remaining[0]);
     const warnings = [];
+    if (unreviewed) warnings.push('UNREVIEWED PROTOTYPE: retained research inputs and proposed crop calendars. Scientific review was waived; these results are not validated agricultural recommendations.');
     if (fixture) warnings.push('SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or agricultural recommendations.');
     if (chosen.length < 3) warnings.push(`Only ${chosen.length - 1} distinct valid alternatives are available.`);
     if (chosen.some(m => m.water.min === null)) warnings.push('Water need is Not evaluated where any crop range is incomplete.');

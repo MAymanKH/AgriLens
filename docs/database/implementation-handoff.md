@@ -1,6 +1,8 @@
 # Implement the MongoDB design
 
-Implement [the schema defaults](mongodb-schema.md) using [the local runtime](../RUNTIME.md). Native server startup, HTTP fixtures, and a [local staging importer](local-import.md) are provided. Live service adapters, scientific publication, and any richer service-owned validators still need implementation.
+Implement [the schema defaults](mongodb-schema.md) using [the local runtime](../RUNTIME.md). Native server startup, HTTP fixtures, and a [local staging importer](local-import.md) are provided. Service adapters and validation are implemented. Scientific publication retains the approved-data procedure below.
+For the completed unreviewed backend prototype, use [the backend runbook](../BACKEND.md);
+it creates separate sealed snapshots without approval records and preserves the default live-mode gates.
 
 ## Use the established defaults
 
@@ -67,4 +69,4 @@ A larger crop catalog can later split into per-crop documents behind the Crop AP
 
 Read the database documents and `START_HERE.md` for storage rules. Use `fixtures/cases.json` for complete runnable HTTP examples. All development fixture values are synthetic, not scientific acceptance evidence.
 
-Next action: Climate and Crop owners implement validators, importers, and adapters using the established defaults. Research owns source IDs/titles and scientific methods. The Lead implements ranking/integration and maintains release configuration. Native MongoDB startup is supplied in `tools/dev.py`. [Candidate research staging files](research-staging.md) are available, but no scientific dataset is approved for live use.
+Current status: Climate and Crop validators, importers and adapters are implemented and tested. Research owns source IDs/titles and scientific methods. The Lead implements ranking/integration and maintains release configuration. Native MongoDB startup is supplied in `tools/dev.py`. [Candidate research staging files](research-staging.md) are available, but no scientific dataset is approved for live use.

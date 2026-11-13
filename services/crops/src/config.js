@@ -22,7 +22,7 @@ function configuration(overrides = {}) {
     return value;
   };
   const mode = env.DATA_MODE || 'live';
-  if (!['live', 'fixture'].includes(mode)) throw new Error('DATA_MODE must be live or fixture.');
+  if (!['live', 'fixture', 'unreviewed'].includes(mode)) throw new Error('DATA_MODE must be live, unreviewed or fixture.');
   return {
     mode, host: env.HOST || '127.0.0.1', port: integer('PORT', env.CROP_PORT || 8002),
     uri: env.MONGODB_URI || 'mongodb://127.0.0.1:27017',

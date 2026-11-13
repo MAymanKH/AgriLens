@@ -116,3 +116,19 @@ test('pinned catalog determines region independently of the research checkout', 
     assert.equal((await fetch(`${base}/internal/crops?region_id=old_region`)).status, 404);
   });
 });
+
+test('unreviewed mode serves sealed data with disclosure while preserving validation and live gates', async () => {
+  const doc = snapshot(); doc.status = 'sealed'; doc.approval = null;
+  doc.crops[0].eligible_for_live = false; doc.crops[0].evidence_status = 'pending';
+  doc.crops[0].water_need_mm = {min:null,max:null};
+  validateSnapshot(doc, {unreviewed:true});
+  assert.throws(() => validateSnapshot(doc, {live:true}));
+  await withServer(createApp({mode:'unreviewed',catalogId:doc._id,Model:memoryModel(doc)}),async base=>{
+    const r=await fetch(`${base}/internal/crops?region_id=sample_region`);
+    assert.equal(r.status,200);assert.equal(r.headers.get('x-agrilens-data-mode'),'unreviewed');
+    assert.deepEqual((await r.json()).crops[0].water_need_mm,{min:null,max:null});
+  });
+  for(const mutate of [d=>{d.status='staging';},d=>{d.status='rejected';},d=>{d.kind='fixture';},d=>{d.schema_version=2;},d=>{d.crops[0].grow_window.start_month=null;},d=>{d.crops[0].water_need_mm.min=-1;},d=>{d.crops[0].source_ids=['missing'];}]){
+    const invalid=structuredClone(doc);mutate(invalid);assert.throws(()=>validateSnapshot(invalid,{unreviewed:true}));
+  }
+});

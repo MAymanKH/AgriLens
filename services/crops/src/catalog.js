@@ -56,7 +56,7 @@ function validateApi(catalog, {eligible = false} = {}) {
   }
 }
 
-function validateSnapshot(doc, {live = false} = {}) {
+function validateSnapshot(doc, {live = false, unreviewed = false} = {}) {
   check(doc && doc.schema_version === 1, 'Unsupported catalog schema version.');
   onlyKeys(doc, ['_id', 'schema_version', 'decision_revision', 'region', 'kind', 'status', 'created_at', 'approval', 'limitations', 'slot_order', 'crops', 'sources'], 'catalog');
   for (const crop of doc.crops || []) {
@@ -76,9 +76,15 @@ function validateSnapshot(doc, {live = false} = {}) {
     (coords.lon === null || (Number.isFinite(coords.lon) && Math.abs(coords.lon) <= 180)), 'Invalid coordinates.');
   check(Array.isArray(doc.limitations) && doc.limitations.every(text), 'Invalid limitations.');
   check(doc.approval === null || (doc.approval && typeof doc.approval === 'object'), 'Invalid approval.');
-  validateApi(toApi(doc), {eligible: live});
+  validateApi(toApi(doc), {eligible: live || unreviewed});
   for (const source of doc.sources) check(text(source.title), 'Missing source title.');
   if (doc.kind === 'fixture') check(doc.status !== 'approved', 'Fixtures cannot be approved.');
+  if (unreviewed) {
+    check(!live && doc.kind === 'observed' && doc.status === 'sealed' && doc.approval === null,
+      'Unreviewed mode requires a sealed observed catalog without approval records.');
+    check(coords.lat !== null && coords.lon !== null, 'Missing representative coordinates.');
+    check(doc.crops.length >= 4 && doc.crops.length <= 6, 'Prototype catalog needs 4–6 crops.');
+  }
   if (live) {
     check(doc.kind === 'observed' && doc.status === 'approved', 'Catalog is not approved.');
     check(coords.lat !== null && coords.lon !== null, 'Missing approved coordinates.');

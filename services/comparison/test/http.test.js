@@ -111,3 +111,12 @@ test('launcher starts the real engine and consumes independent Python fixture se
   children[0].kill('SIGTERM');await once(children[0],'exit');
   assert.equal((await fetch(`${base}/api/compare`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)})).status,503);
 });
+
+test('unreviewed mode discloses status in public config and results and cannot mix with live mode', async t=>{
+  const {settings,state,base,post}=await harness(t);settings.mode='unreviewed';state.mode='unreviewed';
+  const r=await post(input);assert.equal(r.status,200);assert.equal(r.headers.get('x-agrilens-data-mode'),'unreviewed');
+  assert.ok((await r.json()).meta.warnings.some(w=>w.includes('UNREVIEWED PROTOTYPE')));
+  assert.ok((await (await fetch(`${base}/api/config`)).json()).region.name.includes('unreviewed'));
+  settings.mode='live';assert.equal((await post(input)).status,503);
+  settings.mode='unreviewed';state.mode='fixture';assert.equal((await post(input)).status,503);
+});

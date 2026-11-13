@@ -20,7 +20,7 @@ export function configuration(overrides = {}) {
     return value;
   };
   const mode = env.DATA_MODE || 'live';
-  if (!['live', 'fixture'].includes(mode)) throw new Error('DATA_MODE must be live or fixture.');
+  if (!['live', 'fixture', 'unreviewed'].includes(mode)) throw new Error('DATA_MODE must be live, unreviewed or fixture.');
   for (const name of ['CLIMATE_BASE_URL', 'CROP_BASE_URL']) {
     const address = new URL(env[name]);
     if (!['http:', 'https:'].includes(address.protocol) || address.username || address.password || address.search || address.hash) throw new Error(`Invalid ${name}`);
@@ -29,6 +29,7 @@ export function configuration(overrides = {}) {
     mode, host: env.HOST || '127.0.0.1', port: integer('PORT', env.COMPARISON_PORT || 8000),
     regionId: env.COMPARISON_REGION_ID || (mode === 'fixture' ? 'sample_region' : 'zankalon_sharkia'),
     regionName: env.COMPARISON_REGION_NAME || (mode === 'fixture' ? 'Development region' : 'Zankalon, Sharkia Governorate, Egypt'),
+    sampleBaseline: env.COMPARISON_SAMPLE_BASELINE ? env.COMPARISON_SAMPLE_BASELINE.split(',') : undefined,
     climateUrl: env.CLIMATE_BASE_URL, cropUrl: env.CROP_BASE_URL,
     origin: env.APP_ORIGIN || 'http://localhost:5173',
     connectMs: integer('HTTP_CONNECT_TIMEOUT_MS', 1000), readMs: integer('HTTP_READ_TIMEOUT_MS', 3000),

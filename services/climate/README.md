@@ -21,3 +21,11 @@ The imported dataset is currently a staging candidate and is not scientifically 
 `DATA_MODE=fixture` is handled by the separate project fixture server. The live service refuses to start in fixture mode so fixture values cannot be mistaken for live climate evidence.
 
 Run `npm test --prefix services/climate` from the repository root for validation and HTTP contract checks.
+
+## Retained-data prototype
+
+[The backend runbook](../../docs/BACKEND.md) provides a pinned unreviewed release using
+the retained 3,653 daily records. `DATA_MODE=unreviewed` accepts a sealed observed
+snapshot with null approval; all date, completeness, sentinel and metadata checks
+still apply. Default live mode retains its approval requirements. Responses identify
+the selected mode in `X-AgriLens-Data-Mode`.
