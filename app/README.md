@@ -1,8 +1,23 @@
 # Run the AgriLens app
 
 Run commands from the repository root with Node.js 22 or newer. The app has no
-runtime packages or build step. Its Node server serves browser modules and proxies
+runtime packages. Its local Node server serves browser modules and proxies
 only `GET /api/config` and `POST /api/compare` to the Comparison service.
+
+## Deploy on Vercel
+
+Import the GitHub repository and set **Root Directory** to `app`. Select **Other**
+for the framework preset. `vercel.json` supplies the build command and `dist` output
+directory. No environment variables or start command are required.
+
+The build copies only `index.html` and `src/` into `dist/`. Vercel serves those
+files and forwards the two public API endpoints to
+`https://agriapi.mohamedayman.net`. API caching stays disabled. The local Node
+server is not used on Vercel, so `COMPARISON_BASE_URL` only affects local runs.
+To change the deployed API, update both rewrite destinations in `vercel.json`.
+
+After deployment, open `/api/config` on the website's domain, complete a comparison,
+and switch historical scenarios to verify the deployed routing.
 
 ## Use the deployed API
 
