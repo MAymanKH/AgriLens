@@ -101,3 +101,6 @@ Before any implementation, state the assigned owner and files in scope, check `g
 ## PR #1 follow-up (2026-11-13)
 
 Authenticated access confirmed one open PR and one Lead research comment with six requests; there are no submitted reviews, inline comments, commit comments or check runs at the inspected head. See `docs/REVIEW_FOLLOWUP.md`. Scientific candidates are not approved for live use. The executable calendar proposal requires n through n+2; 2024/2025 complete rotation scenarios are unavailable. Read current evidence review and method before relying on earlier snapshot prose.
+
+
+PR #1 second review (0794c46) requests complete NASA input validation and stronger four-crop evidence. Read `docs/FOUR_CROP_EVIDENCE.md` and the latest `docs/REVIEW_FOLLOWUP.md`; run the benchmark negative tests and independent rotation checker. Proposed source-backed selections do not overwrite the retained eight candidate estimates or confer approval.

@@ -128,3 +128,18 @@ Month-only API windows do not encode partial months. Research and the Lead must 
 ## Review disposition
 
 Citation errors are corrected here. Missing treatment-specific pages, biological thresholds, selected calendars, rice permission, and disputed ranges remain explicit evidence gaps. No source homepage, successful structural test or automatically generated report may mark these gaps approved. Research supplies evidence and signs the exact revision; the Lead records shared scope/method approval before live use.
+
+## Four-crop evidence follow-up (2026-11-13)
+
+See [FOUR_CROP_EVIDENCE.md](FOUR_CROP_EVIDENCE.md) for primary source locators, exact selected date examples and applicability of the proposed maize/soybean/wheat/faba shortlist. The earlier ledger rows preserve submitted candidate assumptions; the follow-up explicitly proposes different calendar selections rather than retroactively approving those assumptions. Maize now has regional calendar support in GYGA Egypt Table1. Faba350–500 remains unsupported; newly found ARC Sakha treatment measurements are recorded separately, not substituted as a generic requirement.
+
+### `SRC-GYGA-EGYPT-CALENDAR`
+
+- Title: Global Yield Gap Atlas, Egypt. URL: https://yieldgap-test.containers.wur.nl/egypt
+- Locator: Table1, Nile delta maize/wheat rows. Accessed2026-11-13. Regional calendar evidence; selected dates and farm applicability are declared in the follow-up.
+
+### `SRC-ARC-FABA-EID-2008`
+
+- Title: Effect of irrigations number and phosphorus fertilization on yield and its components of faba bean in North Nile Delta.
+- URL: https://jssae.journals.ekb.eg/article_200464_1ee00d51e561f586f380a8974ec26657.pdf
+- Locator: Table2,p.9124; site/methods p.9122. Accessed2026-11-13. Experimental consumptive-use evidence, not validation of submitted water endpoints.

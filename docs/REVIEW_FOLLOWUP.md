@@ -25,3 +25,14 @@ At inspected head 6777af9, PR #1 is the only PR. One conversation comment, no su
 The reviewer explicitly assigns stale builder replacement, metadata reproducibility, MongoDB staging/checksums/reports and non-self-approving import validation separately. These files still need that owner’s change: notably `scripts/verify_schema_compliance.py` currently writes approval metadata and is not a read-only validator. Do not run it as scientific approval. Existing MongoDB approved-shaped exports are not released evidence; the root register and candidate review gates supersede those historical payload claims. A complete live release must wait for the Lead publication fix and scientific evidence sign-off.
 
 Local fixes do not resolve evidence that does not exist in the retained sources. No source range, rice eligibility, crop scope or calendar proposal was newly approved by this change. Next: Research supplies exact citations and signs the evidence, then the Lead records final scope/calendar and publishes validated staging data.
+
+
+## Follow-up review of 0794c46
+
+Review: https://github.com/MAymanKH/AgriLens/pull/1#issuecomment-6854591906
+
+The benchmark input guard now explicitly requires all six NASA variables and all 3,653 expected dates in each. It rejects null, boolean, nonnumeric, nonfinite and sentinel measurements before arithmetic. `--raw` permits auditing a temporary response without changing the retained cache. Negative regression checks cover missing variables, bad measurements, missing leap dates and unexpected dates; each exercises the actual command and requires a nonzero exit with no success report.
+
+Run `python -m unittest discover -s scripts -p test_check_research_benchmarks.py` (five test methods, 20 corrupt-input variants), then `python scripts/check_research_benchmarks.py`. Both pass against the retained data.
+
+The four-crop evidence follow-up is in `docs/FOUR_CROP_EVIDENCE.md`, with explicit source locations, applicability limits and selected calendar proposals. `data/processed/four_crop_proposal.json` separates the supported-input proposal from preserved historical candidate values; `python scripts/check_rotation_examples.py` checks three distinct nonoverlapping examples. Unsupported faba-bean requirement remains null / Not evaluated. The proposed selections are pending Research/Lead and consumer approval; the raw experimental consumptive-use span must not silently become a comparable FAO requirement.

@@ -3,10 +3,12 @@
 Run: python scripts/check_research_benchmarks.py
 Calendar clarification is a proposal in docs/METHOD.md, pending consumer approval.
 """
+import argparse
 import calendar
 import datetime as dt
 from decimal import Decimal
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,14 +33,47 @@ def exposure(parameters, days):
     return sum(parameters['T2M_MAX'][key] >= 35 for key in keys)
 
 
-def main():
-    raw = json.loads((ROOT/'data/raw/nasa_power_zankalon_2016_2025.json').read_text(), parse_float=Decimal)
-    p = raw['properties']['parameter']
+REQUIRED_VARIABLES = (
+    'T2M_MAX', 'T2M_MIN', 'RH2M', 'PRECTOTCORR',
+    'ALLSKY_SFC_SW_DWN', 'WS2M',
+)
+
+
+def validate_raw(raw):
+    """Require complete, finite retained inputs before reporting any benchmarks."""
+    try:
+        parameters = raw['properties']['parameter']
+        fill = raw['header']['fill_value']
+    except (KeyError, TypeError) as error:
+        raise ValueError('Missing raw parameter map or fill-value metadata') from error
+    if isinstance(fill, bool) or not isinstance(fill, (int, float, Decimal)) or not Decimal(str(fill)).is_finite():
+        raise ValueError('Raw fill-value metadata must be finite and numeric')
+    if not isinstance(parameters, dict):
+        raise ValueError('Raw parameters must be a mapping')
     expected = {day.strftime('%Y%m%d') for day in dates(dt.date(2016,1,1), dt.date(2025,12,31))}
-    for variable, values in p.items():
-        assert set(values) == expected, variable + ': incomplete coverage'
-        assert all(value != raw['header']['fill_value'] for value in values.values()), variable + ': fill value'
-    assert len(expected) == 3653
+    for variable in REQUIRED_VARIABLES:
+        values = parameters.get(variable)
+        if not isinstance(values, dict):
+            raise ValueError(variable + ': missing variable or invalid measurement map')
+        if set(values) != expected:
+            raise ValueError(variable + ': incomplete or unexpected date coverage')
+        for date, value in values.items():
+            if isinstance(value, bool) or not isinstance(value, (int, float, Decimal)):
+                raise ValueError(f'{variable} {date}: measurement must be numeric and non-null')
+            if not Decimal(str(value)).is_finite():
+                raise ValueError(f'{variable} {date}: nonfinite measurement')
+            if value == fill or value == -999:
+                raise ValueError(f'{variable} {date}: fill value')
+    return parameters, expected
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--raw', type=Path, default=ROOT/'data/raw/nasa_power_zankalon_2016_2025.json',
+                        help='Raw response to audit; defaults to the retained Zankalon cache')
+    args = parser.parse_args()
+    raw = json.loads(args.raw.read_text(), parse_float=Decimal, parse_constant=Decimal)
+    p, expected = validate_raw(raw)
     annual = {}
     for year in range(2016,2026):
         keys = sorted(key for key in expected if key.startswith(str(year)))
@@ -83,4 +118,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except (ValueError, KeyError, TypeError, OSError) as error:
+        print(f'INPUT ERROR: {error}', file=sys.stderr)
+        sys.exit(1)

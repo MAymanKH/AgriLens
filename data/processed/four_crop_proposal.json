@@ -1,0 +1,141 @@
+{
+  "region_id": "zankalon_sharkia",
+  "status": "proposal_pending_research_lead_and_consumer_approval",
+  "eligible_for_live": false,
+  "slot_order": [
+    "y1_summer",
+    "y1_winter",
+    "y2_summer",
+    "y2_winter"
+  ],
+  "usage_note": "Source-supported proposals, not approved live records. Whole-month envelopes are proposed calendar approximations. Faba comparable water requirement remains unknown; totals containing it are Not evaluated. Original estimates are preserved in crop_catalog.json.",
+  "crops": [
+    {
+      "id": "maize",
+      "valid_seasons": [
+        "summer"
+      ],
+      "eligible_for_live": false,
+      "evidence_status": "proposal_pending_approval",
+      "grow_window": {
+        "start_month": 5,
+        "end_month": 9
+      },
+      "water_need_mm": {
+        "min": 500,
+        "max": 800
+      },
+      "water_evidence": {
+        "status": "generic_indicative_ET_proposal",
+        "source_id": "SRC-FAO-CROPWATER",
+        "location": "Table 14: Maize",
+        "limitation": "Not Zankalon measured irrigation delivery."
+      },
+      "calendar_evidence": {
+        "source_id": "SRC-GYGA-EGYPT-CALENDAR",
+        "location_and_proposal": "Table 1 Nile delta maize; sow 15 Apr–15 May, maturity 100 DAS early or 110–130 DAS medium/late; select 15 May–22 Sep, 130 elapsed days after sowing and 131 inclusive dates, as proposal.",
+        "limitation": "Whole-month envelope and cultivar/date choice require approval; dates are not asserted as exact local planting observations."
+      }
+    },
+    {
+      "id": "soybean",
+      "valid_seasons": [
+        "summer"
+      ],
+      "eligible_for_live": false,
+      "evidence_status": "proposal_pending_approval",
+      "grow_window": {
+        "start_month": 5,
+        "end_month": 9
+      },
+      "water_need_mm": {
+        "min": 450,
+        "max": 700
+      },
+      "water_evidence": {
+        "status": "generic_indicative_ET_proposal",
+        "source_id": "SRC-FAO-CROPWATER",
+        "location": "Table 14: Soybean",
+        "limitation": "Not Zankalon measured irrigation delivery."
+      },
+      "calendar_evidence": {
+        "source_id": "SRC-FAO-CALENDAR-EG-DELTA",
+        "location_and_proposal": "crop.id 0327 sessions[0]; sow 1–25 May, harvest 1 Sep–20 Oct, duration 95–120 days; select 15 May–11 Sep, 120 inclusive dates, as proposal.",
+        "limitation": "Whole-month envelope and cultivar/date choice require approval; dates are not asserted as exact local planting observations."
+      }
+    },
+    {
+      "id": "wheat",
+      "valid_seasons": [
+        "winter"
+      ],
+      "eligible_for_live": false,
+      "evidence_status": "proposal_pending_approval",
+      "grow_window": {
+        "start_month": 11,
+        "end_month": 4
+      },
+      "water_need_mm": {
+        "min": 450,
+        "max": 650
+      },
+      "water_evidence": {
+        "status": "generic_indicative_ET_proposal",
+        "source_id": "SRC-FAO-CROPWATER",
+        "location": "Table 14: Barley/Oats/Wheat",
+        "limitation": "Not Zankalon measured irrigation delivery."
+      },
+      "calendar_evidence": {
+        "source_id": "SRC-GYGA-EGYPT-CALENDAR",
+        "location_and_proposal": "Table 1 Nile delta wheat; sow 10–30 Nov, maturity 15 Apr–10 May; select 15 Nov–30 Apr as proposal.",
+        "limitation": "Whole-month envelope and cultivar/date choice require approval; dates are not asserted as exact local planting observations."
+      }
+    },
+    {
+      "id": "faba_bean",
+      "valid_seasons": [
+        "winter"
+      ],
+      "eligible_for_live": false,
+      "evidence_status": "proposal_pending_approval",
+      "grow_window": {
+        "start_month": 10,
+        "end_month": 4
+      },
+      "water_need_mm": {
+        "min": null,
+        "max": null
+      },
+      "water_evidence": {
+        "status": "not_evaluated",
+        "source_id": null,
+        "location": null,
+        "limitation": "Comparable faba requirement not established. Generic bean range and ARC treatment consumptive-use span are not substituted for a faba requirement."
+      },
+      "calendar_evidence": {
+        "source_id": "SRC-FAO-CALENDAR-EG-DELTA",
+        "location_and_proposal": "crop.id 0028 sessions[0]; sow 1 Oct–15 Nov, harvest 15 Apr–1 May, duration 180–190 days; select 15 Oct–15 Apr, 183/184 inclusive dates, as proposal.",
+        "limitation": "Whole-month envelope and cultivar/date choice require approval; dates are not asserted as exact local planting observations."
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-FAO-CROPWATER",
+      "url": "https://www.fao.org/4/s2022e/s2022e07.htm",
+      "location": "Section 3.3.4, Table 14; indicative seasonal evapotranspiration under optimal conditions."
+    },
+    {
+      "id": "SRC-GYGA-EGYPT-CALENDAR",
+      "url": "https://yieldgap-test.containers.wur.nl/egypt",
+      "location": "Table 1, Nile delta rows for maize and wheat."
+    },
+    {
+      "id": "SRC-FAO-CALENDAR-EG-DELTA",
+      "url": "https://api-cropcalendar.apps.fao.org/api/v1/countries/EG/cropCalendar?language=en&aez=001",
+      "local_artifact": "data/raw/fao_crop_calendar_EG_delta.json",
+      "sha256": "69d8c6815389133eea1587bf79ada8edfbf1b08296c664bce1ae7c4e49d3f303",
+      "location": "Delta region; crop.id 0327 or 0028, sessions[0]."
+    }
+  ]
+}
