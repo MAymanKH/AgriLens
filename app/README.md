@@ -29,7 +29,8 @@ npm start --prefix app
 
 Open <http://localhost:5173>. Select four crops and a priority, then choose
 **Compare rotations**. Use **See details & stress test** to switch scenarios
-and inspect sources. The retained-data prototype stays labelled unreviewed.
+and inspect sources. Routine screens omit the repeated prototype review warning;
+scientific limitations remain under Sources and limitations.
 Hottest and driest scenarios are eligible rotation anchors, not record-wide extremes.
 
 If Comparison uses another address, set `COMPARISON_BASE_URL` in the app server's
@@ -74,11 +75,12 @@ preserving API crop IDs, numeric values, source URLs and crop slot order.
 Switching languages preserves choices, results and expanded detail sections
 without making another API request. Field Shift remains a Latin wordmark.
 
-Service-provided scientific notes, assumptions, warnings, limitations and source
-titles retain their original wording. The Arabic view identifies this explicitly.
+Arabic also translates the current service's scientific notes, reasons, warnings,
+assumptions, limitations and source descriptions. Complete sentences and bounded
+templates in `src/i18n.js` preserve qualifiers, years and provenance. Unknown future
+wording retains its original text. Source URLs and API payloads remain unchanged.
 Unknown service errors show Arabic recovery guidance alongside the original
-message. Add application-owned translations in `src/i18n.js`; do not translate
-API fields or scientific evidence by replacing arbitrary rendered text.
+message. Add translations to `src/i18n.js`; do not replace arbitrary rendered text.
 
 ## Run verification
 
@@ -121,8 +123,9 @@ The English layouts are adapted to the three approved screens. The Figma file's
 landing page, additional setup pages, area, irrigation and soil inputs, balanced
 priority and example scientific claims are outside the current
 public contract and are not implemented. Supported crops come from the API.
-Wheat, maize and faba bean use the matching Figma illustrations; other crops
-retain their names without borrowing another crop's image. Crop slot order and
+Wheat, maize and faba bean use the matching Figma illustrations. Soybean has a
+local SVG botanical illustration in the same palette. Other crops retain their
+names without borrowing another crop's image. Crop slot order and
 scientific labels follow `START_HERE.md`.
 
 Assets are local in `src/assets/`, including the Readex Pro font and its OFL

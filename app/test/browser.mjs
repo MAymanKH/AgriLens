@@ -142,6 +142,9 @@ try {
     await page.route('**/api/compare', async route => fulfill(route, rename(await fixture('water_average'))));
     await page.goto(url);
     await page.getByLabel('Year 1 Summer').waitFor();
+    await page.getByLabel('Year 1 Summer').selectOption('soybean');
+    await page.locator('[data-crop-art="0"] img[src$="soybean.svg"]').waitFor();
+    assert.ok((await page.locator('[data-summary-crops]').textContent()).includes('Soybean'));
     await page.getByLabel('Year 1 Winter').selectOption('faba_bean');
     await page.locator('[data-crop-art="1"] img[src$="faba-bean.svg"]').waitFor();
     assert.ok((await page.locator('[data-summary-crops]').textContent()).includes('Faba bean'));
@@ -161,6 +164,7 @@ try {
       const images = await page.locator('img').evaluateAll(elements => elements.map(img => ({ src: img.getAttribute('src'), width: img.width, height: img.height, rect: { width: img.getBoundingClientRect().width, height: img.getBoundingClientRect().height } })));
       assert.ok(images.some(img => img.src.endsWith('wheat.svg')));
       assert.ok(images.some(img => img.src.endsWith('maize.svg')));
+      assert.ok(images.some(img => img.src.endsWith('soybean.svg')));
       for (const img of images) {
         assert.ok(img.src.startsWith('/src/assets/'));
         assert.ok(Math.abs(img.width - img.rect.width) < 1 && Math.abs(img.height - img.rect.height) < 1);
@@ -248,6 +252,35 @@ try {
       await page.reload(); await page.getByLabel('Year 1 Summer').waitFor();
       assert.equal(await page.locator('html').getAttribute('lang'), 'en');
     });
+    await run('prototype screens omit repeated review warnings and translate complete service content', async () => {
+      const response = rename(await fixture('water_average'));
+      response.plans[0].reasons = ['Your baseline is preserved unchanged.'];
+      response.plans[0].soil_note = '2 botanical families; 1 legume slots. Soil outcomes are not predicted.';
+      response.meta.warnings = ['UNREVIEWED PROTOTYPE: retained research inputs and proposed crop calendars. Scientific review was waived; these results are not validated agricultural recommendations.'];
+      response.meta.sources[0].title = 'Historical daily climate input';
+      response.meta.assumptions = ['Common complete anchors: 2016, 2017; arithmetic mean of per-anchor crop-day counts.'];
+      illustratedConfig.region.name += ' (unreviewed prototype)';
+      await page.unroute('**/api/config'); await page.unroute('**/api/compare');
+      const send = (route, data) => route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'unreviewed' }, body: JSON.stringify(data) });
+      await page.route('**/api/config', route => send(route, illustratedConfig));
+      await page.route('**/api/compare', route => send(route, response));
+      await page.reload(); await page.getByLabel('Year 1 Summer').waitFor();
+      assert.equal(await page.locator('.data-notice').count(), 0);
+      assert.ok(!(await page.locator('main').textContent()).includes('unreviewed prototype'));
+      await page.getByRole('button', { name: 'Compare rotations', exact: true }).click();
+      await heading(page, 'Compare your options');
+      assert.equal(await page.locator('.warnings').count(), 0);
+      await page.locator('#language-toggle').click();
+      await hasText(page, 'دورتك الأصلية محفوظة دون تغيير.');
+      assert.ok(!(await page.locator('main').textContent()).includes('botanical families'));
+      await page.getByRole('button', { name: 'التفاصيل واختبار الظروف التاريخية', exact: true }).click();
+      await page.locator('#nasa-method > summary').click();
+      await page.locator('#sources > summary').click();
+      await hasText(page, 'البيانات المناخية اليومية التاريخية');
+      assert.ok(!(await page.locator('main').textContent()).includes('Common complete anchors'));
+      await page.setViewportSize({ width: 390, height: 844 }); await noOverflow(page);
+      await page.screenshot({ path: new URL('arabic-service-details-mobile.png', output).pathname, fullPage: true });
+    });
     await design.close();
   });
 
@@ -257,7 +290,8 @@ try {
     const network = [];
     page.on('request', request => { if (request.resourceType() === 'fetch') network.push(new URL(request.url()).pathname); });
     await run('real MongoDB/services: full app journey and all historical scenarios', async () => {
-      await page.goto(url); await page.getByLabel('Year 1 Summer').waitFor(); await hasText(page, 'Unreviewed prototype');
+      await page.goto(url); await page.getByLabel('Year 1 Summer').waitFor();
+      assert.equal(await page.locator('.data-notice').count(), 0);
       await page.getByRole('button', { name: 'Compare rotations', exact: true }).click(); await heading(page, 'Compare your options');
       assert.equal(await page.locator('[data-plan]').count(), 3); await hasText(page, '1,900–2,900');
       await page.screenshot({ path: new URL('real-compare-desktop.png', output).pathname, fullPage: true });

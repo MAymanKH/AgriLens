@@ -13,7 +13,7 @@ export function scenarioName(id, mode, language = 'en') {
 
 export function modeNotice(mode) {
   if (mode === 'fixture') return 'Synthetic development data. These are not NASA measurements or agricultural recommendations.';
-  if (mode === 'unreviewed') return 'Unreviewed prototype. Retained climate records and proposed crop assumptions have not received scientific approval.';
+  if (mode === 'unreviewed') return '';
   if (mode !== 'live') return 'Data review status is not supplied. Check the sources and limitations before using these results.';
   return '';
 }

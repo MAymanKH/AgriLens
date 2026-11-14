@@ -10,7 +10,7 @@ const files = new Map([
   ['/src/model.js', ['src/model.js', 'text/javascript']],
   ['/src/views.js', ['src/views.js', 'text/javascript']],
   ['/src/styles.css', ['src/styles.css', 'text/css']],
-  ...['wheat', 'maize', 'faba-bean', 'droplet', 'thermometer', 'sprout', 'alert-triangle'].map(name => [`/src/assets/${name}.svg`, [`src/assets/${name}.svg`, 'image/svg+xml']]),
+  ...['wheat', 'maize', 'soybean', 'faba-bean', 'droplet', 'thermometer', 'sprout', 'alert-triangle'].map(name => [`/src/assets/${name}.svg`, [`src/assets/${name}.svg`, 'image/svg+xml']]),
   ...['regular', 'semibold'].map(weight => [`/src/assets/readex-${weight}.ttf`, [`src/assets/readex-${weight}.ttf`, 'font/ttf']]),
 ]);
 

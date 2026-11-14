@@ -114,6 +114,7 @@ body:has(.screen-compare) { background: var(--guide); }
 .crop-sequence .crop-art { height: 80px; justify-content: flex-start; padding-left: .5rem; }
 .crop-chip { border-radius: 6px; padding: .5rem .35rem; font-size: .8rem; text-align: center; background: var(--soft); font-weight: 500; overflow-wrap: anywhere; }
 .crop-chip.wheat { background: var(--gold); color: #1b2a23; }
+.crop-chip.soybean { background: #dce8c5; color: #23352c; }
 .crop-chip.maize { background: #a8b89a; color: #1b2a23; }
 .crop-chip.faba-bean { background: #3f6b55; color: white; }
 .metrics { margin: 1.5rem 0 1rem; display: grid; gap: 1rem; }
@@ -215,7 +216,6 @@ footer p { font-size: .8rem; max-width: 360px; }
 @media (prefers-reduced-motion: no-preference) { button, .priority-options label { transition: background-color .15s; } }
 .language-toggle { background: white; color: var(--green); border-color: var(--line); white-space: nowrap; }
 .language-toggle:hover { background: var(--guide); }
-.language-note { color: var(--muted); font-size: .8rem; margin-bottom: 1.5rem; }
 table { text-align: start; }
 ul { padding-left: 0; padding-inline-start: 1.3rem; }
 .crop-sequence .crop-art { padding-left: 0; padding-inline-start: .5rem; }
