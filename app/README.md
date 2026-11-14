@@ -61,6 +61,25 @@ to develop unavailable, missing-metric, or fewer-plan states. Fixture results ar
 recorded cases, so arbitrary crop edits require the real Comparison engine.
 The app never switches to fixtures after an outage.
 
+## Language
+
+Use **العربية** in the header to switch to Arabic, or **English** to switch back.
+The app stores the language preference in browser storage. If storage is blocked,
+the switch still works for the current session. English remains the default.
+
+Arabic includes the three screens, crop names, known region name, controls,
+units, missing values, validation, service recovery, status announcements and
+page title. It uses right-to-left layout and Arabic number formatting while
+preserving API crop IDs, numeric values, source URLs and crop slot order.
+Switching languages preserves choices, results and expanded detail sections
+without making another API request. Field Shift remains a Latin wordmark.
+
+Service-provided scientific notes, assumptions, warnings, limitations and source
+titles retain their original wording. The Arabic view identifies this explicitly.
+Unknown service errors show Arabic recovery guidance alongside the original
+message. Add application-owned translations in `src/i18n.js`; do not translate
+API fields or scientific evidence by replacing arbitrary rendered text.
+
 ## Run verification
 
 ```sh
@@ -100,7 +119,7 @@ and navigation/request state in `src/main.js`.
 
 The English layouts are adapted to the three approved screens. The Figma file's
 landing page, additional setup pages, area, irrigation and soil inputs, balanced
-priority, Arabic translation and example scientific claims are outside the current
+priority and example scientific claims are outside the current
 public contract and are not implemented. Supported crops come from the API.
 Wheat, maize and faba bean use the matching Figma illustrations; other crops
 retain their names without borrowing another crop's image. Crop slot order and

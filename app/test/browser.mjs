@@ -18,7 +18,16 @@ let passed = 0;
 async function run(name, action) { await action(); passed++; console.log(`PASS ${name}`); }
 async function heading(page, name) { await page.getByRole('heading', { level: 1, name, exact: true }).waitFor(); }
 async function hasText(page, text) { await page.getByText(text, { exact: false }).first().waitFor(); }
-async function noOverflow(page) { assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false); }
+async function noOverflow(page) {
+  const overflow = await page.evaluate(() => ({
+    width: innerWidth, scrollWidth: document.documentElement.scrollWidth,
+    elements: [...document.querySelectorAll('body *')].filter(element => {
+      const rect = element.getBoundingClientRect();
+      return rect.width > 0 && (rect.left < -1 || rect.right > innerWidth + 1);
+    }).slice(0, 8).map(element => ({ tag: element.tagName, class: element.className, text: element.textContent.slice(0, 80) })),
+  }));
+  assert.ok(overflow.scrollWidth <= overflow.width, JSON.stringify(overflow));
+}
 const errors = [];
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
@@ -37,6 +46,9 @@ try {
   });
   await run('config failure is retryable', async () => {
     configUnavailable = true; await page.goto(url); await hasText(page, 'Crop choices unavailable.');
+    await page.locator('#language-toggle').click();
+    await page.getByRole('heading', { name: 'تعذّرت المقارنة', exact: true }).waitFor();
+    await page.locator('#language-toggle').click();
     configUnavailable = false; await page.getByRole('button', { name: 'Try again' }).click();
     await page.getByLabel('Year 1 Summer').waitFor();
   });
@@ -167,6 +179,75 @@ try {
     await noOverflow(page);
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.screenshot({ path: new URL('design-details-desktop.png', output).pathname, fullPage: true });
+    await run('Arabic switches every screen without changing requests, results or saved language', async () => {
+      const calls = [];
+      let arabicProfile = 'missing_metrics';
+      await page.unroute('**/api/compare');
+      await page.route('**/api/compare', async route => {
+        calls.push(route.request().postDataJSON());
+        const data = rename(await fixture(arabicProfile));
+        await route.fulfill({ status: data.error ? 422 : 200, contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(data) });
+      });
+      await page.locator('#why-options > summary').click();
+      await page.locator('#language-toggle').click();
+      await heading(page, 'التفاصيل واختبار الظروف التاريخية');
+      assert.equal(await page.locator('html').getAttribute('lang'), 'ar');
+      assert.equal(await page.locator('html').getAttribute('dir'), 'rtl');
+      assert.equal(await page.locator('#sources').getAttribute('open'), '');
+      assert.equal(calls.length, 0);
+      assert.equal(await page.locator('#why-options').getAttribute('open'), null);
+      await page.getByRole('button', { name: 'عدّل اختياراتك', exact: true }).click();
+      await page.getByLabel('شتاء السنة الأولى', { exact: true }).selectOption('faba_bean');
+      assert.ok((await page.locator('[data-summary-crops]').textContent()).includes('فول بلدي'));
+      await page.getByRole('radio', { name: 'تعرّض أقل للحرارة', exact: true }).check();
+      assert.equal(await page.locator('[data-summary-priority]').textContent(), 'تعرّض أقل للحرارة');
+      await page.locator('#language-toggle').click();
+      assert.equal(await page.getByLabel('Year 1 Winter').inputValue(), 'faba_bean');
+      assert.equal(await page.getByRole('radio', { name: 'Less heat exposure', exact: true }).isChecked(), true);
+      await page.locator('#language-toggle').click();
+      await page.reload();
+      await page.getByLabel('صيف السنة الأولى', { exact: true }).waitFor();
+      assert.equal(await page.locator('html').getAttribute('dir'), 'rtl');
+      await page.getByLabel('صيف السنة الأولى', { exact: true }).evaluate(select => {
+        select.add(new Option('Invalid crop', 'wheat'));
+        select.value = 'wheat'; select.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      await page.getByRole('button', { name: 'قارن الدورات', exact: true }).click();
+      await hasText(page, 'اختر محصولًا صيفيًا من المحاصيل المدعومة.');
+      assert.equal(calls.length, 0);
+      await page.getByRole('button', { name: 'استعادة المثال', exact: true }).click();
+      for (const width of [390, 768, 1440]) {
+        await page.setViewportSize({ width, height: 1000 }); await noOverflow(page);
+      }
+      await page.screenshot({ path: new URL('arabic-setup-desktop.png', output).pathname, fullPage: true });
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.screenshot({ path: new URL('arabic-setup-mobile.png', output).pathname, fullPage: true });
+      await page.getByRole('button', { name: 'قارن الدورات', exact: true }).click();
+      await heading(page, 'قارن البدائل');
+      assert.deepEqual(calls[0], { region_id: config.region.id, baseline: ['maize', 'wheat', 'maize', 'wheat'], priority: 'water', scenario: 'average' });
+      await hasText(page, 'لم يتم التقييم');
+      await noOverflow(page);
+      await page.screenshot({ path: new URL('arabic-compare-mobile.png', output).pathname, fullPage: true });
+      await page.getByRole('button', { name: 'التفاصيل واختبار الظروف التاريخية', exact: true }).click();
+      arabicProfile = 'incomplete_scenario';
+      await page.getByLabel('السيناريو التاريخي', { exact: true }).selectOption('hottest_year');
+      await page.getByRole('alert').waitFor();
+      await hasText(page, 'النتيجة السابقة المعروضة: المتوسط التاريخي');
+      assert.equal(await page.locator('#scenario').inputValue(), 'average');
+      await noOverflow(page);
+      await page.screenshot({ path: new URL('arabic-details-mobile.png', output).pathname, fullPage: true });
+      await page.setViewportSize({ width: 1440, height: 1000 }); await noOverflow(page);
+      arabicProfile = 'water_hottest_year';
+      await page.getByRole('button', { name: 'حاول مرة أخرى', exact: true }).click();
+      await page.waitForFunction(() => document.querySelector('#scenario')?.value === 'hottest_year' && !document.querySelector('#scenario').disabled);
+      assert.equal(await page.getByRole('alert').count(), 0);
+      await page.locator('#language-toggle').click();
+      await heading(page, 'Details & historical stress test');
+      assert.equal(await page.locator('#scenario').inputValue(), 'hottest_year');
+      assert.equal(await page.locator('html').getAttribute('dir'), 'ltr');
+      await page.reload(); await page.getByLabel('Year 1 Summer').waitFor();
+      assert.equal(await page.locator('html').getAttribute('lang'), 'en');
+    });
     await design.close();
   });
 

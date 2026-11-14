@@ -213,3 +213,20 @@ footer p { font-size: .8rem; max-width: 360px; }
   footer { padding: 2.5rem 1.5rem; }
 }
 @media (prefers-reduced-motion: no-preference) { button, .priority-options label { transition: background-color .15s; } }
+.language-toggle { background: white; color: var(--green); border-color: var(--line); white-space: nowrap; }
+.language-toggle:hover { background: var(--guide); }
+.language-note { color: var(--muted); font-size: .8rem; margin-bottom: 1.5rem; }
+table { text-align: start; }
+ul { padding-left: 0; padding-inline-start: 1.3rem; }
+.crop-sequence .crop-art { padding-left: 0; padding-inline-start: .5rem; }
+select { padding-inline: .75rem 1.75rem; }
+html[dir="rtl"] .brand { align-self: flex-start; }
+html[dir="rtl"] .header-inner .brand { align-self: center; }
+html[dir="rtl"] .header-inner > span { text-align: start; }
+@media (max-width: 480px) {
+  .header-inner { flex-wrap: wrap; gap: .5rem; }
+  .header-inner > span { display: none; }
+  .crop-control select { padding-inline: .4rem 1.5rem; }
+  html[lang="ar"] .steps { font-size: .75rem; }
+  html[lang="ar"] .priority-options span { gap: .5rem; }
+}

@@ -1,16 +1,42 @@
 import { requestJson, validateConfig, validateComparison, ApiError } from './api.js';
 import { inputErrors, slots, priorities, scenarioName } from './model.js';
 import { render, updateSetupSummary } from './views.js';
+import { t, readLanguage, saveLanguage } from './i18n.js';
 
 const root = document.querySelector('#app');
-const state = { config: null, baseline: [], priority: 'water', result: null, resultRequest: null, mode: 'unknown', screen: 'setup', busy: false, error: null, failedScenario: null, fieldErrors: [] };
+const state = { language: readLanguage(), config: null, baseline: [], priority: 'water', result: null, resultRequest: null, mode: 'unknown', screen: 'setup', busy: false, error: null, failedScenario: null, fieldErrors: [] };
 let active;
 let version = 0;
 function paint(focus = false) {
+  document.documentElement.lang = state.language;
+  document.documentElement.dir = state.language === 'ar' ? 'rtl' : 'ltr';
+  document.title = `Field Shift | ${t(state.language, 'Compare crop rotations')}`;
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    element.textContent = t(state.language, element.dataset.i18n);
+  });
+  const toggle = document.querySelector('#language-toggle');
+  toggle.textContent = state.language === 'ar' ? 'English' : 'العربية';
+  toggle.lang = state.language === 'ar' ? 'en' : 'ar';
+  toggle.setAttribute('aria-label', state.language === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
   root.innerHTML = render(state);
   if (focus) root.querySelector('h1').focus();
 }
-function announce(message) { document.querySelector('#status').textContent = message; }
+function announce(message, values = {}) {
+  document.querySelector('#status').textContent = t(state.language, message, values);
+}
+function announceError(error) {
+  const message = state.language === 'ar' && t(state.language, error.message) === error.message
+    ? error.code || 'SERVICE_UNAVAILABLE' : error.message;
+  announce(message);
+}
+document.querySelector('#language-toggle').addEventListener('click', () => {
+  state.language = state.language === 'ar' ? 'en' : 'ar';
+  saveLanguage(state.language);
+  const sections = [...root.querySelectorAll('details[id]')].map(element => ({ id: element.id, open: element.open }));
+  paint();
+  for (const { id, open } of sections) root.querySelector(`#${id}`).open = open;
+  announce('Language changed.');
+});
 function stop() { version++; active?.abort(); state.busy = false; }
 function navigate(screen, push = true) {
   stop();
@@ -32,7 +58,7 @@ async function loadConfig() {
     paint(true); announce('Crop choices loaded.');
   } catch (error) {
     if (current !== version) return;
-    state.error = error; paint(); announce(error.message);
+    state.error = error; paint(); announceError(error);
   }
 }
 
@@ -52,12 +78,12 @@ async function compare(scenario = 'average') {
     state.result = result; state.resultRequest = request; state.busy = false;
     if (!scenarioSwitch) navigate('compare');
     else { paint(); root.querySelector('#scenario').focus(); }
-    announce(`Showing ${scenarioName(result.scenario, state.mode)}. ${result.plans.length} rotation options.`);
+    announce('Showing {scenario}. {count} rotation options.', { scenario: scenarioName(result.scenario, state.mode, state.language), count: result.plans.length });
   } catch (error) {
     if (current !== version) return;
     state.busy = false; state.error = error;
     state.failedScenario = scenarioSwitch ? scenario : null;
-    paint(); root.querySelector('[role="alert"] button')?.focus(); announce(error.message);
+    paint(); root.querySelector('[role="alert"] button')?.focus(); announceError(error);
   }
 }
 

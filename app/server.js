@@ -6,6 +6,7 @@ const files = new Map([
   ['/', ['index.html', 'text/html']],
   ['/src/main.js', ['src/main.js', 'text/javascript']],
   ['/src/api.js', ['src/api.js', 'text/javascript']],
+  ['/src/i18n.js', ['src/i18n.js', 'text/javascript']],
   ['/src/model.js', ['src/model.js', 'text/javascript']],
   ['/src/views.js', ['src/views.js', 'text/javascript']],
   ['/src/styles.css', ['src/styles.css', 'text/css']],
