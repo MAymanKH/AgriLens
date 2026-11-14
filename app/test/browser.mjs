@@ -87,7 +87,10 @@ try {
     await run(`${name} displays only provided plans and truthful unknowns`, async () => {
       profile = name; await page.getByRole('button', { name: 'Compare rotations', exact: true }).click(); await heading(page, 'Compare your options');
       assert.equal(await page.locator('[data-plan]').count(), count);
-      if (name === 'missing_metrics') await hasText(page, 'Not evaluated');
+      if (name === 'missing_metrics') {
+        await page.locator('[data-plan="water_conscious"] h2').click();
+        await page.locator('.direct-comparison').getByText('Not evaluated', { exact: true }).first().waitFor();
+      }
       await page.getByRole('button', { name: 'Edit choices' }).click();
     });
   }
@@ -96,6 +99,47 @@ try {
     assert.equal(await page.getByLabel('Year 1 Summer').inputValue(), 'summer_a');
     profile = 'malformed'; await page.getByRole('button', { name: 'Try again' }).click(); await hasText(page, 'incomplete response');
     profile = 'water_average'; await page.getByRole('button', { name: 'Try again' }).click(); await heading(page, 'Compare your options');
+  });
+  await run('alternative selection compares every aspect with the unchanged baseline', async () => {
+    await page.locator('[data-plan="water_conscious"] h2').click();
+    await heading(page, 'Details & historical stress test');
+    const comparison = page.locator('.direct-comparison');
+    await comparison.getByRole('heading', { name: 'Your rotation vs Alternative 1', exact: true }).waitFor();
+    assert.deepEqual(await comparison.locator('thead th').allTextContents(), ['Aspect', 'Your rotation', 'Alternative 1']);
+    assert.deepEqual(await comparison.locator('tbody th').allTextContents(), ['Year 1 Summer', 'Year 1 Winter', 'Year 2 Summer', 'Year 2 Winter', 'Indicative water need', 'Historical hot-day exposure', 'Crop diversity and soil', 'Reasons', 'Sources:']);
+    const data = await fixture('water_average');
+    for (const [i, plan] of data.plans.slice(0, 2).entries()) {
+      const cells = await comparison.locator(`tbody tr td:nth-child(${i + 2})`).allTextContents();
+      assert.ok(cells[4].includes(`${plan.water_need_mm.min.toLocaleString('en')}–${plan.water_need_mm.max.toLocaleString('en')}`));
+      assert.ok(cells[5].includes(String(plan.hot_days)));
+      assert.equal(cells[6], plan.soil_note);
+      assert.ok(plan.reasons.every(reason => cells[7].includes(reason)));
+      assert.ok(plan.source_ids.every(id => cells[8].includes(id)));
+    }
+    await noOverflow(page);
+    await page.screenshot({ path: new URL('direct-comparison-mobile.png', output).pathname, fullPage: true });
+    await page.locator('#language-toggle').click();
+    await comparison.getByRole('heading', { name: 'دورتك مقارنةً بـ البديل الأول', exact: true }).waitFor();
+    await noOverflow(page);
+    await page.locator('#language-toggle').click();
+    profile = 'incomplete_scenario'; await page.getByLabel('Historical scenario', { exact: true }).selectOption('hottest_year');
+    await page.getByRole('alert').waitFor();
+    assert.equal(await comparison.locator('thead th').last().textContent(), 'Alternative 1');
+    profile = 'water_hottest_year'; await page.getByRole('button', { name: 'Try again' }).click();
+    await page.waitForFunction(() => document.querySelector('#scenario')?.value === 'hottest_year' && !document.querySelector('#scenario').disabled);
+    assert.equal(await comparison.locator('thead th').last().textContent(), 'Alternative 1');
+    await page.getByRole('button', { name: 'Back to comparison', exact: true }).click();
+    const second = page.getByRole('button', { name: 'Compare Alternative 2 with your rotation', exact: true });
+    await second.focus(); await page.keyboard.press('Enter');
+    await comparison.getByRole('heading', { name: 'Your rotation vs Alternative 2', exact: true }).waitFor();
+    await page.goBack(); await heading(page, 'Compare your options');
+    await page.goForward();
+    await comparison.getByRole('heading', { name: 'Your rotation vs Alternative 2', exact: true }).waitFor();
+    await page.setViewportSize({ width: 1440, height: 1000 }); await noOverflow(page);
+    await page.screenshot({ path: new URL('direct-comparison-desktop.png', output).pathname, fullPage: true });
+    profile = 'water_average'; await page.getByLabel('Historical scenario', { exact: true }).selectOption('average');
+    await page.waitForFunction(() => document.querySelector('#scenario')?.value === 'average' && !document.querySelector('#scenario').disabled);
+    await page.getByRole('button', { name: 'Back to comparison', exact: true }).click();
   });
   await run('failed scenario preserves and labels previous result; retry switches successfully', async () => {
     await page.getByRole('button', { name: 'See details & stress test' }).click();

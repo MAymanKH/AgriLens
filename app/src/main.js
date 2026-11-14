@@ -4,7 +4,7 @@ import { render, updateSetupSummary } from './views.js';
 import { t, readLanguage, saveLanguage } from './i18n.js';
 
 const root = document.querySelector('#app');
-const state = { language: readLanguage(), config: null, baseline: [], priority: 'water', result: null, resultRequest: null, mode: 'unknown', screen: 'setup', busy: false, error: null, failedScenario: null, fieldErrors: [] };
+const state = { language: readLanguage(), config: null, baseline: [], priority: 'water', result: null, resultRequest: null, mode: 'unknown', screen: 'setup', busy: false, error: null, failedScenario: null, selectedPlanId: null, fieldErrors: [] };
 let active;
 let version = 0;
 function paint(focus = false) {
@@ -42,7 +42,7 @@ function navigate(screen, push = true) {
   stop();
   state.screen = state.result || screen === 'setup' ? screen : 'setup';
   state.error = null; state.failedScenario = null;
-  if (push) history.pushState({ screen: state.screen }, '', `#${state.screen}`);
+  if (push) history.pushState({ screen: state.screen, selectedPlanId: state.selectedPlanId }, '', `#${state.screen}`);
   paint(true);
 }
 
@@ -76,7 +76,7 @@ async function compare(scenario = 'average') {
     if (response.mode !== state.mode) throw new ApiError('SERVICE_UNAVAILABLE', 'The data source changed. Reload the app to load matching crop choices.');
     const result = validateComparison(response.data, request, state.config);
     state.result = result; state.resultRequest = request; state.busy = false;
-    if (!scenarioSwitch) navigate('compare');
+    if (!scenarioSwitch) { state.selectedPlanId = null; navigate('compare'); }
     else { paint(); root.querySelector('#scenario').focus(); }
     announce('Showing {scenario}. {count} rotation options.', { scenario: scenarioName(result.scenario, state.mode, state.language), count: result.plans.length });
   } catch (error) {
@@ -99,7 +99,14 @@ root.addEventListener('change', event => {
   if (event.target.id === 'scenario' && !state.busy) compare(event.target.value);
 });
 root.addEventListener('click', event => {
+  const selectedPlanId = event.target.closest('[data-compare-plan]')?.dataset.comparePlan;
+  if (selectedPlanId && state.result?.plans.some(plan => plan.id === selectedPlanId && plan.id !== 'baseline')) {
+    state.selectedPlanId = selectedPlanId;
+    navigate('details');
+    return;
+  }
   const action = event.target.closest('[data-action]')?.dataset.action;
+  if (action === 'details') state.selectedPlanId = null;
   if (['setup', 'compare', 'details'].includes(action)) navigate(action);
   if (action === 'reset') {
     state.baseline = [...state.config.sample_baseline];
@@ -123,6 +130,9 @@ root.addEventListener('click', event => {
     target.tabIndex = -1; target.focus(); target.scrollIntoView({ block: 'center' });
   }
 });
-window.addEventListener('popstate', event => navigate(event.state?.screen || 'setup', false));
+window.addEventListener('popstate', event => {
+  state.selectedPlanId = event.state?.selectedPlanId || null;
+  navigate(event.state?.screen || 'setup', false);
+});
 history.replaceState({ screen: 'setup' }, '', '#setup');
 paint(); loadConfig();
