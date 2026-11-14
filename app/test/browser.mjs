@@ -103,6 +103,8 @@ try {
     await heading(page, 'Compare your options');
     const data = await fixture('water_average');
     assert.equal(await page.locator('.direct-comparison').count(), 2);
+    await hasText(page.locator('[data-plan="water_conscious"] .farmer-benefits'), 'About 2,200 m³ less water needed per hectare');
+    await hasText(page.locator('.farm-outcomes'), 'Not evaluated. We do not have yield or crop-loss data');
     assert.equal(await page.locator('[data-compare-plan], .compare-plan').count(), 0);
     for (const alternative of data.plans.slice(1)) {
       const card = page.locator(`[data-plan="${alternative.id}"]`);
@@ -131,6 +133,7 @@ try {
     await page.screenshot({ path: new URL('inline-comparison-mobile.png', output).pathname, fullPage: true });
     await page.locator('#language-toggle').click();
     await heading(page, 'قارن البدائل');
+    await hasText(page.locator('[data-plan="water_conscious"] .farmer-benefits'), 'احتياج مياه أقل بحوالي ٢٬٢٠٠ متر مكعب لكل هكتار');
     assert.equal(await page.locator('.direct-comparison').count(), 2);
     await noOverflow(page);
     await page.screenshot({ path: new URL('inline-comparison-arabic-mobile.png', output).pathname, fullPage: true });
