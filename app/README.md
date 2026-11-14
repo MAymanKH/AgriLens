@@ -166,7 +166,9 @@ Local npm start/dev also load the ignored `app/.env.local` file. `GEMINI_MODEL` 
 check that an override is available on your project's free tier. The code does not
 enable billing, upgrade tiers or switch to a paid fallback. Google controls quotas
 and billing; a paid project key may incur charges. Each question can use up to four
-model requests. Missing keys and quota failures preserve manual form access.
+model requests. Temporary Gemini server failures retry with backoff within that
+four-request budget and the existing 45-second deadline. Quota and configuration
+errors are not retried. Missing keys and quota failures preserve manual form access.
 
 Deploy the updated Comparison service before testing search. Its new
 `POST /api/knowledge` reads the current checked Crop/Climate snapshots via existing

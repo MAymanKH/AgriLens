@@ -79,3 +79,27 @@ test('Gemini key, model, and permission errors identify deployment configuration
     await assert.rejects(assistant(input), error=>error.status===503 && expected.test(error.message) && !error.message.includes('test-key'));
   }
 });
+
+test('temporary Gemini overload retries the same turn and preserves search results', async () => {
+  let calls=0;const requests=[];
+  const assistant=createAssistant({comparisonUrl:'http://comparison',apiKey:'key',fetchImpl:async(url,options)=>{
+    if(String(url).endsWith('/api/config'))return json(config);
+    if(String(url).endsWith('/api/knowledge'))return json({sources:[{id:'crop',url:'https://example.com'}],crops:[]});
+    requests.push(options.body);calls++;
+    if(calls===1)return answer([{functionCall:{name:'search_data',args:{query:'maize'}}}]);
+    if(calls===2)return json({error:{status:'UNAVAILABLE',message:'High demand'}},503);
+    return answer([{text:'The crop records are available.'}]);
+  }});
+  const result=await assistant(input);
+  assert.equal(calls,3);assert.equal(requests[1],requests[2]);assert.equal(result.sources[0].id,'crop');
+});
+
+test('persistent Gemini overload stays within four attempts and never returns a pending action as success', async () => {
+  let calls=0;
+  const assistant=createAssistant({comparisonUrl:'http://comparison',apiKey:'key',fetchImpl:async url=>{
+    if(String(url).endsWith('/api/config'))return json(config);
+    calls++;return json({error:{status:'UNAVAILABLE'}},503);
+  }});
+  await assert.rejects(assistant(input),error=>error.status===503);
+  assert.equal(calls,4);
+});

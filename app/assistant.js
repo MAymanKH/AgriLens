@@ -1,3 +1,4 @@
+import { setTimeout as delay } from 'node:timers/promises';
 import { validateConfig } from './src/api.js';
 import { inputErrors } from './src/model.js';
 
@@ -44,10 +45,15 @@ export function createAssistant({ comparisonUrl, apiKey = process.env.GEMINI_API
           method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }, signal, redirect: 'error',
           body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, tools: [{ functionDeclarations: declarations }], generationConfig: { temperature: 0.2, maxOutputTokens: 1600, thinkingConfig: { thinkingLevel: 'minimal' } } }),
         });
+        if ([500, 502, 503, 504].includes(response.status) && round < 3) {
+          await response.body?.cancel();
+          await delay(1000 * 2 ** round, undefined, { signal });
+          continue;
+        }
         if (!response.ok) {
           const failure = await response.json().catch(() => ({}));
           const invalidKey = failure.error?.details?.some(detail => detail.reason === 'API_KEY_INVALID') || /API key not valid|API_KEY_INVALID/i.test(failure.error?.message || '');
-          let message = 'Gemini is unavailable. Try again later.';
+          let message = 'Gemini is busy right now. Please try again in a moment.';
           if (response.status === 429) message = 'Gemini’s free-tier limit was reached. Try again later.';
           else if (invalidKey || response.status === 401) message = 'The assistant API key is invalid. Update GEMINI_API_KEY in Vercel and redeploy.';
           else if (response.status === 403) message = 'Gemini denied this request. Check the API key permissions and the website server region.';
