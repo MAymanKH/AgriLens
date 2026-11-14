@@ -106,14 +106,19 @@ def run(output=OUTPUT):
         raw, expected, fields = validate_chunk(payload, first, last)
         if all_dates & expected:
             raise ValueError('Overlapping chunks')
-        if not path.exists():
-            path.write_bytes(payload)
         all_dates.update(expected)
         audit['chunks'].append({'request_url': url, 'raw_file': path.name,
                                  'retrieved_at_utc': retrieval,
                                  'sha256': hashlib.sha256(payload).hexdigest(),
                                  'header': raw['header'], 'response_geometry': raw.get('geometry'),
                                  'variables': fields})
+        completed = {chunk['raw_file']: chunk for chunk in audit['chunks']}
+        progress = dict(audit, chunks=list((prior_chunks | completed).values()))
+        write_audit(previous_path, progress)
+        if not path.exists():
+            temporary = path.with_suffix('.tmp')
+            temporary.write_bytes(payload)
+            temporary.replace(path)
         print(f'{first}-{last}: PASS, {len(expected)} days x {len(VARIABLES)} variables', flush=True)
     audit.update(status='coverage_and_basic_QA_passed', expected_days=10958,
                  actual_days=len(all_dates), leap_days=sum(d.endswith('0229') for d in all_dates),
@@ -138,6 +143,10 @@ def main(output=OUTPUT):
                                         scientific_approval='pending'))
         run(output)
     except (ValueError, KeyError, TypeError, OSError) as error:
+        try:
+            previous = json.loads(previous_path.read_text(encoding='utf-8'), object_pairs_hook=unique_object)
+        except (ValueError, OSError):
+            pass
         failure = dict(previous, status='audit_failed', scientific_approval='pending', error=str(error))
         write_audit(previous_path, failure)
         raise SystemExit(f'AUDIT FAILED: {error}')

@@ -8,6 +8,7 @@ import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.error import URLError
 
 import audit_power_history as audit
 
@@ -64,6 +65,32 @@ class HistoryAuditTests(unittest.TestCase):
             self.assertEqual(failed['status'], 'audit_failed')
             self.assertIn('checksum changed', failed['error'])
             self.assertFalse((output/'raw_1991_2000.json').exists())
+
+    def test_interrupted_initial_download_retains_provenance_and_retry_pins(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            raw = (audit.OUTPUT/'raw_1991_2000.json').read_bytes()
+            with patch.object(audit.urllib.request, 'urlopen', side_effect=[io.BytesIO(raw), URLError('offline')]):
+                with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit):
+                    audit.main(output)
+            failed = json.loads((output/'audit.json').read_text())
+            self.assertEqual(failed['status'], 'audit_failed')
+            self.assertEqual(len(failed['chunks']), 1)
+            first = failed['chunks'][0]
+            self.assertIn('19910101', first['request_url'])
+            self.assertNotIn('not inferred', first['retrieved_at_utc'])
+            with (output/'raw_1991_2000.json').open('ab') as file:
+                file.write(b' ')
+            with self.assertRaises(SystemExit):
+                audit.main(output)
+            self.assertIn('checksum changed', json.loads((output/'audit.json').read_text())['error'])
+            (output/'raw_1991_2000.json').write_bytes(raw)
+            remaining = [(audit.OUTPUT/f'raw_{first}_{last}.json').read_bytes()
+                         for first, last in ((2001, 2010), (2011, 2020))]
+            with patch.object(audit.urllib.request, 'urlopen', side_effect=[io.BytesIO(p) for p in remaining]):
+                with contextlib.redirect_stdout(io.StringIO()):
+                    audit.main(output)
+            self.assertEqual(json.loads((output/'audit.json').read_text())['chunks'][0], first)
 
     def test_failure_marks_manifest_failed_and_preserves_provenance(self):
         for mutation in ('checksum', 'request'):
