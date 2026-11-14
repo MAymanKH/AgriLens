@@ -102,9 +102,9 @@ try {
   await run('every alternative immediately compares all aspects inside its own card', async () => {
     await heading(page, 'Compare your options');
     const data = await fixture('water_average');
-    assert.equal(await page.locator('.direct-comparison').count(), 2);
     await hasText(page.locator('[data-plan="water_conscious"] .farmer-benefits'), 'About 2,200 m³ less water needed per hectare');
     await hasText(page.locator('.farm-outcomes'), 'Not evaluated. We do not have yield or crop-loss data');
+    assert.equal(await page.locator('.direct-comparison').count(), 2);
     assert.equal(await page.locator('[data-compare-plan], .compare-plan').count(), 0);
     for (const alternative of data.plans.slice(1)) {
       const card = page.locator(`[data-plan="${alternative.id}"]`);
@@ -351,7 +351,7 @@ try {
       await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ reply: '<script>unsafe()</script> Choices ready.', action: { region_id: config.region.id, baseline: config.sample_baseline, priority: 'water', scenario: 'average' }, sources: [{id:'unsafe',url:'javascript:alert(1)'}] }) });
     });
     await p.goto(url); await p.getByLabel('Year 1 Summer').waitFor();
-    await p.getByRole('button', {name:'Ask AgriLens', exact:true}).click();
+    await p.getByRole('button', {name:'Chat with AgriLens AI', exact:true}).click();
     await p.getByLabel('Your question').fill('Use the example crops with less water and compare.');
     await p.getByRole('button', {name:'Send', exact:true}).click();
     await heading(p, 'Compare your options');
@@ -360,23 +360,23 @@ try {
     assert.equal(await p.locator('#assistant-panel script').count(), 0);
     assert.equal(await p.locator('#assistant-panel a').count(), 0);
     await p.screenshot({path:new URL('assistant-mobile.png',output).pathname,fullPage:true});
-    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('button', {name:'Chat with AgriLens AI',exact:true}).click();
     await p.getByRole('button', {name:'Edit choices',exact:true}).click();
-    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('button', {name:'Chat with AgriLens AI',exact:true}).click();
     delay = true;
     await p.getByLabel('Your question').fill('Compare again.');
     await p.getByRole('button', {name:'Send',exact:true}).click();
     await p.waitForFunction(() => document.querySelector('#assistant-question').disabled);
-    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('button', {name:'Chat with AgriLens AI',exact:true}).click();
     await p.getByRole('radio', {name:'Less heat exposure',exact:true}).check();
     while (!release) await new Promise(resolve => setTimeout(resolve, 10));
     release();
-    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('button', {name:'Chat with AgriLens AI',exact:true}).click();
     await hasText(p, 'Your page changed while I was answering.');
     assert.ok(await p.getByRole('radio', {name:'Less heat exposure',exact:true}).isChecked());
-    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('button', {name:'Chat with AgriLens AI',exact:true}).click();
     await p.locator('#language-toggle').click();
-    await p.getByRole('button', {name:'اسأل أجريلينس',exact:true}).click();
+    await p.getByRole('button', {name:'دردشة أجريلينس بالذكاء الاصطناعي',exact:true}).click();
     await p.getByLabel('سؤالك').waitFor();
     await p.screenshot({path:new URL('assistant-arabic-mobile.png',output).pathname,fullPage:true});
     await chat.close();
@@ -417,6 +417,68 @@ try {
     await hasText(p, 'The historical reference is unavailable.');
     assert.equal(await p.locator('.reference-line').count(), 0);
     await history.close();
+  });
+
+  await run('AI chat supports keyboard sending, safe Markdown, closing and content sizing', async () => {
+    const chat = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const p = await chat.newPage(); p.on('pageerror', error => errors.push(error.message));
+    await p.route('**/api/config', route => route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(config) }));
+    let requests = 0;
+    const reply = '**أهلاً بالمزارع**\n\nاختر *محصولاً* لكل موسم.\n\n- ذرة في الصيف\n- قمح في الشتاء\n\n1. اختر المحاصيل\n2. قارن النتائج\n\n[المصدر](https://example.com/source)\n\n[رابط غير آمن](javascript:alert(1))\n\n<script>window.chatInjected=true</script>\n\n`كود كنص`\n\n> تقديرات أولية\n\n### الخطوة التالية\n\n```text\n<img src=x onerror=alert(1)>\n```';
+    await p.route('**/api/assistant', async route => {
+      requests++;
+      const body = route.request().postDataJSON();
+      assert.equal(body.messages.at(-1).text, 'First line\nSecond line');
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ reply: reply + '\n\n' + 'معلومات زراعية بسيطة وواضحة. '.repeat(90), action: null, sources: [] }) });
+    });
+    await p.goto(url); await p.getByLabel('Year 1 Summer').waitFor();
+    const launcher = p.getByRole('button', { name: 'Chat with AgriLens AI', exact: true });
+    await launcher.click();
+    const empty = await p.locator('#assistant-panel').boundingBox();
+    const question = p.getByLabel('Your question');
+    await question.fill('First line'); await question.press('Shift+Enter');
+    await question.press('S'); await question.type('econd line');
+    assert.equal(requests, 0);
+    await question.dispatchEvent('keydown', {key:'Enter',isComposing:true});
+    assert.equal(requests, 0);
+    await question.press('Enter');
+    await p.locator('.assistant-message.assistant strong').waitFor();
+    assert.equal(requests, 1);
+    assert.equal(await p.locator('.assistant-message.assistant strong').textContent(), 'أهلاً بالمزارع');
+    assert.equal(await p.locator('.assistant-message.assistant em').textContent(), 'محصولاً');
+    assert.equal(await p.locator('#assistant-panel ul li').count(), 2);
+    assert.equal(await p.locator('#assistant-panel ol li').count(), 2);
+    assert.equal(await p.locator('#assistant-panel a').count(), 1);
+    assert.equal(await p.locator('#assistant-panel a').getAttribute('href'), 'https://example.com/source');
+    assert.equal(await p.locator('#assistant-panel script, #assistant-panel img').count(), 0);
+    assert.equal(await p.evaluate(() => window.chatInjected), undefined);
+    assert.equal(await p.locator('#assistant-panel pre code').textContent(), '<img src=x onerror=alert(1)>\n');
+    await p.screenshot({path:new URL('assistant-markdown-desktop.png',output).pathname,fullPage:true});
+    const expanded = await p.locator('#assistant-panel').boundingBox();
+    assert.ok(expanded.height > empty.height); assert.ok(expanded.width > empty.width);
+    await p.getByRole('button', {name:'Close chat',exact:true}).click();
+    assert.equal(await p.locator('#assistant-panel').count(), 0);
+    assert.ok(await launcher.evaluate(element => element === document.activeElement));
+    await launcher.click();
+    assert.ok((await p.locator('#assistant-panel').textContent()).includes('أهلاً بالمزارع'));
+    await question.press('Escape'); assert.equal(await p.locator('#assistant-panel').count(), 0);
+    await launcher.click();
+    await p.getByRole('button', {name:'New chat',exact:true}).click();
+    assert.ok((await p.locator('#assistant-panel').boundingBox()).height < expanded.height);
+    await question.fill('line\n'.repeat(12));
+    assert.ok((await question.boundingBox()).height <= 162);
+    for (const width of [320,390,768]) {
+      await p.setViewportSize({width,height:844}); await noOverflow(p);
+      const box = await p.locator('#assistant-panel').boundingBox();
+      assert.ok(box.y >= 0 && box.y + box.height <= 844, JSON.stringify(box));
+    }
+    await p.screenshot({path:new URL('assistant-controls-mobile.png',output).pathname,fullPage:true});
+    await p.getByRole('button', {name:'Close chat',exact:true}).click();
+    await p.locator('#language-toggle').click();
+    await p.getByRole('button', {name:'دردشة أجريلينس بالذكاء الاصطناعي',exact:true}).click();
+    await p.getByRole('button', {name:'إغلاق الدردشة',exact:true}).waitFor();
+    await noOverflow(p);
+    await chat.close();
   });
 
   if (process.env.TEST_REAL_BACKEND === '1') {

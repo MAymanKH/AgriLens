@@ -236,15 +236,28 @@ html[dir="rtl"] .header-inner .brand { align-self: center; }
 .direct-comparison td small { display: block; font-size: .7rem; color: var(--muted); }
 
 .assistant-widget { position: fixed; inset-inline-end: 1rem; bottom: 1rem; z-index: 30; max-width: calc(100vw - 2rem); }
-.assistant-toggle { background: #173d32; color: white; border-radius: 2rem; padding: .75rem 1.1rem; box-shadow: 0 4px 16px #173d3233; }
-#assistant-panel { position: absolute; inset-inline-end: 0; bottom: 3.75rem; width: min(25rem, calc(100vw - 2rem)); max-height: calc(100dvh - 7rem); overflow-y: auto; background: #fffdf7; color: #173d32; border: 1px solid #b9c7bc; border-radius: 1rem; padding: 1rem; box-shadow: 0 8px 32px #173d3233; }
-#assistant-panel h2 { margin-top: 0; font-size: 1.2rem; }
-.assistant-log { max-height: 32dvh; overflow-y: auto; overflow-wrap: anywhere; }
-.assistant-message { white-space: pre-wrap; padding: .6rem; background: #eaf0e7; border-radius: .6rem; }
-.assistant-message.user { background: #f1ead8; }
-.assistant-log a { display: inline-block; margin-inline-end: .75rem; }
-#assistant-panel textarea { display: block; width: 100%; resize: vertical; margin: .5rem 0; padding: .5rem; font: inherit; }
-#assistant-panel button { min-height: 44px; margin-inline-end: .5rem; }
+.assistant-toggle { display: flex; align-items: center; gap: .6rem; max-width: 100%; background: #173d32; color: white; border-radius: 2rem; padding: .75rem 1.1rem; box-shadow: 0 4px 16px #173d3233; }
+.assistant-toggle svg { width: 1.4rem; height: 1.4rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#assistant-panel { position: absolute; inset-inline-end: 0; bottom: calc(100% + .5rem); display: flex; flex-direction: column; gap: .75rem; width: max-content; min-width: min(22rem, calc(100vw - 2rem)); max-width: min(36rem, calc(100vw - 2rem)); max-height: min(44rem, calc(100dvh - 7rem)); overflow-y: auto; background: #fffdf7; color: #173d32; border: 1px solid #b9c7bc; border-radius: 1rem; padding: 1rem; box-shadow: 0 8px 32px #173d3233; }
+.assistant-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
+#assistant-panel h2 { margin: 0; font-size: 1.2rem; }
+#assistant-panel .assistant-close { display: grid; place-items: center; flex: none; width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; color: #173d32; font-size: 1.8rem; line-height: 1; }
+.assistant-close:hover { background: #eaf0e7; }
+.assistant-log { min-height: 0; overflow-y: auto; overflow-wrap: anywhere; overscroll-behavior: contain; }
+.assistant-message { padding: .75rem; background: #eaf0e7; border-radius: .6rem; margin-bottom: .65rem; }
+.assistant-message.user { white-space: pre-wrap; background: #f1ead8; }
+.assistant-message p, .assistant-message ul, .assistant-message ol, .assistant-message blockquote, .assistant-message pre { margin: 0 0 .6rem; }
+.assistant-message > :last-child { margin-bottom: 0; }
+.assistant-message ul, .assistant-message ol { padding-inline-start: 1.3rem; }
+.assistant-message h3, .assistant-message h4, .assistant-message h5, .assistant-message h6 { margin: .5rem 0; font-size: 1rem; }
+.assistant-message blockquote { border-inline-start: 3px solid #9bae9e; padding-inline-start: .75rem; }
+.assistant-message pre { white-space: pre-wrap; }
+.assistant-message code { font-size: .9em; background: #dfe7dc; border-radius: .2rem; padding: .1rem .2rem; overflow-wrap: anywhere; }
+.assistant-log > a { display: inline-block; margin-inline-end: .75rem; }
+#assistant-panel form { flex-shrink: 0; }
+#assistant-panel textarea { display: block; width: 100%; min-height: 64px; max-height: 160px; resize: none; overflow-y: auto; margin: .4rem 0 .6rem; padding: .6rem; font: inherit; }
+.assistant-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+#assistant-panel button { min-height: 44px; }
 
 .steps li, .region, .crop-control, .metrics > div, .soil-note { border-radius: 8px; }
 .setup-note { border-radius: 12px; }

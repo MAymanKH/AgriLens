@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const files = new Map([
   ['/', ['index.html', 'text/html']],
+  ['/src/markdown.js', ['src/markdown.js', 'text/javascript']],
   ['/src/assistant.js', ['src/assistant.js', 'text/javascript']],
   ['/src/main.js', ['src/main.js', 'text/javascript']],
   ['/src/api.js', ['src/api.js', 'text/javascript']],

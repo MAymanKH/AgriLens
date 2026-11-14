@@ -218,3 +218,16 @@ unreviewed mode. Missing/corrupt reference files show an unavailable section whi
 preserving the current comparison. Older APIs omit the section. The retained 2026
 probe is not used. Verify using the backend acceptance suite and the browser harness
 with `TEST_REAL_BACKEND=1` against the updated backend.
+
+## Assistant chat controls
+
+Use **Chat with AgriLens AI** to open the assistant. Enter sends a message;
+Shift+Enter adds a new line. The close button or Escape hides the popup and
+keeps the conversation. The popup and question field grow with their content
+within the screen limits; long conversations scroll inside the popup.
+
+Assistant replies render common Markdown: bold, emphasis, links, lists, headings,
+quotes and code. The renderer builds DOM elements without executing model HTML,
+and links accept HTTP/HTTPS URLs only. User messages remain plain text.
+The model instructions ask for short, practical explanations in everyday language,
+with familiar Egyptian Arabic for Arabic questions and one follow-up at a time.
