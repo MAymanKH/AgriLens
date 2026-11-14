@@ -74,7 +74,7 @@ function localizedViews(language = 'en') {
     if (difference === null) return `<span>${t('Not evaluated')}</span><small>${t(baseline === 0 ? 'Baseline is zero; percentage unavailable.' : 'Data incomplete; percentage unavailable.')}</small>`;
     const percent = new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en', { style: 'percent', maximumFractionDigits: 1 }).format(Math.abs(difference) / 100);
     const label = difference === 0 ? 'No change (0%)' : difference < 0 ? '{percent} lower' : '{percent} higher';
-    return `<strong class="metric-difference">${escape(t(label, { percent }))}</strong><small>${t('Compared with your rotation')}</small>`;
+    return `<strong class="metric-difference ${difference < 0 ? 'metric-lower' : difference > 0 ? 'metric-higher' : ''}">${escape(t(label, { percent }))}</strong><small>${t('Compared with your rotation')}</small>`;
   }
 
   function compare(state) {
@@ -88,20 +88,29 @@ function localizedViews(language = 'en') {
       <div class="actions">${button('details', 'See details & stress test', 'primary')}</div>${warnings(result)}`;
   }
 
-  function waterDifference(plans, result, config) {
-    const incomplete = [...plans].reverse().find(plan => waterMidpoint(plan.water_need_mm) === null);
-    if (incomplete) return `<small>${t(planNames[incomplete.id])}</small>${missingWater(incomplete, result, config)}`;
-    return `${metricDifference(...plans.map(plan => waterMidpoint(plan.water_need_mm)))}<small>${t('Based on range midpoints')}</small>`;
+  function metricValues(plans, value, numeric) {
+    const values = plans.map(numeric);
+    return plans.map((plan, index) => {
+      const other = values[1 - index];
+      const current = values[index];
+      const color = current === null || other === null || current === other ? ''
+        : current < other ? 'metric-lower' : 'metric-higher';
+      return `<td><span class="metric-value ${color}">${value(plan)}</span></td>`;
+    }).join('');
   }
 
   function directComparison(plans, config, result) {
     const rows = [
       ...slotNames.map((name, i) => [t(name), plan => `<div class="crop-art">${cropArt(plan.crops[i])}</div>${escape(cropName(config, plan.crops[i]))}`]),
-      [t('Indicative water need'), () => waterDifference(plans, result, config), true],
-      [t('Historical hot-day exposure'), () => metricDifference(plans[0].hot_days, plans[1].hot_days), true],
+      [t('Indicative water need'), plan => waterValue(plan, result, config), plan => waterMidpoint(plan.water_need_mm)],
+      [t('Historical hot-day exposure'), plan => `<bdi dir="ltr">${number(plan.hot_days)}</bdi>${plan.hot_days === null ? '' : `<small>${t('crop-days across the rotation')}</small>`}`, plan => plan.hot_days],
       [t('Crop diversity and soil'), plan => `<bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi>`],
     ];
-    return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value, shared]) => `<tbody><tr><th scope="rowgroup" colspan="2">${label}</th></tr><tr>${shared ? `<td colspan="2" class="difference-cell">${value()}</td>` : plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr></tbody>`).join('')}</table></div>`;
+    return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value, numeric]) => {
+      const complete = numeric && plans.every(plan => numeric(plan) !== null);
+      const difference = complete ? `<tr><td colspan="2" class="difference-cell">${metricDifference(...plans.map(numeric))}${label === t('Indicative water need') ? `<small>${t('Based on range midpoints')}</small>` : ''}</td></tr>` : '';
+      return `<tbody><tr><th scope="rowgroup" colspan="2">${label}</th></tr><tr>${numeric ? metricValues(plans, value, numeric) : plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr>${difference}</tbody>`;
+    }).join('')}</table></div>`;
   }
 
   function details(state) {

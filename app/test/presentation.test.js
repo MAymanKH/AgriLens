@@ -84,7 +84,8 @@ test('alternative cards show directional percentages and retain original numbers
   assert.match(html, /44% lower/);
   assert.match(html, /No change \(0%\)/);
   assert.match(html, /Based on range midpoints/);
-  assert.ok(!html.includes('220–340'));
+  assert.match(html, /metric-value metric-higher[^]*?360–640/);
+  assert.match(html, /metric-value metric-lower[^]*?220–340/);
   assert.match(render({ ...state, result, screen: 'details' }), /220–340/);
   assert.match(render({ ...state, result, screen: 'compare', language: 'ar' }), /أقل بنسبة ٤٤٪/);
 });
@@ -99,4 +100,19 @@ test('missing water names only affected crops while heat remains comparable', as
   assert.match(card, /فول بلدي: بيانات احتياج المياه غير مكتملة/);
   assert.match(card, /بدون تغيير/);
   assert.ok(!html.split('data-plan="baseline"')[1].split('</article>')[0].includes('بيانات احتياج المياه غير مكتملة'));
+});
+
+test('metric colors follow actual trade-offs and leave equal or missing values neutral', async () => {
+  const result = JSON.parse(await readFile(new URL('../../fixtures/comparison/water_average.json', import.meta.url)));
+  result.plans[1].hot_days = result.plans[0].hot_days * 1.2;
+  let html = render({ ...state, result, screen: 'compare' });
+  let card = html.split('data-plan="water_conscious"')[1].split('</article>')[0];
+  assert.match(card, /metric-difference metric-higher">20% higher/);
+  assert.equal((card.match(/metric-value metric-higher/g) || []).length, 2);
+  result.plans[1].water_need_mm = { min: null, max: null };
+  result.plans[1].hot_days = result.plans[0].hot_days;
+  html = render({ ...state, result, screen: 'compare' });
+  card = html.split('data-plan="water_conscious"')[1].split('</article>')[0];
+  assert.ok(!card.includes('metric-value metric-higher'));
+  assert.ok(!card.includes('metric-value metric-lower'));
 });

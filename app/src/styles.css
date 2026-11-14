@@ -254,6 +254,11 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
 .exposure table, .direct-comparison { border-radius: 8px; overflow: hidden; }
 #assistant-panel textarea { border: 1px solid #6f7b73; border-radius: 8px; }
 .difference-cell { text-align: center; }
-.metric-difference { display: block; font-size: 1.15rem; color: var(--green); }
+.metric-difference { display: block; font-size: 1.15rem; }
 .metrics dd:has(small) { font-size: 1.25rem; }
 .exposure td small { display: block; font-size: .75rem; color: var(--muted); }
+
+.metric-value { display: block; font-weight: 600; }
+.metric-value small { font-weight: 400; }
+.metric-lower { color: #23613c; }
+.metric-higher { color: #a33028; }

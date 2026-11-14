@@ -115,10 +115,14 @@ try {
           const crop = Object.values(config.crops_by_season).flat().find(crop => crop.id === plan.crops[slot]);
           assert.equal(cells[slot], crop.name);
         }
-        assert.equal(cells[4], plan.soil_note);
+        assert.ok(cells[4].includes(`${plan.water_need_mm.min.toLocaleString('en')}–${plan.water_need_mm.max.toLocaleString('en')}`));
+        assert.ok(cells[5].includes(String(plan.hot_days)));
+        assert.equal(cells[6], plan.soil_note);
       }
       await hasText(comparison, alternative.id === 'water_conscious' ? '44% lower' : '22% lower');
       await hasText(comparison, 'No change (0%)');
+      assert.equal(await comparison.locator('.metric-value.metric-higher').count(), 1);
+      assert.equal(await comparison.locator('.metric-value.metric-lower').count(), 1);
       assert.equal(await comparison.locator('a').count(), 0);
       await card.getByRole('heading', { level: 2 }).click();
       await heading(page, 'Compare your options');
