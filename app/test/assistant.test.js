@@ -55,3 +55,15 @@ test('HTTP assistant rejects cross-site, oversized and malformed requests withou
     assert.equal((await fetch(base + '/assistant.js')).status, 404);
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
 });
+
+
+test('assistant examples retain the canonical action and checked knowledge shapes', async () => {
+  const turn = JSON.parse(await readFile(new URL('./fixtures/assistant/turn.json', import.meta.url)));
+  const knowledge = JSON.parse(await readFile(new URL('./fixtures/assistant/knowledge.json', import.meta.url)));
+  const { validateAction } = await import('../assistant.js');
+  const { searchKnowledge } = await import('../../services/comparison/src/knowledge.js');
+  assert.deepEqual(validateAction(turn.response.action, config), action);
+  const catalog = JSON.parse(await readFile(new URL('../../fixtures/crops/catalog.json', import.meta.url)));
+  const climate = JSON.parse(await readFile(new URL('../../fixtures/climate/daily.json', import.meta.url)));
+  assert.deepEqual(knowledge, searchKnowledge('summer_a', catalog, climate, 'fixture'));
+});

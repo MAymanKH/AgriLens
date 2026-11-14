@@ -8,6 +8,7 @@ npm ci --prefix services/climate
 npm test --prefix services/crops
 npm test --prefix services/climate
 npm test --prefix services/comparison
+npm test --prefix app
 python3 tools/verify_fixtures.py
 python3 tools/verify_runtime.py
 python3 -m unittest discover -s deploy -p 'test_*.py'

@@ -1,11 +1,11 @@
 {
-  "climate_dataset_id": "prototype-7be6a3954c12fc4a1c6043d9-climate",
-  "crop_catalog_id": "prototype-7be6a3954c12fc4a1c6043d9-crops",
+  "climate_dataset_id": "prototype-670a2261b37556a78b0237d2-climate",
+  "crop_catalog_id": "prototype-670a2261b37556a78b0237d2-crops",
   "identity": {
     "data_mode": "unreviewed",
     "format_version": 1,
     "inputs": {
-      "START_HERE.md": "d6fe71e6c8c0656cedc8bb0570147f7b3b7a55244e083f54858290555cceaf76",
+      "START_HERE.md": "54dfbf075c34db5a9fd1b49052037c1286027df1b479616662e6d515fc83ff03",
       "data/fixtures/mock_climate_response.json": "a0000ec32045cf238426fa9e170995a336f62ed1eb27a68faf69b346e58b16b0",
       "data/fixtures/mock_crop_catalog.json": "af08f2d9b88823452f9521b3c2f9741350286229503010272c998d273511d3f2",
       "data/processed/climate_daily_clean.json": "a0000ec32045cf238426fa9e170995a336f62ed1eb27a68faf69b346e58b16b0",
@@ -41,11 +41,12 @@
       "services/climate/src/utils/success.res.js": "305acb9d91bec218f7e90c8ae59d50bb789c3d51e5eba7b4b67d5eab100e1b65",
       "services/climate/start.json": "ed4e5a64ff8c85b405d42fec4e2a9ec45dfdb840f84f8519c6a3c77ff8c99bed",
       "services/comparison/package.json": "e75105fd6aad94926522ea14bff6f28f2aa6a325d868e0a8f299a1dca459628c",
-      "services/comparison/src/app.js": "0ce57c0d11ecf82d5d46356db9effd5a8b5b5e081087923b5b23cdb4999bc57a",
+      "services/comparison/src/app.js": "00d59246ee9ee1dd222809fc03edac23d921b022f0c8b96c57eacede6d07380c",
       "services/comparison/src/client.js": "58dc27d33251e7e54011874eb3611dae0215e354d364dbf66b906edaff501000",
       "services/comparison/src/config.js": "4fb9b92850f0a9d649fe311c1e360a1adfc351886ddd0f65ec0a8feee9f939f0",
       "services/comparison/src/engine.js": "39ab1f7bdc59f83ebfa1b72228efbec49e6a27565f02cc2eca3e8196ef1b25de",
       "services/comparison/src/errors.js": "e62d76dd4512abe071615e6e25a430c4a2e3690a45bfc1963d2b9995ecaafa2b",
+      "services/comparison/src/knowledge.js": "1585770d41df246f168d5939d46de72601def406781b55eca8f7880c5d1cb00c",
       "services/comparison/src/server.js": "4df23ade9bcdbea8ce87323beedf6895fbd9f78a30890673833694fd28f9f20f",
       "services/comparison/start.json": "14f58b415462acdcd0e567e9cda7a76245dc09b6f8d206f42fcbe512563770c8",
       "services/crops/package-lock.json": "5a9811fbaaa039bda188ba701ddc35c57f701a5ccf0eb0973435949f7b979351",
@@ -68,6 +69,6 @@
     ],
     "scientific_status": "unreviewed; workflow waived, not Research approved"
   },
-  "package_sha256": "920145f43359285af976732f765af423052f5b641d2a313c5a8090872329b090",
-  "release_id": "prototype-7be6a3954c12fc4a1c6043d9"
+  "package_sha256": "1940ff8ef9f870783e1e0f317819eb3c2492d9ef0fd39abc8dd55ab09866388b",
+  "release_id": "prototype-670a2261b37556a78b0237d2"
 }

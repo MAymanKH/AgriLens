@@ -85,8 +85,17 @@ test('launcher starts the real engine and consumes independent Python fixture se
   const root=new URL('../../../',import.meta.url);
   const children=[];
   t.after(()=>Promise.all(children.map(child=>new Promise(resolve=>{if(child.exitCode!==null || child.signalCode!==null){resolve();return;}child.once('exit',resolve);child.kill('SIGINT');}))));
-  async function launch(args,env={}) {
+  async function launch(args,env={},readyMessage) {
     const child=spawn('python3',args,{cwd:root,env:{...process.env,DATA_MODE:'fixture',...env},stdio:['ignore','pipe','pipe']});children.push(child);
+    if (readyMessage) await new Promise((resolve,reject)=>{
+      let output='';
+      const finish=error=>{clearTimeout(timer);child.stdout.off('data',onData);child.off('exit',onExit);child.off('error',onError);error?reject(error):resolve();};
+      const onData=chunk=>{output+=chunk.toString();if(output.includes(readyMessage))finish();};
+      const onExit=()=>finish(new Error(`Launcher exited before ${readyMessage}`));
+      const onError=error=>finish(error);
+      const timer=setTimeout(()=>finish(new Error(`Launcher did not report ${readyMessage}`)),5000);
+      child.stdout.on('data',onData);child.once('exit',onExit);child.once('error',onError);
+    });
     return child;
   }
   // Reserve ephemeral ports before launching the three independent processes.
@@ -94,17 +103,12 @@ test('launcher starts the real engine and consumes independent Python fixture se
   for(let i=0;i<3;i++) {
     const temp=http.createServer();temp.listen(0,'127.0.0.1');await once(temp,'listening');ports.push(temp.address().port);await new Promise(resolve=>temp.close(resolve));
   }
-  await launch(['tools/fixture_server.py','crops','--port',String(ports[0])]);
-  await launch(['tools/fixture_server.py','climate','--port',String(ports[1])]);
+  // Keep one dependency slow so the readiness check cannot pass by chance.
+  await launch(['-c',"import runpy,time; time.sleep(0.8); runpy.run_path('tools/fixture_server.py', run_name='__main__')",'crops','--port',String(ports[0])],{},'SYNTHETIC FIXTURES ONLY: crops');
+  await launch(['tools/fixture_server.py','climate','--port',String(ports[1])],{},'SYNTHETIC FIXTURES ONLY: climate');
   const env={DATA_MODE:'fixture',HOST:'127.0.0.1',COMPARISON_REGION_ID:'sample_region',COMPARISON_REGION_NAME:'Fixture region',COMPARISON_PORT:String(ports[2]),CROP_BASE_URL:`http://127.0.0.1:${ports[0]}`,CLIMATE_BASE_URL:`http://127.0.0.1:${ports[1]}`};
-  const child=await launch(['tools/dev.py','run','comparison'],env);
+  await launch(['tools/dev.py','run','comparison'],env,'Comparison service:');
   const base=`http://127.0.0.1:${ports[2]}`;
-  const ready=await new Promise((resolve,reject)=>{
-    const timer=setTimeout(()=>reject(new Error('Launcher did not start')),5000);
-    child.stdout.on('data',chunk=>{if(chunk.toString().includes('Comparison service:')){clearTimeout(timer);resolve(true);}});
-    child.on('exit',()=>{clearTimeout(timer);reject(new Error('Launcher exited early'));});
-  });
-  assert.ok(ready);
   const response=await fetch(`${base}/api/compare`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)});
   assert.equal(response.status,200);assert.deepEqual((await response.json()).plans[0].crops,input.baseline);
   // Stop a real dependency and prove the engine does not replay its last success.

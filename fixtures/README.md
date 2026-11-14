@@ -20,7 +20,7 @@ The `missing_day` climate profile removes 2021-07-01, records one missing day an
 
 Run and regenerate using [the local runtime guide](../docs/RUNTIME.md). Generation is maintained in `tools/generate_fixtures.py`; edit the generator and regenerate rather than hand-editing response copies.
 
-Assistant extension examples live in `assistant/turn.json` and
-`assistant/knowledge.json`. They are synthetic development data, not model output
+Assistant extension examples live in `app/test/fixtures/assistant/turn.json` and
+`app/test/fixtures/assistant/knowledge.json` relative to the repository root. These app-only examples are separate from the transport manifest. They are synthetic development data, not model output
 or NASA evidence. Search requires the runnable Comparison engine rather than the
 static fixture HTTP server. See `START_HERE.md` for the additive contracts.
