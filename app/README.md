@@ -30,11 +30,10 @@ npm start --prefix app
 ```
 
 Open <http://localhost:5173>. Select four crops and a priority, then choose
-**Compare rotations**. Select an alternative card or **Compare with your rotation**
-to compare it directly with the unchanged baseline. The comparison includes each
-season’s crop, water range, historical heat exposure, diversity/soil notes, all
-reasons and source references. The selected pair stays visible when switching
-scenarios or languages. Use **See details & stress test** to view all plans and switch scenarios
+**Compare rotations**. Each alternative card immediately compares the alternative
+with your unchanged rotation. Both columns show each season's crop, water range,
+historical heat exposure, diversity and soil notes, all reasons, and source links.
+Use **See details & stress test** to switch historical scenarios
 and inspect sources. Routine screens omit the repeated prototype review warning;
 scientific limitations remain under Sources and limitations.
 Hottest and driest scenarios are eligible rotation anchors, not record-wide extremes.

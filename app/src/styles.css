@@ -231,13 +231,11 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
   html[lang="ar"] .priority-options span { gap: .5rem; }
 }
 
-.plan[data-compare-plan] { cursor: pointer; }
-.plan[data-compare-plan]:hover, .plan[data-compare-plan]:focus-within { border-color: var(--selected); }
-.compare-plan { width: 100%; margin-top: 1.5rem; }
-.direct-comparison { margin-top: 2rem; }
-.direct-comparison h2 { font-size: 1.4rem; }
-.direct-comparison table { table-layout: fixed; }
-.direct-comparison thead th:first-child { width: 26%; }
+.direct-comparison table { table-layout: fixed; font-size: .8rem; }
+.direct-comparison thead th { width: 50%; }
+.direct-comparison tbody th { padding-bottom: .25rem; border-bottom: 0; font-size: .75rem; color: var(--muted); }
+.direct-comparison td { padding-top: .25rem; }
+.direct-comparison td + td { border-inline-start: 1px solid var(--line); }
 .direct-comparison td small { display: block; font-size: .7rem; color: var(--muted); }
 .direct-comparison ul { margin: 0; padding-inline-start: 1rem; }
 .direct-comparison li { font-size: inherit; }
