@@ -116,6 +116,60 @@ try {
   });
   await context.close();
 
+  await run('Figma assets render locally and summaries follow edited crops on desktop and mobile', async () => {
+    const design = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    const page = await design.newPage();
+    page.on('pageerror', error => errors.push(error.message));
+    const ids = { summer_a: 'maize', summer_b: 'soybean', winter_a: 'wheat', winter_b: 'faba_bean' };
+    const names = { maize: 'Maize', soybean: 'Soybean', wheat: 'Wheat', faba_bean: 'Faba bean' };
+    const rename = value => JSON.parse(JSON.stringify(value), (_key, item) => typeof item === 'string' ? ids[item] || item : item);
+    const illustratedConfig = rename(config);
+    Object.values(illustratedConfig.crops_by_season).flat().forEach(crop => { crop.name = names[crop.id]; });
+    const fulfill = (route, data) => route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(data) });
+    await page.route('**/api/config', route => fulfill(route, illustratedConfig));
+    await page.route('**/api/compare', async route => fulfill(route, rename(await fixture('water_average'))));
+    await page.goto(url);
+    await page.getByLabel('Year 1 Summer').waitFor();
+    await page.getByLabel('Year 1 Winter').selectOption('faba_bean');
+    await page.locator('[data-crop-art="1"] img[src$="faba-bean.svg"]').waitFor();
+    assert.ok((await page.locator('[data-summary-crops]').textContent()).includes('Faba bean'));
+    await page.getByRole('radio', { name: 'Less heat exposure', exact: true }).check();
+    assert.equal(await page.locator('[data-summary-priority]').textContent(), 'Less heat exposure');
+    await page.getByRole('button', { name: 'Reset example' }).click();
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await noOverflow(page);
+    }
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: new URL('design-setup-desktop.png', output).pathname, fullPage: true });
+    await page.getByRole('button', { name: 'Compare rotations', exact: true }).click();
+    await heading(page, 'Compare your options');
+    async function checkImages() {
+      await page.waitForFunction(() => [...document.images].every(img => img.complete && img.naturalWidth > 0));
+      const images = await page.locator('img').evaluateAll(elements => elements.map(img => ({ src: img.getAttribute('src'), width: img.width, height: img.height, rect: { width: img.getBoundingClientRect().width, height: img.getBoundingClientRect().height } })));
+      assert.ok(images.some(img => img.src.endsWith('wheat.svg')));
+      assert.ok(images.some(img => img.src.endsWith('maize.svg')));
+      for (const img of images) {
+        assert.ok(img.src.startsWith('/src/assets/'));
+        assert.ok(Math.abs(img.width - img.rect.width) < 1 && Math.abs(img.height - img.rect.height) < 1);
+      }
+      assert.equal(await page.evaluate(() => document.fonts.check('16px "Readex Pro"')), true);
+    }
+    await checkImages();
+    await page.screenshot({ path: new URL('design-compare-desktop.png', output).pathname, fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 }); await noOverflow(page); await checkImages();
+    await page.screenshot({ path: new URL('design-compare-mobile.png', output).pathname, fullPage: true });
+    await page.getByRole('button', { name: 'See details & stress test' }).click();
+    await page.locator('[data-open-details="nasa-method"]').click();
+    assert.equal(await page.locator('#nasa-method').getAttribute('open'), '');
+    await page.locator('[data-open-details="sources"]').click();
+    assert.equal(await page.locator('#sources').getAttribute('open'), '');
+    await noOverflow(page);
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.screenshot({ path: new URL('design-details-desktop.png', output).pathname, fullPage: true });
+    await design.close();
+  });
+
   if (process.env.TEST_REAL_BACKEND === '1') {
     const real = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
     const page = await real.newPage(); page.on('pageerror', error => errors.push(error.message));

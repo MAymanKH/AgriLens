@@ -49,7 +49,7 @@ test('null metrics, real zeros, safe source links and unreviewed scenario scope 
 test('API content is escaped and sources cannot inject markup', () => {
   const result = structuredClone(original); result.meta.warnings.push('<img src=x onerror=alert(1)>');
   const html = render({ config, baseline: config.sample_baseline, priority: 'water', screen: 'compare', mode: 'fixture', result });
-  assert.ok(html.includes('&lt;img')); assert.ok(!html.includes('<img'));
+  assert.ok(html.includes('&lt;img')); assert.ok(!html.includes('<img src=x'));
   assert.ok(!html.includes('Best option'));
 });
 

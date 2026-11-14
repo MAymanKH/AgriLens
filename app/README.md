@@ -90,12 +90,31 @@ retry, source navigation, and responses arriving after the user edits choices.
 The real-backend check covers the deployed API and all scenarios. Set
 `COMPARISON_BASE_URL=http://127.0.0.1:8000` to run it against a local backend instead.
 
-## Handoff to the final design
+## Design implementation
 
-Replace presentation in `src/styles.css` and screen markup in `src/views.js`.
-The stylesheet contains the temporary palette, typography and layout tokens.
-Keep API validation in `src/api.js` and navigation/request state in `src/main.js`.
-No framework choice is required by the shared contract.
+The [Field Shift Figma design](https://www.figma.com/design/kBGVFvZFv8iDrOQmYjKCwf/?node-id=2-4)
+supplies the palette, Readex Pro typography, field-strip brand mark, crop
+illustrations, metric icons, form surfaces and comparison cards. Presentation is
+in `src/styles.css` and `src/views.js`. API validation remains in `src/api.js`
+and navigation/request state in `src/main.js`.
+
+The English layouts are adapted to the three approved screens. The Figma file's
+landing page, additional setup pages, area, irrigation and soil inputs, balanced
+priority, Arabic translation and example scientific claims are outside the current
+public contract and are not implemented. Supported crops come from the API.
+Wheat, maize and faba bean use the matching Figma illustrations; other crops
+retain their names without borrowing another crop's image. Crop slot order and
+scientific labels follow `START_HERE.md`.
+
+Assets are local in `src/assets/`, including the Readex Pro font and its OFL
+license. The local server explicitly serves the maintained SVG and font files;
+Vercel includes them through the existing `src/` copy. No Figma download URLs or
+external font requests are required at runtime.
+
+Browser verification also exercises local image loading, illustration dimensions,
+summary updates and source disclosures at phone, tablet and desktop widths.
+The `design-*.png` screenshots use labelled synthetic fixtures with supported
+crop identifiers for visual checks; they are not scientific results.
 
 The app displays returned values and reasons. It computes no agronomic scores,
 savings or forecasts. Unknown values read **Not evaluated**. Alternative titles
@@ -105,6 +124,6 @@ Scenario errors keep the previous scenario explicitly labelled. Editing crops
 or priority invalidates old results. Browser Back and Edit choices preserve
 in-memory input; a page reload starts the configured example.
 
-Research acceptance, final visual design, deployment, and the required tests with
+Research acceptance, design-owner review, deployment, and the required tests with
 two unfamiliar people remain separate work. App verification does not approve
 scientific inputs or check off the entire project definition of done.

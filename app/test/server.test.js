@@ -21,6 +21,12 @@ test('serves the app, proxies only public endpoints, preserves status/mode, and 
   try {
     const page = await fetch(url); assert.equal(page.status, 200); assert.match(await page.text(), /id="app"/);
     assert.match(page.headers.get('Content-Security-Policy'), /connect-src 'self'/);
+    for (const [path, type] of [['wheat.svg', 'image/svg+xml'], ['readex-regular.ttf', 'font/ttf']]) {
+      const asset = await fetch(`${url}/src/assets/${path}`);
+      assert.equal(asset.status, 200);
+      assert.ok(asset.headers.get('Content-Type').startsWith(type));
+      assert.ok((await asset.arrayBuffer()).byteLength > 0);
+    }
     const config = await fetch(`${url}/api/config`);
     assert.equal(config.headers.get('X-AgriLens-Data-Mode'), 'unreviewed');
     assert.deepEqual(await config.json(), { region: 'test' });

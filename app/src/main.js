@@ -1,6 +1,6 @@
 import { requestJson, validateConfig, validateComparison, ApiError } from './api.js';
 import { inputErrors, slots, priorities, scenarioName } from './model.js';
-import { render } from './views.js';
+import { render, updateSetupSummary } from './views.js';
 
 const root = document.querySelector('#app');
 const state = { config: null, baseline: [], priority: 'water', result: null, resultRequest: null, mode: 'unknown', screen: 'setup', busy: false, error: null, failedScenario: null, fieldErrors: [] };
@@ -69,6 +69,7 @@ root.addEventListener('change', event => {
   const index = slots.indexOf(event.target.name);
   if (index >= 0) { state.baseline[index] = event.target.value; state.fieldErrors[index] = ''; state.result = null; state.resultRequest = null; }
   if (event.target.name === 'priority') { state.priority = event.target.value; state.result = null; state.resultRequest = null; }
+  if (index >= 0 || event.target.name === 'priority') updateSetupSummary(root, state);
   if (event.target.id === 'scenario' && !state.busy) compare(event.target.value);
 });
 root.addEventListener('click', event => {
@@ -82,6 +83,13 @@ root.addEventListener('click', event => {
   }
   if (action === 'retry' && !state.busy) { if (!state.config) loadConfig(); else compare(state.failedScenario || 'average'); }
   const source = event.target.closest('a[href^="#source-"]');
+  const disclosure = event.target.closest('[data-open-details]');
+  if (disclosure) {
+    event.preventDefault();
+    const target = document.getElementById(disclosure.dataset.openDetails);
+    if (target.tagName === 'DETAILS') target.open = true;
+    target.tabIndex = -1; target.focus(); target.scrollIntoView({ block: 'start' });
+  }
   if (source) {
     event.preventDefault();
     root.querySelector('#sources').open = true;
