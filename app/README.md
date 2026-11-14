@@ -73,7 +73,7 @@ units, missing values, validation, service recovery, status announcements and
 page title. It uses right-to-left layout and Arabic number formatting while
 preserving API crop IDs, numeric values, source URLs and crop slot order.
 Switching languages preserves choices, results and expanded detail sections
-without making another API request. Field Shift remains a Latin wordmark.
+without making another API request. AgriLens remains a Latin wordmark.
 
 Arabic also translates the current service's scientific notes, reasons, warnings,
 assumptions, limitations and source descriptions. Complete sentences and bounded

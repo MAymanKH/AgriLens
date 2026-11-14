@@ -10,7 +10,7 @@ let version = 0;
 function paint(focus = false) {
   document.documentElement.lang = state.language;
   document.documentElement.dir = state.language === 'ar' ? 'rtl' : 'ltr';
-  document.title = `Field Shift | ${t(state.language, 'Compare crop rotations')}`;
+  document.title = `AgriLens | ${t(state.language, 'Compare crop rotations')}`;
   document.querySelectorAll('[data-i18n]').forEach(element => {
     element.textContent = t(state.language, element.dataset.i18n);
   });
