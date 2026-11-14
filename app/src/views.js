@@ -131,11 +131,9 @@ function localizedViews(language = 'en') {
 
   function render(state) {
     const screen = state.screen;
-    const steps = [['setup', 'Setup'], ['compare', 'Compare'], ['details', 'Details']];
-    const nav = `<nav aria-label="${t('Comparison steps')}"><ol class="steps">${steps.map(([id, name], i) => `<li ${screen === id ? 'aria-current="step"' : ''}><span class="step-number">${number(i + 1)}</span>${t(name)}</li>`).join('')}</ol></nav>`;
     const notice = state.config ? modeNotice(state.mode) : '';
     const body = !state.config ? `<h1 tabindex="-1">${t('Compare crop rotations')}</h1>${state.error ? errorView(state) : `<p role="status">${t('Loading crop choices…')}</p>`}` : screen === 'setup' ? setup(state) : screen === 'compare' ? compare(state) : details(state);
-    return `<div class="progress-band">${nav}</div><main id="main" class="screen-${screen}">${notice ? `<aside class="data-notice">${escape(t(notice))}</aside>` : ''}${body}</main>`;
+    return `<main id="main" class="screen-${screen}">${notice ? `<aside class="data-notice">${escape(t(notice))}</aside>` : ''}${body}</main>`;
   }
 
   return { render, updateSetupSummary };
@@ -143,3 +141,8 @@ function localizedViews(language = 'en') {
 
 export function render(state) { return localizedViews(state.language).render(state); }
 export function updateSetupSummary(root, state) { localizedViews(state.language).updateSetupSummary(root, state); }
+
+export function renderSteps(state) {
+  const steps = [['setup', 'Setup'], ['compare', 'Compare'], ['details', 'Details']];
+  return `<nav aria-label="${translate(state.language, 'Comparison steps')}"><ol class="steps">${steps.map(([id, name], i) => `<li ${state.screen === id ? 'aria-current="step"' : ''}><span class="step-number">${formatNumber(i + 1, state.language)}</span>${translate(state.language, name)}</li>`).join('')}</ol></nav>`;
+}

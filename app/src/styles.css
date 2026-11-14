@@ -35,18 +35,18 @@ h3 { font-size: 1.05rem; }
 p, li { max-width: 85ch; }
 ul { padding-left: 1.3rem; }
 li + li { margin-top: .5rem; }
-.site-header { background: var(--surface); border-bottom: 1px solid var(--line); }
-.header-inner { min-height: 88px; max-width: 1280px; padding: 1rem 2.5rem; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.header-inner > span { font-size: .9rem; }
-.header-inner .project-label { color: var(--muted); font-size: .8rem; }
+.site-header { background: var(--soft); border-bottom: 1px solid #b6c8ba; }
+.header-inner { min-height: 88px; max-width: 1392px; padding: 1rem 2.5rem; margin: auto; display: grid; grid-template-columns: 180px minmax(0, 1fr) 180px; align-items: center; gap: 1.5rem; }
+.header-inner .brand { justify-self: start; }
+.header-inner .language-toggle { justify-self: end; }
+#header-progress { min-width: 0; width: 100%; max-width: 640px; justify-self: center; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; color: var(--green); white-space: nowrap; }
 .brand-mark { width: 32px; height: 32px; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 6px; border-radius: 8px; background: var(--green); flex-shrink: 0; }
 .brand-mark i { width: 14px; height: 4px; border-radius: 2px; background: var(--gold); }
 .brand-mark i:nth-child(2) { width: 20px; background: #a8b89a; }
 .brand-mark i:nth-child(3) { background: white; }
-.progress-band { background: var(--soft); }
-.steps { list-style: none; max-width: 1312px; margin: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; padding: 1.5rem; }
-.steps li { display: flex; align-items: center; gap: .65rem; margin: 0; color: var(--green); padding: .75rem 1rem; }
+.steps { list-style: none; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; padding: 0; }
+.steps li { display: flex; align-items: center; gap: .65rem; margin: 0; color: var(--green); padding: .75rem 1rem; justify-content: center; white-space: nowrap; }
 .step-number { font-size: .9rem; }
 .steps [aria-current] { color: white; background: var(--green); }
 main { max-width: 1392px; padding: 3.5rem 2.5rem 5rem; margin: auto; min-height: 65vh; }
@@ -180,8 +180,9 @@ footer p { font-size: .8rem; max-width: 360px; }
 }
 @media (max-width: 800px) {
   main { padding: 2rem 1.5rem 3rem; }
-  .header-inner { padding: 1rem 1.5rem; }
-  .header-inner .project-label { display: none; }
+  .header-inner { padding: 1rem 1.5rem; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1rem; }
+  .steps { font-size: .85rem; }
+  .steps li { padding: .65rem .5rem; gap: .4rem; }
   .setup-layout, .details-layout { grid-template-columns: 1fr; }
   .setup-note { margin-top: .5rem; }
   .contents { grid-row: 1; }
@@ -195,9 +196,8 @@ footer p { font-size: .8rem; max-width: 360px; }
 }
 @media (max-width: 480px) {
   .header-inner, main { padding-left: 1rem; padding-right: 1rem; }
-  .header-inner > span { font-size: .7rem; max-width: 100px; text-align: right; }
   .brand { font-size: 18px; }
-  .steps { gap: .5rem; padding: 1rem; font-size: .8rem; }
+  .steps { font-size: .8rem; }
   .steps li { padding: .6rem; gap: .4rem; }
   #setup-form, .setup-note, .plan { padding: 1.25rem; }
   #setup-form > h2 { font-size: 1.4rem; }
@@ -222,10 +222,7 @@ ul { padding-left: 0; padding-inline-start: 1.3rem; }
 select { padding-inline: .75rem 1.75rem; }
 html[dir="rtl"] .brand { align-self: flex-start; }
 html[dir="rtl"] .header-inner .brand { align-self: center; }
-html[dir="rtl"] .header-inner > span { text-align: start; }
 @media (max-width: 480px) {
-  .header-inner { flex-wrap: wrap; gap: .5rem; }
-  .header-inner > span { display: none; }
   .crop-control select { padding-inline: .4rem 1.5rem; }
   html[lang="ar"] .steps { font-size: .75rem; }
   html[lang="ar"] .priority-options span { gap: .5rem; }
@@ -262,3 +259,8 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
 .metric-value small { font-weight: 400; }
 .metric-lower { color: #23613c; }
 .metric-higher { color: #a33028; }
+
+@media (max-width: 600px) {
+  .header-inner { grid-template-columns: 1fr auto; gap: .75rem; }
+  #header-progress { grid-column: 1 / -1; grid-row: 2; max-width: none; }
+}

@@ -1,7 +1,7 @@
 import { mountAssistant } from './assistant.js';
 import { requestJson, validateConfig, validateComparison, ApiError } from './api.js';
 import { inputErrors, slots, priorities, scenarioName } from './model.js';
-import { render, updateSetupSummary } from './views.js';
+import { render, renderSteps, updateSetupSummary } from './views.js';
 import { t, readLanguage, saveLanguage } from './i18n.js';
 
 const root = document.querySelector('#app');
@@ -20,6 +20,7 @@ function paint(focus = false) {
   toggle.textContent = state.language === 'ar' ? 'English' : 'العربية';
   toggle.lang = state.language === 'ar' ? 'en' : 'ar';
   toggle.setAttribute('aria-label', state.language === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+  document.querySelector('#header-progress').innerHTML = renderSteps(state);
   root.innerHTML = render(state);
   assistant?.refresh();
   if (focus) root.querySelector('h1').focus();
