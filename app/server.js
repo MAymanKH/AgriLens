@@ -1,9 +1,11 @@
 import http from 'node:http';
+import { createAssistant, assistantHttp } from './assistant.js';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 const files = new Map([
   ['/', ['index.html', 'text/html']],
+  ['/src/assistant.js', ['src/assistant.js', 'text/javascript']],
   ['/src/main.js', ['src/main.js', 'text/javascript']],
   ['/src/api.js', ['src/api.js', 'text/javascript']],
   ['/src/i18n.js', ['src/i18n.js', 'text/javascript']],
@@ -14,11 +16,12 @@ const files = new Map([
   ...['regular', 'semibold'].map(weight => [`/src/assets/readex-${weight}.ttf`, [`src/assets/readex-${weight}.ttf`, 'font/ttf']]),
 ]);
 
-export function createAppServer({ comparisonUrl = 'https://agriapi.mohamedayman.net', timeoutMs = 8000 } = {}) {
+export function createAppServer({ comparisonUrl = 'https://agriapi.mohamedayman.net', timeoutMs = 8000, assistantOptions = {} } = {}) {
   const upstream = new URL(comparisonUrl);
   if (!['http:', 'https:'].includes(upstream.protocol) || upstream.username || upstream.password || upstream.search || upstream.hash || upstream.pathname !== '/') {
     throw new Error('COMPARISON_BASE_URL must be an HTTP origin without credentials.');
   }
+  const assistant = createAssistant({ comparisonUrl, ...assistantOptions });
   return http.createServer(async (request, response) => {
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -31,6 +34,7 @@ export function createAppServer({ comparisonUrl = 'https://agriapi.mohamedayman.
     };
     try {
       const path = new URL(request.url, 'http://localhost').pathname;
+      if (request.url === '/api/assistant') { await assistantHttp(request, response, assistant); return; }
       if (request.url === '/api/config' && request.method === 'GET' || request.url === '/api/compare' && request.method === 'POST') {
         const chunks = [];
         let size = 0;

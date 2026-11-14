@@ -241,3 +241,15 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
 .direct-comparison td small { display: block; font-size: .7rem; color: var(--muted); }
 .direct-comparison ul { margin: 0; padding-inline-start: 1rem; }
 .direct-comparison li { font-size: inherit; }
+
+.assistant-widget { position: fixed; inset-inline-end: 1rem; bottom: 1rem; z-index: 30; max-width: calc(100vw - 2rem); }
+.assistant-toggle { background: #173d32; color: white; border-radius: 2rem; padding: .75rem 1.1rem; box-shadow: 0 4px 16px #173d3233; }
+#assistant-panel { position: absolute; inset-inline-end: 0; bottom: 3.75rem; width: min(25rem, calc(100vw - 2rem)); max-height: calc(100dvh - 7rem); overflow-y: auto; background: #fffdf7; color: #173d32; border: 1px solid #b9c7bc; border-radius: 1rem; padding: 1rem; box-shadow: 0 8px 32px #173d3233; }
+#assistant-panel h2 { margin-top: 0; font-size: 1.2rem; }
+.assistant-notice { font-size: .8rem; line-height: 1.5; }
+.assistant-log { max-height: 32dvh; overflow-y: auto; overflow-wrap: anywhere; }
+.assistant-message { white-space: pre-wrap; padding: .6rem; background: #eaf0e7; border-radius: .6rem; }
+.assistant-message.user { background: #f1ead8; }
+.assistant-log a { display: inline-block; margin-inline-end: .75rem; }
+#assistant-panel textarea { display: block; width: 100%; resize: vertical; margin: .5rem 0; padding: .5rem; font: inherit; }
+#assistant-panel button { min-height: 44px; margin-inline-end: .5rem; }

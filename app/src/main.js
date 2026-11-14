@@ -1,3 +1,4 @@
+import { mountAssistant } from './assistant.js';
 import { requestJson, validateConfig, validateComparison, ApiError } from './api.js';
 import { inputErrors, slots, priorities, scenarioName } from './model.js';
 import { render, updateSetupSummary } from './views.js';
@@ -5,6 +6,7 @@ import { t, readLanguage, saveLanguage } from './i18n.js';
 
 const root = document.querySelector('#app');
 const state = { language: readLanguage(), config: null, baseline: [], priority: 'water', result: null, resultRequest: null, mode: 'unknown', screen: 'setup', busy: false, error: null, failedScenario: null, selectedPlanId: null, fieldErrors: [] };
+let assistant;
 let active;
 let version = 0;
 function paint(focus = false) {
@@ -19,6 +21,7 @@ function paint(focus = false) {
   toggle.lang = state.language === 'ar' ? 'en' : 'ar';
   toggle.setAttribute('aria-label', state.language === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
   root.innerHTML = render(state);
+  assistant?.refresh();
   if (focus) root.querySelector('h1').focus();
 }
 function announce(message, values = {}) {
@@ -133,6 +136,16 @@ root.addEventListener('click', event => {
 window.addEventListener('popstate', event => {
   state.selectedPlanId = event.state?.selectedPlanId || null;
   navigate(event.state?.screen || 'setup', false);
+});
+assistant = mountAssistant({
+  context: () => structuredClone({ language: state.language, config: state.config, mode: state.mode, baseline: state.baseline, priority: state.priority, result: state.result, resultRequest: state.resultRequest, screen: state.screen, busy: state.busy }),
+  apply: async action => {
+    if (state.busy || action.region_id !== state.config.region.id || !Array.isArray(action.baseline) || action.baseline.length !== 4 || inputErrors(state.config, action.baseline).some(Boolean) || !state.config.priorities.includes(action.priority) || !state.config.scenarios.includes(action.scenario)) throw new Error(t(state.language, 'The assistant returned unsupported crop choices. Please clarify your choices.'));
+    navigate('setup');
+    state.baseline = [...action.baseline]; state.priority = action.priority;
+    state.result = null; state.resultRequest = null; state.fieldErrors = [];
+    await compare(action.scenario);
+  },
 });
 history.replaceState({ screen: 'setup' }, '', '#setup');
 paint(); loadConfig();

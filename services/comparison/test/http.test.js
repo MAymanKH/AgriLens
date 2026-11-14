@@ -120,3 +120,18 @@ test('unreviewed mode discloses status in public config and results and cannot m
   settings.mode='live';assert.equal((await post(input)).status,503);
   settings.mode='unreviewed';state.mode='fixture';assert.equal((await post(input)).status,503);
 });
+
+test('knowledge search uses checked snapshots, reports truncation and rejects invalid queries or modes', async t => {
+  const {base, state} = await harness(t);
+  const search = query => fetch(`${base}/api/knowledge`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({query}) });
+  const response = await search('summer_a');
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.crops[0].id, 'summer_a');
+  assert.ok(result.sources.length); assert.equal(result.mode, 'fixture');
+  assert.match(result.limitations.join(' '), /Synthetic/);
+  const year = await (await search('2019')).json();
+  assert.ok(year.climate.daily.length <= 20);
+  for (const invalid of ['', 42, 'x'.repeat(501)]) assert.equal((await search(invalid)).status, 400);
+  state.mode = 'live'; assert.equal((await search('summer_a')).status, 503);
+});

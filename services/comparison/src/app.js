@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { searchKnowledge } from './knowledge.js';
 import { ApiError, statuses, requireInput } from './errors.js';
 import { createEngine, validateRequest } from './engine.js';
 import { getJson } from './client.js';
@@ -44,7 +45,7 @@ export function createServer(settings) {
     try {
       const address = new URL(request.url, 'http://localhost');
       if (request.method === 'OPTIONS') { send(200, {}); return; }
-      const known = (request.method === 'GET' && ['/health', '/api/config'].includes(address.pathname)) || (request.method === 'POST' && address.pathname === '/api/compare');
+      const known = (request.method === 'GET' && ['/health', '/api/config'].includes(address.pathname)) || (request.method === 'POST' && ['/api/compare', '/api/knowledge'].includes(address.pathname));
       if (!known) { send(404, { error: { code: 'INVALID_INPUT', message: 'Use GET /api/config or POST /api/compare.' } }); return; }
       requireInput(!address.search, 'Remove unsupported query parameters.');
       let input;
@@ -53,6 +54,13 @@ export function createServer(settings) {
         if (controller.signal.aborted) return;
         validateRequest(input);
         if (input.region_id !== settings.regionId) throw new ApiError('UNKNOWN_REGION', 'Choose the configured region.');
+      }
+      let search;
+      if (address.pathname === '/api/knowledge') {
+        const body = await readBody(request);
+        requireInput(body && Object.keys(body).length === 1, 'Provide only query.');
+        search = body.query;
+        requireInput(typeof search === 'string' && search.trim().length > 0 && search.length <= 500, 'Provide a query of 1–500 characters.');
       }
       const query = `?region_id=${encodeURIComponent(settings.regionId)}`;
       const [catalog, climate] = await Promise.all([
@@ -63,6 +71,7 @@ export function createServer(settings) {
       const engine = createEngine(catalog, climate, { ...settings, fixture: settings.mode === 'fixture', unreviewed: settings.mode === 'unreviewed' });
       const config = engine.config();
       if (address.pathname === '/health') send(200, { status: 'ok' });
+      else if (search) send(200, searchKnowledge(search, catalog, climate, settings.mode));
       else if (input) send(200, engine.compare(input));
       else send(200, config);
     } catch (error) {

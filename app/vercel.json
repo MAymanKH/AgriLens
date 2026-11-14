@@ -32,5 +32,6 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": { "api/assistant.js": { "maxDuration": 60 } }
 }

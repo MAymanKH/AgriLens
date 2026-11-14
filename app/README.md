@@ -2,18 +2,20 @@
 
 Run commands from the repository root with Node.js 22 or newer. The app has no
 runtime packages. Its local Node server serves browser modules and proxies
-only `GET /api/config` and `POST /api/compare` to the Comparison service.
+`GET /api/config` and `POST /api/compare` to the Comparison service. It also
+serves a server-side Gemini assistant endpoint.
 
 ## Deploy on Vercel
 
 Import the GitHub repository and set **Root Directory** to `app`. Select **Other**
 for the framework preset. `vercel.json` supplies the build command and `dist` output
-directory. No environment variables or start command are required.
+directory. No start command is required. Set server-side `GEMINI_API_KEY` to enable the assistant.
 
 The build copies only `index.html` and `src/` into `dist/`. Vercel serves those
 files and forwards the two public API endpoints to
 `https://agriapi.mohamedayman.net`. API caching stays disabled. The local Node
-server is not used on Vercel, so `COMPARISON_BASE_URL` only affects local runs.
+server is not used on Vercel, so `COMPARISON_BASE_URL` affects local proxying and assistant retrieval, while
+the deployed form uses the rewrite destinations. Keep those origins aligned.
 To change the deployed API, update both rewrite destinations in `vercel.json`.
 
 After deployment, open `/api/config` on the website's domain, complete a comparison,
@@ -40,7 +42,7 @@ Hottest and driest scenarios are eligible rotation anchors, not record-wide extr
 If Comparison uses another address, set `COMPARISON_BASE_URL` in the app server's
 environment. It defaults to `https://agriapi.mohamedayman.net`. Set `APP_PORT` to change 5173
 or `APP_HOST` to change the loopback bind address. The app server reads process
-environment variables, not the repository `.env` file. The browser always calls
+environment variables and npm start/dev load `app/.env.local`, not the repository `.env` file. The browser always calls
 the app's own origin, so no CORS adjustment is needed.
 
 ## Use a local backend
@@ -153,3 +155,44 @@ in-memory input; a page reload starts the configured example.
 Research acceptance, design-owner review, deployment, and the required tests with
 two unfamiliar people remain separate work. App verification does not approve
 scientific inputs or check off the entire project definition of done.
+
+## Gemini assistant
+
+The assistant panel uses `gemini-3.5-flash-lite`, currently listed with free input
+and output tokens in [Google's pricing](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.5-flash-lite).
+Create a key in [Google AI Studio](https://aistudio.google.com/api-keys) for a free-tier
+project. Set `GEMINI_API_KEY` in the app server's environment, or Vercel's server-side
+environment settings. Never put it in `src/`, a browser-prefixed variable or Git.
+Local npm start/dev also load the ignored `app/.env.local` file. `GEMINI_MODEL` overrides the model;
+check that an override is available on your project's free tier. The code does not
+enable billing, upgrade tiers or switch to a paid fallback. Google controls quotas
+and billing; a paid project key may incur charges. Each question can use up to four
+model requests. Missing keys and quota failures preserve manual form access.
+
+Deploy the updated Comparison service before testing search. Its new
+`POST /api/knowledge` reads the current checked Crop/Climate snapshots via existing
+internal APIs, including data stored by those services in MongoDB. It does not
+search archived snapshots or unrelated collections. The static fixture server does
+not implement search; use the actual Comparison engine in fixture mode for that.
+
+Chat receives current choices, displayed results and their original request.
+Gemini can search project data with source links and return a complete form action.
+The browser validates that action, ignores it if the page changed, fills the form
+and calls the existing comparison flow. Try “What does Not evaluated mean?” or
+“Enter maize, wheat, soybean, faba bean in that order, prioritize less water and
+compare the historical average” against the corresponding real config. Incomplete
+choices should produce a follow-up question. Unsupported crops must not submit.
+Chat and choices go to Google, whose free tier may use content to improve products;
+the panel discloses this before submission. History stays in browser memory and is
+cleared with New chat or reload. No server chat persistence is added.
+
+The local process limits assistant starts to eight per minute and two concurrent
+turns. Limits are per process, including per warm Vercel instance, rather than a
+shared deployment quota. The provider's free-tier quotas remain the final limit.
+A 60-second Vercel function limit covers the 45-second model deadline.
+
+Verify with `npm test --prefix app`, `npm test --prefix services/comparison`, and
+`npm run test:browser --prefix app`. Browser tests cover automatic comparisons,
+text escaping, unsafe source links, stale actions and Arabic mobile UI; model tests
+stub Gemini to reproduce tool calls and quota errors without consuming quota.
+A real key is required for a live model smoke test.

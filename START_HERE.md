@@ -90,6 +90,43 @@ The executable acceptance check is `scripts/test_prototype_backend.py`.
 public hosting, user testing, presentation and scientific acceptance remain separate
 work. This status does not check off the project-wide definition of done.
 
+### Conversational assistant extension, 2026-11-14
+
+The project owner requested an embedded assistant with Gemini free-tier inference,
+current form/result context, project-data retrieval and conversational form entry.
+This explicitly extends the previous three-screen scope with a panel available on
+those screens. Existing comparison/scientific contracts and approval statuses stay
+in force. The implementation owns both the app consumer and Comparison integration.
+
+Before: only `GET /api/config` and `POST /api/compare` were public product operations.
+After: those operations remain unchanged; the additive operations below support the
+assistant. App and Lead role mirrors, synthetic examples and acceptance tests change
+together. Crop and Climate internal APIs and storage ownership do not change.
+
+- Comparison owns `POST /api/knowledge` with `{query:string}` of 1–500 characters.
+  It returns `{region_id,mode,query,crops,sources,climate,limitations}` from the same
+  checked service snapshots used by the engine. `climate` includes `period`,
+  `coordinates`, `units`, internal full-record `scenarios`, `provenance`, a maximum
+  of 20 matching `daily` rows, `matching_days` and `truncated`. These annual scenario
+  records must not be confused with eligible four-slot rotation anchors. Search
+  uses case-insensitive OR token matching. It searches current snapshots only,
+  with no arbitrary database queries, archive access or direct browser database access.
+- The app server owns same-origin `POST /api/assistant` with
+  `{messages:[{role:"user"|"assistant",text:string}],context:object}`. Context contains
+  current language/config/mode/baseline/priority/screen/busy state and the last
+  displayed `result` and `resultRequest`. It returns
+  `{reply:string,action:null|{region_id,baseline,priority,scenario},sources:[{id,url}]}`.
+  `action` is a pending complete comparison request, validated against server config
+  and browser state. The browser discards stale actions and uses its existing
+  `/api/compare` flow. Model text is rendered as text. Retrieval sources retain IDs
+  and URLs. The model asks for missing choices instead of inventing inputs.
+- Standard error envelopes apply. Request sizes are bounded to 64 KiB, history to
+  20 messages of 4000 characters, page context to 40000 characters. Gemini calls
+  have a 45-second total deadline, four rounds maximum and no paid fallback.
+  Quota errors return HTTP 429 with `SERVICE_UNAVAILABLE`; unavailable/configuration
+  errors return 503. Chat is memory-only and New chat clears browser history.
+  The UI explains Google free-tier data use before the user sends a message.
+
 ## 3. Shared API contracts (authoritative)
 
 These are the common field names and meanings. **Examples are structural, not real agricultural results.** No service may change these silently. Additional optional fields are allowed only if consumers can ignore them safely.

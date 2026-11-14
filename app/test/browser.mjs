@@ -238,7 +238,7 @@ try {
       });
       await page.locator('#why-options > summary').click();
       await page.locator('#language-toggle').click();
-      await heading(page, 'التفاصيل واختبار الظروف التاريخية');
+      await heading(page, 'التفاصيل وتجربة ظروف السنين اللي فاتت');
       assert.equal(await page.locator('html').getAttribute('lang'), 'ar');
       assert.equal(await page.locator('html').getAttribute('dir'), 'rtl');
       assert.equal(await page.locator('#sources').getAttribute('open'), '');
@@ -261,9 +261,9 @@ try {
         select.value = 'wheat'; select.dispatchEvent(new Event('change', { bubbles: true }));
       });
       await page.getByRole('button', { name: 'قارن الدورات', exact: true }).click();
-      await hasText(page, 'اختر محصولًا صيفيًا من المحاصيل المدعومة.');
+      await hasText(page, 'اختار محصول صيفي من القائمة.');
       assert.equal(calls.length, 0);
-      await page.getByRole('button', { name: 'استعادة المثال', exact: true }).click();
+      await page.getByRole('button', { name: 'رجّع المثال', exact: true }).click();
       for (const width of [390, 768, 1440]) {
         await page.setViewportSize({ width, height: 1000 }); await noOverflow(page);
       }
@@ -276,7 +276,7 @@ try {
       await hasText(page, 'لم يتم التقييم');
       await noOverflow(page);
       await page.screenshot({ path: new URL('arabic-compare-mobile.png', output).pathname, fullPage: true });
-      await page.getByRole('button', { name: 'التفاصيل واختبار الظروف التاريخية', exact: true }).click();
+      await page.getByRole('button', { name: 'التفاصيل وتجربة ظروف السنين اللي فاتت', exact: true }).click();
       arabicProfile = 'incomplete_scenario';
       await page.getByLabel('السيناريو التاريخي', { exact: true }).selectOption('hottest_year');
       await page.getByRole('alert').waitFor();
@@ -315,9 +315,9 @@ try {
       await heading(page, 'Compare your options');
       assert.equal(await page.locator('.warnings').count(), 0);
       await page.locator('#language-toggle').click();
-      await hasText(page, 'دورتك الأصلية محفوظة دون تغيير.');
+      await hasText(page, 'دورتك الأصلية زي ما هي، من غير تغيير.');
       assert.ok(!(await page.locator('main').textContent()).includes('botanical families'));
-      await page.getByRole('button', { name: 'التفاصيل واختبار الظروف التاريخية', exact: true }).click();
+      await page.getByRole('button', { name: 'التفاصيل وتجربة ظروف السنين اللي فاتت', exact: true }).click();
       await page.locator('#nasa-method > summary').click();
       await page.locator('#sources > summary').click();
       await hasText(page, 'البيانات المناخية اليومية التاريخية');
@@ -326,6 +326,55 @@ try {
       await page.screenshot({ path: new URL('arabic-service-details-mobile.png', output).pathname, fullPage: true });
     });
     await design.close();
+  });
+
+  await run('assistant submits through the manual comparison flow and ignores stale actions', async () => {
+    const chat = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const p = await chat.newPage(); p.on('pageerror', error => errors.push(error.message));
+    await p.route('**/api/config', route => route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(config) }));
+    let submitted;
+    await p.route('**/api/compare', async route => {
+      submitted = route.request().postDataJSON();
+      const result = await fixture('water_average');
+      await route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(result) });
+    });
+    let release, delay = false;
+    await p.route('**/api/assistant', async route => {
+      const body = route.request().postDataJSON();
+      assert.equal(body.context.mode, 'fixture'); assert.ok(body.context.baseline.length === 4);
+      if (delay) await new Promise(resolve => { release = resolve; });
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ reply: '<script>unsafe()</script> Choices ready.', action: { region_id: config.region.id, baseline: config.sample_baseline, priority: 'water', scenario: 'average' }, sources: [{id:'unsafe',url:'javascript:alert(1)'}] }) });
+    });
+    await p.goto(url); await p.getByLabel('Year 1 Summer').waitFor();
+    await p.getByRole('button', {name:'Ask AgriLens', exact:true}).click();
+    await p.getByLabel('Your question').fill('Use the example crops with less water and compare.');
+    await p.getByRole('button', {name:'Send', exact:true}).click();
+    await heading(p, 'Compare your options');
+    await p.waitForFunction(() => !document.querySelector('#assistant-question').disabled);
+    assert.deepEqual(submitted.baseline, config.sample_baseline);
+    assert.equal(await p.locator('#assistant-panel script').count(), 0);
+    assert.equal(await p.locator('#assistant-panel a').count(), 0);
+    await p.screenshot({path:new URL('assistant-mobile.png',output).pathname,fullPage:true});
+    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('button', {name:'Edit choices',exact:true}).click();
+    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    delay = true;
+    await p.getByLabel('Your question').fill('Compare again.');
+    await p.getByRole('button', {name:'Send',exact:true}).click();
+    await p.waitForFunction(() => document.querySelector('#assistant-question').disabled);
+    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.getByRole('radio', {name:'Less heat exposure',exact:true}).check();
+    while (!release) await new Promise(resolve => setTimeout(resolve, 10));
+    release();
+    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await hasText(p, 'Your page changed while I was answering.');
+    assert.ok(await p.getByRole('radio', {name:'Less heat exposure',exact:true}).isChecked());
+    await p.getByRole('button', {name:'Ask AgriLens',exact:true}).click();
+    await p.locator('#language-toggle').click();
+    await p.getByRole('button', {name:'اسأل أجريلينس',exact:true}).click();
+    await p.getByLabel('سؤالك').waitFor();
+    await p.screenshot({path:new URL('assistant-arabic-mobile.png',output).pathname,fullPage:true});
+    await chat.close();
   });
 
   if (process.env.TEST_REAL_BACKEND === '1') {

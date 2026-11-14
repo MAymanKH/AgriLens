@@ -91,3 +91,14 @@ the eligible set, selection rule and full-record extremes in assumptions/warning
 Consumers must display that scope rather than describe these as absolute record years.
 No JSON fields change. Live-mode rules and pending scientific review remain unchanged.
 See `START_HERE.md` and `docs/METHOD.md` for the authoritative exception.
+
+## Assistant extension, 2026-11-14
+
+The owner requested the Gemini assistant described in `START_HERE.md`. The app may
+now call its same-origin `POST /api/assistant`; the assistant server calls public
+Comparison `POST /api/knowledge` with `{query}`. The response contains checked crop
+and climate records, provenance, search limits and data mode. No direct database
+or internal service access is added to the app. Complete assistant actions use the
+existing comparison request shape and validation; stale actions are discarded.
+See `app/README.md` for setup and `app/test/assistant.test.js`,
+`app/test/browser.mjs` and Comparison HTTP tests for acceptance evidence.

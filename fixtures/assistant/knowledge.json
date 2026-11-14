@@ -1,0 +1,73 @@
+{
+  "region_id": "sample_region",
+  "mode": "fixture",
+  "query": "summer_a",
+  "crops": [
+    {
+      "id": "summer_a",
+      "name": "Fixture summer_a",
+      "valid_seasons": [
+        "summer"
+      ],
+      "grow_window": {
+        "start_month": 6,
+        "end_month": 8
+      },
+      "water_need_mm": {
+        "min": 100,
+        "max": 200
+      },
+      "family": "fixture_family_a",
+      "is_legume": false,
+      "source_ids": [
+        "fixture_rules"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "fixture_rules",
+      "url": "https://example.invalid/agrilens-fixture",
+      "supports": "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts."
+    }
+  ],
+  "climate": {
+    "period": {
+      "first_year": 2020,
+      "last_year": 2024
+    },
+    "coordinates": {
+      "lat": 0,
+      "lon": 0
+    },
+    "units": {
+      "tmax": "C",
+      "rain": "mm/day"
+    },
+    "scenarios": {
+      "hottest_year": {
+        "year": 2021,
+        "rule": "Fixture only: greatest annual mean tmax; earliest tie."
+      },
+      "driest_year": {
+        "year": 2022,
+        "rule": "Fixture only: smallest annual rain sum; earliest tie."
+      }
+    },
+    "provenance": {
+      "source_url": "https://example.invalid/agrilens-fixture",
+      "retrieved_at": "2026-11-13T00:00:00Z",
+      "missing_days": 0,
+      "spatial_resolution": "SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or approved agricultural facts.",
+      "time_standard": "Synthetic daily calendar"
+    },
+    "daily": [],
+    "matching_days": 0,
+    "truncated": false
+  },
+  "limitations": [
+    "Search covers the current service-owned crop and climate snapshots, not private records or archived snapshots.",
+    "Daily search is a bounded sample, not an aggregate. Use comparisons for rotation metrics.",
+    "Synthetic development data, not NASA measurements."
+  ]
+}

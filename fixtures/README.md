@@ -19,3 +19,8 @@ Climate includes every date in 2020–2024, including leap days. Synthetic annua
 The `missing_day` climate profile removes 2021-07-01, records one missing day and makes its hottest-year selection unavailable. `missing_water` keeps season validity but returns null water for one crop. Comparison partial-data profiles are independent UI examples, not automatically derived from whichever internal profile is running.
 
 Run and regenerate using [the local runtime guide](../docs/RUNTIME.md). Generation is maintained in `tools/generate_fixtures.py`; edit the generator and regenerate rather than hand-editing response copies.
+
+Assistant extension examples live in `assistant/turn.json` and
+`assistant/knowledge.json`. They are synthetic development data, not model output
+or NASA evidence. Search requires the runnable Comparison engine rather than the
+static fixture HTTP server. See `START_HERE.md` for the additive contracts.

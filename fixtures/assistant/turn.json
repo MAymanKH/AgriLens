@@ -1,0 +1,40 @@
+{
+  "request": {
+    "messages": [
+      {
+        "role": "user",
+        "text": "Use the sample crops, prioritize water and compare."
+      }
+    ],
+    "context": {
+      "mode": "fixture",
+      "baseline": [
+        "summer_a",
+        "winter_a",
+        "summer_a",
+        "winter_a"
+      ],
+      "priority": "water",
+      "result": null,
+      "resultRequest": null,
+      "language": "en",
+      "screen": "setup",
+      "busy": false
+    }
+  },
+  "response": {
+    "reply": "Your choices are ready to compare.",
+    "action": {
+      "region_id": "sample_region",
+      "baseline": [
+        "summer_a",
+        "winter_a",
+        "summer_a",
+        "winter_a"
+      ],
+      "priority": "water",
+      "scenario": "average"
+    },
+    "sources": []
+  }
+}

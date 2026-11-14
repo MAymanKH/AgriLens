@@ -5,8 +5,8 @@
   "type": "module",
   "engines": { "node": ">=22" },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
+    "start": "node --env-file-if-exists=.env.local server.js",
+    "dev": "node --env-file-if-exists=.env.local --watch server.js",
     "test": "node --test test/*.test.js",
     "test:browser": "node test/browser.mjs"
   }
