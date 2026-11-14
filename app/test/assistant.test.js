@@ -67,3 +67,15 @@ test('assistant examples retain the canonical action and checked knowledge shape
   const climate = JSON.parse(await readFile(new URL('../../fixtures/climate/daily.json', import.meta.url)));
   assert.deepEqual(knowledge, searchKnowledge('summer_a', catalog, climate, 'fixture'));
 });
+
+test('Gemini key, model, and permission errors identify deployment configuration without exposing provider text', async () => {
+  for (const [status, provider, expected] of [
+    [400, {status:'INVALID_ARGUMENT',message:'API key not valid. test-key',details:[{reason:'API_KEY_INVALID'}]}, /API key is invalid/],
+    [403, {status:'PERMISSION_DENIED',message:'credential details test-key'}, /key permissions/],
+    [404, {status:'NOT_FOUND',message:'model unavailable test-key'}, /model is unavailable/],
+    [400, {status:'INVALID_ARGUMENT',message:'unsupported field test-key'}, /request configuration/],
+  ]) {
+    const assistant = createAssistant({comparisonUrl:'http://comparison',apiKey:'test-key',fetchImpl:async url=>String(url).endsWith('/api/config')?json(config):json({error:provider},status)});
+    await assert.rejects(assistant(input), error=>error.status===503 && expected.test(error.message) && !error.message.includes('test-key'));
+  }
+});

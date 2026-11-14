@@ -44,7 +44,17 @@ export function createAssistant({ comparisonUrl, apiKey = process.env.GEMINI_API
           method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }, signal, redirect: 'error',
           body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, tools: [{ functionDeclarations: declarations }], generationConfig: { temperature: 0.2, maxOutputTokens: 1600, thinkingConfig: { thinkingLevel: 'minimal' } } }),
         });
-        if (!response.ok) throw new AssistantError(response.status === 429 ? 429 : 503, response.status === 429 ? 'Gemini’s free-tier limit was reached. Try again later.' : 'Gemini is unavailable. Try again later.');
+        if (!response.ok) {
+          const failure = await response.json().catch(() => ({}));
+          const invalidKey = failure.error?.details?.some(detail => detail.reason === 'API_KEY_INVALID') || /API key not valid|API_KEY_INVALID/i.test(failure.error?.message || '');
+          let message = 'Gemini is unavailable. Try again later.';
+          if (response.status === 429) message = 'Gemini’s free-tier limit was reached. Try again later.';
+          else if (invalidKey || response.status === 401) message = 'The assistant API key is invalid. Update GEMINI_API_KEY in Vercel and redeploy.';
+          else if (response.status === 403) message = 'Gemini denied this request. Check the API key permissions and the website server region.';
+          else if (response.status === 404) message = 'The configured Gemini model is unavailable for this project. Check GEMINI_MODEL in Vercel and redeploy.';
+          else if (response.status === 400) message = 'Gemini rejected the assistant request configuration. The site administrator needs to check the model settings.';
+          throw new AssistantError(response.status === 429 ? 429 : 503, message);
+        }
         const data = await response.json();
         const content = data.candidates?.[0]?.content;
         if (!content?.parts?.length) throw new AssistantError(503, 'The assistant could not answer. Try rephrasing your question.');
