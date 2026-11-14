@@ -64,17 +64,18 @@ function localizedViews(language = 'en') {
       : t('Crop-water data incomplete for this rotation.'))}</small>`;
   }
 
-  function waterValue(plan, result, config) {
+  function waterValue(plan, result, config, showUnit = true) {
     return waterMidpoint(plan.water_need_mm) === null ? missingWater(plan, result, config)
-      : `<bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi><small>${t('mm / four growing periods')}</small>`;
+      : `<bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi>${showUnit ? `<small>${t('mm / four growing periods')}</small>` : ''}`;
   }
 
-  function metricDifference(baseline, alternative) {
+  function metricDifference(baseline, alternative, label, water) {
     const difference = percentageDifference(baseline, alternative);
-    if (difference === null) return `<span>${t('Not evaluated')}</span><small>${t(baseline === 0 ? 'Baseline is zero; percentage unavailable.' : 'Data incomplete; percentage unavailable.')}</small>`;
+    if (difference === null) return `<span class="metric-difference" title="${t(baseline === 0 ? 'Baseline is zero; percentage unavailable.' : 'Data incomplete; percentage unavailable.')}">${t('Not evaluated')}</span>`;
     const percent = new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en', { style: 'percent', maximumFractionDigits: 1 }).format(Math.abs(difference) / 100);
-    const label = difference === 0 ? 'No change (0%)' : difference < 0 ? '{percent} lower' : '{percent} higher';
-    return `<strong class="metric-difference ${difference < 0 ? 'metric-lower' : difference > 0 ? 'metric-higher' : ''}">${escape(t(label, { percent }))}</strong><small>${t('Compared with your rotation')}</small>`;
+    const change = difference === 0 ? 'No change (0%)' : difference < 0 ? '{percent} lower' : '{percent} higher';
+    const context = `${label}: ${t(change, { percent })}. ${t('Compared with your rotation')}${water ? `. ${t('Based on range midpoints')}` : ''}`;
+    return `<strong class="metric-difference ${difference < 0 ? 'metric-lower' : difference > 0 ? 'metric-higher' : ''}" aria-label="${escape(context)}" title="${escape(context)}">${escape(t(change, { percent }))}</strong>`;
   }
 
   function compare(state) {
@@ -102,14 +103,14 @@ function localizedViews(language = 'en') {
   function directComparison(plans, config, result) {
     const rows = [
       ...slotNames.map((name, i) => [t(name), plan => `<div class="crop-art">${cropArt(plan.crops[i])}</div>${escape(cropName(config, plan.crops[i]))}`]),
-      [t('Indicative water need'), plan => waterValue(plan, result, config), plan => waterMidpoint(plan.water_need_mm)],
-      [t('Historical hot-day exposure'), plan => `<bdi dir="ltr">${number(plan.hot_days)}</bdi>${plan.hot_days === null ? '' : `<small>${t('crop-days across the rotation')}</small>`}`, plan => plan.hot_days],
+      [t('Indicative water need'), plan => waterValue(plan, result, config, false), plan => waterMidpoint(plan.water_need_mm), 'mm / four growing periods'],
+      [t('Historical hot-day exposure'), plan => `<bdi dir="ltr">${number(plan.hot_days)}</bdi>`, plan => plan.hot_days, 'crop-days'],
       [t('Crop diversity and soil'), plan => `<bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi>`],
     ];
-    return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value, numeric]) => {
+    return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value, numeric, unit]) => {
       const complete = numeric && plans.every(plan => numeric(plan) !== null);
-      const difference = complete ? `<tr><td colspan="2" class="difference-cell">${metricDifference(...plans.map(numeric))}${label === t('Indicative water need') ? `<small>${t('Based on range midpoints')}</small>` : ''}</td></tr>` : '';
-      return `<tbody><tr><th scope="rowgroup" colspan="2">${label}</th></tr><tr>${numeric ? metricValues(plans, value, numeric) : plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr>${difference}</tbody>`;
+      const difference = complete ? metricDifference(...plans.map(numeric), label, unit === 'mm / four growing periods') : '';
+      return `<tbody><tr><th scope="rowgroup" colspan="2"><div class="metric-heading"><span><span data-row-label>${label}</span>${unit ? `<small class="metric-unit">${t(unit)}</small>` : ''}</span>${difference}</div></th></tr><tr>${numeric ? metricValues(plans, value, numeric) : plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr></tbody>`;
     }).join('')}</table></div>`;
   }
 

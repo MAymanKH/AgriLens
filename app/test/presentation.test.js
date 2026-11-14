@@ -107,7 +107,7 @@ test('metric colors follow actual trade-offs and leave equal or missing values n
   result.plans[1].hot_days = result.plans[0].hot_days * 1.2;
   let html = render({ ...state, result, screen: 'compare' });
   let card = html.split('data-plan="water_conscious"')[1].split('</article>')[0];
-  assert.match(card, /metric-difference metric-higher">20% higher/);
+  assert.match(card, /metric-difference metric-higher[^>]*>20% higher/);
   assert.equal((card.match(/metric-value metric-higher/g) || []).length, 2);
   result.plans[1].water_need_mm = { min: null, max: null };
   result.plans[1].hot_days = result.plans[0].hot_days;

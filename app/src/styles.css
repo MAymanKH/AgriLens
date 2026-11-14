@@ -250,17 +250,21 @@ html[dir="rtl"] .header-inner .brand { align-self: center; }
 .setup-note { border-radius: 12px; }
 .exposure table, .direct-comparison { border-radius: 8px; overflow: hidden; }
 #assistant-panel textarea { border: 1px solid #6f7b73; border-radius: 8px; }
-.difference-cell { text-align: center; }
-.metric-difference { display: block; font-size: 1.15rem; }
+.metric-difference { display: inline-flex; align-items: center; flex-shrink: 0; padding: .2rem .55rem; border-radius: 6px; background: var(--guide); color: var(--ink); font-size: .75rem; line-height: 1.5; white-space: nowrap; }
 .metrics dd:has(small) { font-size: 1.25rem; }
 .exposure td small { display: block; font-size: .75rem; color: var(--muted); }
 
-.metric-value { display: block; font-weight: 600; }
+.metric-value { display: block; height: 100%; padding: .7rem .5rem; border-radius: 8px; background: var(--guide); color: var(--ink); font-weight: 600; }
 .metric-value small { font-weight: 400; }
-.metric-lower { color: #23613c; }
-.metric-higher { color: #a33028; }
+.metric-lower { background: #dceee0; }
+.metric-higher { background: #f9e2de; }
 
 @media (max-width: 600px) {
   .header-inner { grid-template-columns: 1fr auto; gap: .75rem; }
   #header-progress { grid-column: 1 / -1; grid-row: 2; max-width: none; }
 }
+
+.metric-heading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; text-align: start; }
+.metric-unit { display: block; font-size: .65rem; font-weight: 400; }
+.direct-comparison tbody:has(.metric-value) td { border-inline-start: 0; }
+.direct-comparison tbody:has(.metric-value) th { padding-bottom: .5rem; }

@@ -108,7 +108,7 @@ try {
       const card = page.locator(`[data-plan="${alternative.id}"]`);
       const comparison = card.locator('.direct-comparison');
       assert.deepEqual(await comparison.locator('thead th').allTextContents(), ['Your rotation', alternative.id === 'water_conscious' ? 'Alternative 1' : 'Alternative 2']);
-      assert.deepEqual(await comparison.locator('tbody th').allTextContents(), ['Year 1 Summer', 'Year 1 Winter', 'Year 2 Summer', 'Year 2 Winter', 'Indicative water need', 'Historical hot-day exposure', 'Crop diversity and soil']);
+      assert.deepEqual(await comparison.locator('tbody th [data-row-label]').allTextContents(), ['Year 1 Summer', 'Year 1 Winter', 'Year 2 Summer', 'Year 2 Winter', 'Indicative water need', 'Historical hot-day exposure', 'Crop diversity and soil']);
       for (const [i, plan] of [data.plans[0], alternative].entries()) {
         const cells = await comparison.locator(`tbody td:not([colspan]):nth-child(${i + 1})`).allTextContents();
         for (let slot = 0; slot < 4; slot++) {
