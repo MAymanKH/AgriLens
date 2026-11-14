@@ -244,7 +244,6 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
 .assistant-toggle { background: #173d32; color: white; border-radius: 2rem; padding: .75rem 1.1rem; box-shadow: 0 4px 16px #173d3233; }
 #assistant-panel { position: absolute; inset-inline-end: 0; bottom: 3.75rem; width: min(25rem, calc(100vw - 2rem)); max-height: calc(100dvh - 7rem); overflow-y: auto; background: #fffdf7; color: #173d32; border: 1px solid #b9c7bc; border-radius: 1rem; padding: 1rem; box-shadow: 0 8px 32px #173d3233; }
 #assistant-panel h2 { margin-top: 0; font-size: 1.2rem; }
-.assistant-notice { font-size: .8rem; line-height: 1.5; }
 .assistant-log { max-height: 32dvh; overflow-y: auto; overflow-wrap: anywhere; }
 .assistant-message { white-space: pre-wrap; padding: .6rem; background: #eaf0e7; border-radius: .6rem; }
 .assistant-message.user { background: #f1ead8; }

@@ -125,7 +125,7 @@ together. Crop and Climate internal APIs and storage ownership do not change.
   have a 45-second total deadline, four rounds maximum and no paid fallback.
   Quota errors return HTTP 429 with `SERVICE_UNAVAILABLE`; unavailable/configuration
   errors return 503. Chat is memory-only and New chat clears browser history.
-  The UI explains Google free-tier data use before the user sends a message.
+  The owner requested a compact popup without an introductory notice on 2026-11-14.
 
 ## 3. Shared API contracts (authoritative)
 

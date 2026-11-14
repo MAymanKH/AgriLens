@@ -19,9 +19,6 @@ export function mountAssistant({ context, apply }) {
     if (!open) return;
     const panel = document.createElement('section'); panel.id = 'assistant-panel'; panel.setAttribute('aria-label', label('AgriLens assistant', 'مساعد أجريلينس'));
     const title = document.createElement('h2'); title.textContent = label('AgriLens assistant', 'مساعد أجريلينس'); panel.append(title);
-    const notice = document.createElement('p'); notice.className = 'assistant-notice';
-    notice.textContent = label('Ask about your results or tell me which crops to enter. Your chat, choices and results are sent to Google Gemini. Google may use free-tier data to improve its products. Avoid personal information.', 'اسأل عن النتائج أو أخبرني بالمحاصيل التي تريد إدخالها. تُرسل المحادثة واختياراتك ونتائجك إلى Google Gemini. قد تستخدم Google بيانات الخطة المجانية لتحسين منتجاتها. تجنّب المعلومات الشخصية.');
-    panel.append(notice);
     const log = document.createElement('div'); log.className = 'assistant-log'; log.setAttribute('role', 'log'); log.setAttribute('aria-live', 'polite');
     for (const message of messages) {
       const item = document.createElement('p'); item.className = `assistant-message ${message.role}`; item.dir = 'auto'; item.textContent = message.text; log.append(item);

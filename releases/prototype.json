@@ -1,11 +1,11 @@
 {
-  "climate_dataset_id": "prototype-670a2261b37556a78b0237d2-climate",
-  "crop_catalog_id": "prototype-670a2261b37556a78b0237d2-crops",
+  "climate_dataset_id": "prototype-ba32ce7acdf02da6c65d2086-climate",
+  "crop_catalog_id": "prototype-ba32ce7acdf02da6c65d2086-crops",
   "identity": {
     "data_mode": "unreviewed",
     "format_version": 1,
     "inputs": {
-      "START_HERE.md": "54dfbf075c34db5a9fd1b49052037c1286027df1b479616662e6d515fc83ff03",
+      "START_HERE.md": "b64b65e00a7912e8173e8493142f7153f7de8e21ad02b21161450bdf4b3bfc81",
       "data/fixtures/mock_climate_response.json": "a0000ec32045cf238426fa9e170995a336f62ed1eb27a68faf69b346e58b16b0",
       "data/fixtures/mock_crop_catalog.json": "af08f2d9b88823452f9521b3c2f9741350286229503010272c998d273511d3f2",
       "data/processed/climate_daily_clean.json": "a0000ec32045cf238426fa9e170995a336f62ed1eb27a68faf69b346e58b16b0",
@@ -69,6 +69,6 @@
     ],
     "scientific_status": "unreviewed; workflow waived, not Research approved"
   },
-  "package_sha256": "1940ff8ef9f870783e1e0f317819eb3c2492d9ef0fd39abc8dd55ab09866388b",
-  "release_id": "prototype-670a2261b37556a78b0237d2"
+  "package_sha256": "47a82048b3123aba897e52bdff84cc9301652495e60a03b55db5e53514359231",
+  "release_id": "prototype-ba32ce7acdf02da6c65d2086"
 }

@@ -182,7 +182,7 @@ and calls the existing comparison flow. Try “What does Not evaluated mean?” 
 compare the historical average” against the corresponding real config. Incomplete
 choices should produce a follow-up question. Unsupported crops must not submit.
 Chat and choices go to Google, whose free tier may use content to improve products;
-the panel discloses this before submission. History stays in browser memory and is
+the popup omits introductory copy at the owner's request. History stays in browser memory and is
 cleared with New chat or reload. No server chat persistence is added.
 
 The local process limits assistant starts to eight per minute and two concurrent
