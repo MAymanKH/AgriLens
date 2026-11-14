@@ -103,3 +103,44 @@ test('persistent Gemini overload stays within four attempts and never returns a 
   await assert.rejects(assistant(input),error=>error.status===503);
   assert.equal(calls,4);
 });
+
+test('two primary overloads switch to Flash Lite 3.1 within the same four-call budget', async () => {
+  const models=[];
+  const assistant=createAssistant({comparisonUrl:'http://comparison',apiKey:'key',fetchImpl:async url=>{
+    if(String(url).endsWith('/api/config'))return json(config);
+    models.push(String(url));
+    return models.length<3?json({error:{status:'UNAVAILABLE'}},503):answer([{text:'Fallback answer.'}]);
+  }});
+  assert.equal((await assistant(input)).reply,'Fallback answer.');
+  assert.equal(models.length,3);assert.match(models[0],/gemini-3.5-flash-lite/);assert.match(models[1],/gemini-3.5-flash-lite/);assert.match(models[2],/gemini-3.1-flash-lite/);
+});
+
+test('fallback keeps retrieved evidence and one pending action without replaying primary thought signatures', async () => {
+  let calls=0;let fallbackRequest;
+  const assistant=createAssistant({comparisonUrl:'http://comparison',apiKey:'key',fetchImpl:async(url,options)=>{
+    if(String(url).endsWith('/api/config'))return json(config);
+    if(String(url).endsWith('/api/knowledge'))return json({sources:[{id:'crop',url:'https://example.com'}],crops:[{id:'summer_a',water_need_mm:{min:100,max:200}}]});
+    calls++;
+    if(calls===1)return answer([{functionCall:{name:'search_data',args:{query:'summer_a'}},thoughtSignature:'primary-only'}, {functionCall:{name:'set_inputs',args:action},thoughtSignature:'primary-only'}]);
+    if(calls<4)return json({error:{status:'UNAVAILABLE'}},503);
+    fallbackRequest=JSON.parse(options.body);return answer([{text:'Your validated choices are ready.'}]);
+  }});
+  const result=await assistant(input);
+  assert.deepEqual(result.action,action);assert.equal(result.sources[0].id,'crop');
+  assert.ok(JSON.stringify(fallbackRequest.contents).includes('water_need_mm'));
+  assert.ok(JSON.stringify(fallbackRequest.contents).includes('pending_action'));
+  assert.ok(!JSON.stringify(fallbackRequest.contents).includes('primary-only'));
+  assert.deepEqual(fallbackRequest.tools[0].functionDeclarations.map(tool=>tool.name),['search_data']);
+});
+
+test('primary model unavailability and quota exhaustion try the approved fallback once', async () => {
+  for (const status of [404,429]) {
+    const models=[];
+    const assistant=createAssistant({comparisonUrl:'http://comparison',apiKey:'key',fetchImpl:async url=>{
+      if(String(url).endsWith('/api/config'))return json(config);
+      models.push(String(url));return models.length===1?json({error:{status:'UNAVAILABLE'}},status):answer([{text:'Fallback ready.'}]);
+    }});
+    assert.equal((await assistant(input)).reply,'Fallback ready.');
+    assert.equal(models.length,2);assert.match(models[1],/gemini-3.1-flash-lite/);
+  }
+});
