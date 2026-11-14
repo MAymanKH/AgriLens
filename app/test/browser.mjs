@@ -110,15 +110,15 @@ try {
       assert.deepEqual(await comparison.locator('thead th').allTextContents(), ['Your rotation', alternative.id === 'water_conscious' ? 'Alternative 1' : 'Alternative 2']);
       assert.deepEqual(await comparison.locator('tbody th').allTextContents(), ['Year 1 Summer', 'Year 1 Winter', 'Year 2 Summer', 'Year 2 Winter', 'Indicative water need', 'Historical hot-day exposure', 'Crop diversity and soil']);
       for (const [i, plan] of [data.plans[0], alternative].entries()) {
-        const cells = await comparison.locator(`tbody td:nth-child(${i + 1})`).allTextContents();
+        const cells = await comparison.locator(`tbody td:not([colspan]):nth-child(${i + 1})`).allTextContents();
         for (let slot = 0; slot < 4; slot++) {
           const crop = Object.values(config.crops_by_season).flat().find(crop => crop.id === plan.crops[slot]);
           assert.equal(cells[slot], crop.name);
         }
-        assert.ok(cells[4].includes(`${plan.water_need_mm.min.toLocaleString('en')}–${plan.water_need_mm.max.toLocaleString('en')}`));
-        assert.ok(cells[5].includes(String(plan.hot_days)));
-        assert.equal(cells[6], plan.soil_note);
+        assert.equal(cells[4], plan.soil_note);
       }
+      await hasText(comparison, alternative.id === 'water_conscious' ? '44% lower' : '22% lower');
+      await hasText(comparison, 'No change (0%)');
       assert.equal(await comparison.locator('a').count(), 0);
       await card.getByRole('heading', { level: 2 }).click();
       await heading(page, 'Compare your options');
@@ -230,6 +230,7 @@ try {
       await page.route('**/api/compare', async route => {
         calls.push(route.request().postDataJSON());
         const data = rename(await fixture(arabicProfile));
+        if (arabicProfile === 'missing_metrics') data.meta.warnings.push('Crop faba_bean: water-need range is incomplete; rotation water total is Not evaluated.');
         await route.fulfill({ status: data.error ? 422 : 200, contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(data) });
       });
       assert.equal(await page.locator('#why-options').getAttribute('open'), null);
@@ -270,6 +271,7 @@ try {
       await heading(page, 'قارن البدائل');
       assert.deepEqual(calls[0], { region_id: config.region.id, baseline: ['maize', 'wheat', 'maize', 'wheat'], priority: 'water', scenario: 'average' });
       await hasText(page, 'لم يتم التقييم');
+      await hasText(page, 'فول بلدي: بيانات احتياج المياه غير مكتملة');
       await noOverflow(page);
       await page.screenshot({ path: new URL('arabic-compare-mobile.png', output).pathname, fullPage: true });
       await page.getByRole('button', { name: 'التفاصيل وتجربة ظروف السنين اللي فاتت', exact: true }).click();

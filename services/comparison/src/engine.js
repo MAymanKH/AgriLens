@@ -208,6 +208,9 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
     if (fixture) warnings.push('SYNTHETIC DEVELOPMENT FIXTURE. Not NASA measurements or agricultural recommendations.');
     if (chosen.length < 3) warnings.push(`Only ${chosen.length - 1} distinct valid alternatives are available.`);
     if (chosen.some(m => m.water.min === null)) warnings.push('Water need is Not evaluated where any crop range is incomplete.');
+    const missingWaterCrops = new Set(chosen.flatMap(m => m.crops)
+      .filter(crop => crop.water_need_mm.min === null || crop.water_need_mm.max === null).map(crop => crop.id));
+    for (const id of missingWaterCrops) warnings.push(`Crop ${id}: water-need range is incomplete; rotation water total is Not evaluated.`);
     if (chosen.some(m => m.families === null || m.legumes === null)) warnings.push('Some family or legume information is Not evaluated.');
     if (chosen.length > 1 && chosen.every(m => m.hot === chosen[0].hot)) warnings.push('Heat exposure is unchanged because these growing windows have equal threshold-day totals.');
     if (input.priority === 'water' && chosen.every(m => m.water.min === null)) warnings.push('Water ranking is Not evaluated; alternatives use heat exposure and descriptive diversity tie-breaks.');

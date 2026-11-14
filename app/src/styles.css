@@ -248,3 +248,12 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
 .assistant-log a { display: inline-block; margin-inline-end: .75rem; }
 #assistant-panel textarea { display: block; width: 100%; resize: vertical; margin: .5rem 0; padding: .5rem; font: inherit; }
 #assistant-panel button { min-height: 44px; margin-inline-end: .5rem; }
+
+.steps li, .region, .crop-control, .metrics > div, .soil-note { border-radius: 8px; }
+.setup-note { border-radius: 12px; }
+.exposure table, .direct-comparison { border-radius: 8px; overflow: hidden; }
+#assistant-panel textarea { border: 1px solid #6f7b73; border-radius: 8px; }
+.difference-cell { text-align: center; }
+.metric-difference { display: block; font-size: 1.15rem; color: var(--green); }
+.metrics dd:has(small) { font-size: 1.25rem; }
+.exposure td small { display: block; font-size: .75rem; color: var(--muted); }

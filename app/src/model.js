@@ -27,3 +27,11 @@ export function safeUrl(value) {
   try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : null; }
   catch { return null; }
 }
+
+export function percentageDifference(baseline, alternative) {
+  if (baseline === null || alternative === null || baseline === 0) return null;
+  return (alternative - baseline) / baseline * 100;
+}
+export function waterMidpoint(range) {
+  return range.min === null || range.max === null ? null : (range.min + range.max) / 2;
+}

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { percentageDifference, waterMidpoint } from '../src/model.js';
 import { render } from '../src/views.js';
 import { serviceText, visibleWarnings } from '../src/i18n.js';
 
@@ -64,4 +65,38 @@ test('service translations handle whole dynamic sentences and leave unfamiliar e
   assert.ok(serviceText('ar', sentences[7]).includes('٢٠٢٤'));
   assert.ok(serviceText('ar', sentences[7]).includes('٢٠٢٣'));
   assert.equal(serviceText('ar', 'New evidence; review it independently.'), 'New evidence; review it independently.');
+});
+
+test('percentage comparisons use the baseline and range midpoints, preserving unknowns', () => {
+  assert.equal(percentageDifference(500, 280), -44);
+  assert.equal(percentageDifference(100, 120), 20);
+  assert.equal(percentageDifference(100, 100), 0);
+  assert.equal(percentageDifference(0, 20), null);
+  assert.equal(percentageDifference(null, 20), null);
+  assert.equal(percentageDifference(20, null), null);
+  assert.equal(waterMidpoint({ min: 360, max: 640 }), 500);
+  assert.equal(waterMidpoint({ min: null, max: 640 }), null);
+});
+
+test('alternative cards show directional percentages and retain original numbers in details', async () => {
+  const result = JSON.parse(await readFile(new URL('../../fixtures/comparison/water_average.json', import.meta.url)));
+  const html = render({ ...state, result, screen: 'compare' });
+  assert.match(html, /44% lower/);
+  assert.match(html, /No change \(0%\)/);
+  assert.match(html, /Based on range midpoints/);
+  assert.ok(!html.includes('220–340'));
+  assert.match(render({ ...state, result, screen: 'details' }), /220–340/);
+  assert.match(render({ ...state, result, screen: 'compare', language: 'ar' }), /أقل بنسبة ٤٤٪/);
+});
+
+test('missing water names only affected crops while heat remains comparable', async () => {
+  const result = JSON.parse(await readFile(new URL('../../fixtures/comparison/water_average.json', import.meta.url)));
+  result.plans[1].crops = ['soybean', 'faba_bean', 'soybean', 'faba_bean'];
+  result.plans[1].water_need_mm = { min: null, max: null };
+  result.meta.warnings.push('Crop faba_bean: water-need range is incomplete; rotation water total is Not evaluated.');
+  const html = render({ ...state, result, screen: 'compare', language: 'ar' });
+  const card = html.split('data-plan="water_conscious"')[1].split('</article>')[0];
+  assert.match(card, /فول بلدي: بيانات احتياج المياه غير مكتملة/);
+  assert.match(card, /بدون تغيير/);
+  assert.ok(!html.split('data-plan="baseline"')[1].split('</article>')[0].includes('بيانات احتياج المياه غير مكتملة'));
 });

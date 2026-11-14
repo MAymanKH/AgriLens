@@ -1,4 +1,4 @@
-import { slots, slotNames, priorities, planNames, scenarioName, modeNotice, number as formatNumber, waterRange as formatWaterRange, safeUrl } from './model.js';
+import { slots, slotNames, priorities, planNames, scenarioName, modeNotice, number as formatNumber, waterRange as formatWaterRange, safeUrl, percentageDifference, waterMidpoint } from './model.js';
 import { t as translate, cropLabel, regionLabel, serviceText, visibleWarnings } from './i18n.js';
 
 export const escape = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
@@ -50,8 +50,31 @@ function localizedViews(language = 'en') {
   }
 
   function warnings(result) {
-    const messages = visibleWarnings(result.meta.warnings);
+    const messages = visibleWarnings(result.meta.warnings).filter(message => !/^Crop .+: water-need range is incomplete;/.test(message));
     return messages.length ? `<aside class="notice warnings"><h2>${icon('alert-triangle')} ${t('Before using these results')}</h2>${list(messages)}</aside>` : '';
+  }
+
+  function missingWater(plan, result, config) {
+    const missing = result.meta.warnings.flatMap(warning => {
+      const match = warning.match(/^Crop (.+): water-need range is incomplete; rotation water total is Not evaluated\.$/);
+      return match && plan.crops.includes(match[1]) ? [cropName(config, match[1])] : [];
+    });
+    return `<span>${t('Not evaluated')}</span><small>${escape(missing.length
+      ? t('{crops}: water data incomplete; rotation total unavailable.', { crops: missing.join(language === 'ar' ? '، ' : ', ') })
+      : t('Crop-water data incomplete for this rotation.'))}</small>`;
+  }
+
+  function waterValue(plan, result, config) {
+    return waterMidpoint(plan.water_need_mm) === null ? missingWater(plan, result, config)
+      : `<bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi><small>${t('mm / four growing periods')}</small>`;
+  }
+
+  function metricDifference(baseline, alternative) {
+    const difference = percentageDifference(baseline, alternative);
+    if (difference === null) return `<span>${t('Not evaluated')}</span><small>${t(baseline === 0 ? 'Baseline is zero; percentage unavailable.' : 'Data incomplete; percentage unavailable.')}</small>`;
+    const percent = new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en', { style: 'percent', maximumFractionDigits: 1 }).format(Math.abs(difference) / 100);
+    const label = difference === 0 ? 'No change (0%)' : difference < 0 ? '{percent} lower' : '{percent} higher';
+    return `<strong class="metric-difference">${escape(t(label, { percent }))}</strong><small>${t('Compared with your rotation')}</small>`;
   }
 
   function compare(state) {
@@ -59,20 +82,26 @@ function localizedViews(language = 'en') {
     return `<div class="page-heading heading-actions"><div><h1 tabindex="-1">${t('Compare your options')}</h1><p>${escape(region(config))} · ${t('Priority:')} ${t(priorities[result.priority])}</p></div>${button('setup', 'Edit choices')}</div>
       <p class="scenario-caption">${t('Showing')} ${escape(scenario(result.scenario, state.mode))}${result.meta.scenario_year === null ? '' : `, ${year(result.meta.scenario_year)}`}. ${t('Period:')} <bdi>${escape(result.meta.climate_period)}</bdi>.</p>
       ${result.plans.length < 3 ? `<p class="notice">${t(result.plans.length === 1 ? 'No other valid rotation is available.' : 'One distinct valid alternative is available.')}</p>` : ''}
-      <div class="plans">${result.plans.map(plan => `<article class="plan ${plan.id === 'baseline' ? 'baseline' : ''}" data-plan="${plan.id}"><div class="plan-heading"><h2>${t(planNames[plan.id])}</h2>${plan.id === 'baseline' ? `<span>${t('Unchanged baseline')}</span>` : ''}</div>${plan.id !== 'baseline' ? directComparison([result.plans[0], plan], config) : `${cropSequence(plan, config)}
-      <dl class="metrics"><div><dt>${icon('droplet')} ${t('Indicative water need')}</dt><dd><bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi>${plan.water_need_mm.min === null || plan.water_need_mm.max === null ? '' : `<small>${t('mm / four growing periods')}</small>`}</dd></div><div><dt>${icon('thermometer')} ${t('Historical hot-day exposure')}</dt><dd><bdi dir="ltr">${number(plan.hot_days)}</bdi>${plan.hot_days === null ? '' : `<small>${t('crop-days across the rotation')}</small>`}</dd></div></dl>
+      <div class="plans">${result.plans.map(plan => `<article class="plan ${plan.id === 'baseline' ? 'baseline' : ''}" data-plan="${plan.id}"><div class="plan-heading"><h2>${t(planNames[plan.id])}</h2>${plan.id === 'baseline' ? `<span>${t('Unchanged baseline')}</span>` : ''}</div>${plan.id !== 'baseline' ? directComparison([result.plans[0], plan], config, result) : `${cropSequence(plan, config)}
+      <dl class="metrics"><div><dt>${icon('droplet')} ${t('Indicative water need')}</dt><dd>${waterValue(plan, result, config)}</dd></div><div><dt>${icon('thermometer')} ${t('Historical hot-day exposure')}</dt><dd><bdi dir="ltr">${number(plan.hot_days)}</bdi>${plan.hot_days === null ? '' : `<small>${t('crop-days across the rotation')}</small>`}</dd></div></dl>
       <p class="soil-note"><span class="metric-label">${icon('sprout')} ${t('Crop diversity and soil')}</span><bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi></p><p class="reason" dir="auto">${escape(prose(plan.reasons[0] || t('See sources and limitations for available evidence.')))}</p>`}<p class="threshold">${result.meta.heat_threshold_c === null ? `${t('Heat threshold:')} ${t('Not evaluated')}` : `${t('Heat threshold:')} ${number(result.meta.heat_threshold_c)} ${t('°C. See details for the method.')}`}</p></article>`).join('')}</div>
       <div class="actions">${button('details', 'See details & stress test', 'primary')}</div>${warnings(result)}`;
   }
 
-  function directComparison(plans, config) {
+  function waterDifference(plans, result, config) {
+    const incomplete = [...plans].reverse().find(plan => waterMidpoint(plan.water_need_mm) === null);
+    if (incomplete) return `<small>${t(planNames[incomplete.id])}</small>${missingWater(incomplete, result, config)}`;
+    return `${metricDifference(...plans.map(plan => waterMidpoint(plan.water_need_mm)))}<small>${t('Based on range midpoints')}</small>`;
+  }
+
+  function directComparison(plans, config, result) {
     const rows = [
       ...slotNames.map((name, i) => [t(name), plan => `<div class="crop-art">${cropArt(plan.crops[i])}</div>${escape(cropName(config, plan.crops[i]))}`]),
-      [t('Indicative water need'), plan => `<bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi><small>${t('mm / four growing periods')}</small>`],
-      [t('Historical hot-day exposure'), plan => `<bdi dir="ltr">${number(plan.hot_days)}</bdi><small>${t('crop-days across the rotation')}</small>`],
+      [t('Indicative water need'), () => waterDifference(plans, result, config), true],
+      [t('Historical hot-day exposure'), () => metricDifference(plans[0].hot_days, plans[1].hot_days), true],
       [t('Crop diversity and soil'), plan => `<bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi>`],
     ];
-    return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value]) => `<tbody><tr><th scope="rowgroup" colspan="2">${label}</th></tr><tr>${plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr></tbody>`).join('')}</table></div>`;
+    return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value, shared]) => `<tbody><tr><th scope="rowgroup" colspan="2">${label}</th></tr><tr>${shared ? `<td colspan="2" class="difference-cell">${value()}</td>` : plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr></tbody>`).join('')}</table></div>`;
   }
 
   function details(state) {
@@ -83,7 +112,7 @@ function localizedViews(language = 'en') {
       <section class="scenario-panel" aria-busy="${busy}"><label for="scenario">${t('Historical scenario')}</label><select id="scenario" ${busy ? 'disabled' : ''}>${['average', 'hottest_year', 'driest_year'].map(id => `<option value="${id}" ${result.scenario === id ? 'selected' : ''} ${!config.scenarios.includes(id) ? 'disabled' : ''}>${escape(scenario(id, state.mode))}${config.scenarios.includes(id) ? '' : t(' (unavailable)')}</option>`).join('')}</select>${busy ? `<p role="status">${t('Loading the requested scenario. The previous result remains below.')}</p>` : ''}</section>
       ${errorView(state)}
       <div class="details-layout"><div><section class="exposure"><h2>${t('Historical heat exposure')}</h2><p class="scenario-caption">${t('Showing')} ${escape(scenario(result.scenario, state.mode))}${meta.scenario_year === null ? '' : `, ${year(meta.scenario_year)}`}. ${t('Climate period:')} <bdi>${escape(meta.climate_period)}</bdi>.</p><p>${t('Threshold:')} ${meta.heat_threshold_c === null ? t('Not evaluated') : `${number(meta.heat_threshold_c)} ${t('°C')}`}. ${t('Exposure is not a prediction of crop damage.')}</p>
-      <table><caption>${t('Returned plans, with fixed indicative water ranges')}</caption><thead><tr><th scope="col">${t('Rotation')}</th><th scope="col">${t('Hot-day exposure')} <span>${t('crop-days')}</span></th><th scope="col">${t('Water need')} <span>${t('mm / four growing periods')}</span></th></tr></thead><tbody>${plans.map(plan => `<tr><th scope="row">${t(planNames[plan.id])}</th><td><bdi dir="ltr">${number(plan.hot_days)}</bdi></td><td><bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi></td></tr>`).join('')}</tbody></table></section>
+      <table><caption>${t('Returned plans, with fixed indicative water ranges')}</caption><thead><tr><th scope="col">${t('Rotation')}</th><th scope="col">${t('Hot-day exposure')} <span>${t('crop-days')}</span></th><th scope="col">${t('Water need')} <span>${t('mm / four growing periods')}</span></th></tr></thead><tbody>${plans.map(plan => `<tr><th scope="row">${t(planNames[plan.id])}</th><td><bdi dir="ltr">${number(plan.hot_days)}</bdi></td><td>${waterValue(plan, result, config)}</td></tr>`).join('')}</tbody></table></section>
       ${warnings(result)}
       <div class="explanations" id="method"><details id="why-options"><summary>${t('Why these options?')}</summary>${plans.map(plan => `<section><h3>${t(planNames[plan.id])}</h3>${cropSequence(plan, config)}${list(plan.reasons)}<p><bdi>${escape(prose(plan.soil_note))}</bdi></p><p>${t('Sources:')} ${plan.source_ids.length ? plan.source_ids.map(id => `<a href="#source-${encodeURIComponent(id)}">${escape(id)}</a>`).join(', ') : t('Not evaluated')}</p></section>`).join('')}</details>
       <details id="nasa-method"><summary>${t('NASA data and method')}</summary><p>${t('Historical stress tests illustrate past conditions, not forecasts. Fixed crop-water ranges do not represent delivered irrigation or measured savings.')}</p>${meta.assumptions.length ? list(meta.assumptions) : `<p>${t('No further method assumptions were supplied.')}</p>`}</details>

@@ -207,3 +207,14 @@ test('unreviewed eligible anchors respect gaps, null declarations and earliest-y
   });
   for(const scenario of ['hottest_year','driest_year']) assert.equal(tied.compare({...input,scenario}).meta.scenario_year,2020);
 });
+
+test('missing-water warning identifies only the crop with incomplete evidence once', () => {
+  const result = setup(catalog => {
+    catalog.crops.find(crop => crop.id === 'winter_a').water_need_mm.min = null;
+  }).compare(input);
+  assert.deepEqual(result.meta.warnings.filter(warning => warning.startsWith('Crop ')), [
+    'Crop winter_a: water-need range is incomplete; rotation water total is Not evaluated.',
+  ]);
+  assert.equal(result.plans[0].water_need_mm.min, null);
+  assert.ok(result.plans[0].hot_days > 0);
+});
