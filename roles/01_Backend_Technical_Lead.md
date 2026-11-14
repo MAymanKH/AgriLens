@@ -125,3 +125,6 @@ or internal service access is added to the app. Complete assistant actions use t
 existing comparison request shape and validation; stale actions are discarded.
 See `app/README.md` for setup and `app/test/assistant.test.js`,
 `app/test/browser.mjs` and Comparison HTTP tests for acceptance evidence.
+
+The assistant uses Gemini 3.5 Flash Lite with Gemini 3.1 Flash Lite fallback,
+within the single four-request and 45-second turn budget in `START_HERE.md`.

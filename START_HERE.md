@@ -122,7 +122,12 @@ together. Crop and Climate internal APIs and storage ownership do not change.
   and URLs. The model asks for missing choices instead of inventing inputs.
 - Standard error envelopes apply. Request sizes are bounded to 64 KiB, history to
   20 messages of 4000 characters, page context to 40000 characters. Gemini calls
-  have a 45-second total deadline, four rounds maximum and no paid fallback.
+  have a 45-second total deadline, four model requests maximum and no paid fallback.
+  The owner requested `gemini-3.5-flash-lite` with `gemini-3.1-flash-lite` fallback
+  on 2026-11-14. Two consecutive temporary primary failures, primary model
+  unavailability or primary quota exhaustion switch once to 3.1. The same call
+  budget/deadline applies across both models. Retrieved evidence and a pending
+  validated action survive the switch; primary thought signatures do not.
   Quota errors return HTTP 429 with `SERVICE_UNAVAILABLE`; unavailable/configuration
   errors return 503. Chat is memory-only and New chat clears browser history.
   The owner requested a compact popup without an introductory notice on 2026-11-14.
