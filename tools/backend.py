@@ -136,13 +136,14 @@ class Stack:
         self.close()
 
 
-def independent_exposures(bundle, crop_ids):
+def independent_exposures(bundle, crop_ids, temperatures=None, period=None):
     import base64
-    raw_path = bundle['package'][1]['raw_artifact']['uri']
-    raw = json.loads(base64.b64decode(bundle['artifacts'][raw_path]))
-    temperatures = raw['properties']['parameter']['T2M_MAX']
+    if temperatures is None:
+        raw_path = bundle['package'][1]['raw_artifact']['uri']
+        raw = json.loads(base64.b64decode(bundle['artifacts'][raw_path]))
+        temperatures = raw['properties']['parameter']['T2M_MAX']
     crops = {crop['id']: crop for crop in bundle['package'][0]['crops']}
-    period = bundle['package'][1]['period']
+    period = period or bundle['package'][1]['period']
     totals = {}
     for anchor in range(period['first_year'], period['last_year'] + 1):
         total = 0
@@ -206,6 +207,14 @@ def check(stack):
     exposures = {sequence: independent_exposures(stack.bundle, sequence) for sequence in sequences}
     years = independent_scenarios(stack.bundle, exposures)
     common = set.intersection(*(set(values) for values in exposures.values()))
+    import base64
+    temperatures = {}
+    for first in (1991, 2001, 2011):
+        path = f'docs/research/power_1991_2020/raw_{first}_{first+9}.json'
+        raw = json.loads(base64.b64decode(stack.bundle['artifacts'][path]))
+        temperatures.update(raw['properties']['parameter']['T2M_MAX'])
+    reference_exposures = {sequence: independent_exposures(stack.bundle, sequence, temperatures,
+                           {'first_year': 1991, 'last_year': 2020}) for sequence in sequences}
     comparisons = 0
     baseline_heat = {}
     for sequence, priority, scenario in itertools.product(sequences, ('water', 'heat', 'soil'), config['scenarios']):
@@ -218,6 +227,15 @@ def check(stack):
         require(result['meta']['scenario_year'] == years.get(scenario), 'Independent scenario selection differs')
         if scenario != 'average':
             require(any('complete rotation coverage' in w for w in result['meta']['warnings']), 'Eligible-anchor disclosure missing')
+        reference = result['meta']['historical_reference']
+        require(reference['status'] == 'available' and reference['scientific_approval'] == 'pending', 'Historical reference unavailable or missing limitation')
+        require(reference['anchors'] == list(range(1991, 2019)), 'Reference must use 28 complete rotation anchors')
+        for plan, historic in zip(result['plans'], reference['plans']):
+            require((plan['id'], plan['crops']) == (historic['id'], historic['crops']), 'Reference is for a different rotation')
+            expected = reference_exposures[tuple(plan['crops'])]
+            require(historic['by_anchor'] == [{'year': year, 'hot_days': expected[year]} for year in reference['anchors']], 'Independent historical heat counts differ')
+            counts = list(expected.values())
+            require(historic['mean_hot_days'] == sum(counts)/len(counts) and historic['min_hot_days'] == min(counts) and historic['max_hot_days'] == max(counts), 'Historical summaries differ')
         sources = {source['id'] for source in result['meta']['sources']}
         for plan in result['plans']:
             require(set(plan['source_ids']) <= sources, 'Source reference does not resolve')

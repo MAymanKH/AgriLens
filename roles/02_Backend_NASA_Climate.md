@@ -84,3 +84,15 @@ the eligible set, selection rule and full-record extremes in assumptions/warning
 Consumers must display that scope rather than describe these as absolute record years.
 No JSON fields change. Live-mode rules and pending scientific review remain unchanged.
 See `START_HERE.md` and `docs/METHOD.md` for the authoritative exception.
+
+## Long-term heat context handoff, 2026-11-14
+
+The owner requested a visible integration of PR #2. Follow the additive
+`historical_reference` contracts in `START_HERE.md`: Climate serves the separately
+pinned 1991–2020 reference only in unreviewed mode; Comparison measures the same
+returned rotations across common complete windows; App shows a summary, chart,
+exact-value table, sources and research limitations in Details. Existing scenarios,
+ranking and water estimates remain unchanged. Current calendars allow 28 complete
+start years, 1991–2018. Missing or corrupt reference data shows unavailable without
+substituting data or breaking the current comparison. Scientific approval stays
+pending; the 2026 probe is not integrated.

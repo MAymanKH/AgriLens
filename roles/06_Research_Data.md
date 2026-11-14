@@ -64,3 +64,15 @@ Every displayed scientific value is traceable to a raw record, a documented calc
 ## Start independently
 
 Own `docs/SOURCES.md` including stable source IDs and human-readable titles, and `docs/METHOD.md` including scientific definitions and worked examples. Publish source-backed decisions incrementally in the root register without waiting for a group meeting; the Lead retains the final integration/scope decision. Backend runtime and schema work are not Research responsibilities. Final scientific audits still require actual service outputs, App screens, and presentation drafts.
+
+## Long-term heat context handoff, 2026-11-14
+
+The owner requested a visible integration of PR #2. Follow the additive
+`historical_reference` contracts in `START_HERE.md`: Climate serves the separately
+pinned 1991–2020 reference only in unreviewed mode; Comparison measures the same
+returned rotations across common complete windows; App shows a summary, chart,
+exact-value table, sources and research limitations in Details. Existing scenarios,
+ranking and water estimates remain unchanged. Current calendars allow 28 complete
+start years, 1991–2018. Missing or corrupt reference data shows unavailable without
+substituting data or breaking the current comparison. Scientific approval stays
+pending; the 2026 probe is not integrated.

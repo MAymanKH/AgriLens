@@ -255,6 +255,28 @@
       "response_file": "comparison/soil_driest_year.json"
     },
     {
+      "id": "historical_reference",
+      "service": "comparison",
+      "profile": "historical_reference",
+      "request": {
+        "method": "POST",
+        "path": "/api/compare",
+        "body": {
+          "region_id": "sample_region",
+          "baseline": [
+            "summer_a",
+            "winter_a",
+            "summer_a",
+            "winter_a"
+          ],
+          "priority": "water",
+          "scenario": "average"
+        }
+      },
+      "status": 200,
+      "response_file": "comparison/historical_reference.json"
+    },
+    {
       "id": "incomplete_scenario",
       "service": "comparison",
       "profile": "incomplete_scenario",

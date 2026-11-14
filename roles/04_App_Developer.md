@@ -105,3 +105,15 @@ See `app/README.md` for setup and `app/test/assistant.test.js`,
 
 The assistant uses Gemini 3.5 Flash Lite with Gemini 3.1 Flash Lite fallback,
 within the single four-request and 45-second turn budget in `START_HERE.md`.
+
+## Long-term heat context handoff, 2026-11-14
+
+The owner requested a visible integration of PR #2. Follow the additive
+`historical_reference` contracts in `START_HERE.md`: Climate serves the separately
+pinned 1991–2020 reference only in unreviewed mode; Comparison measures the same
+returned rotations across common complete windows; App shows a summary, chart,
+exact-value table, sources and research limitations in Details. Existing scenarios,
+ranking and water estimates remain unchanged. Current calendars allow 28 complete
+start years, 1991–2018. Missing or corrupt reference data shows unavailable without
+substituting data or breaking the current comparison. Scientific approval stays
+pending; the 2026 probe is not integrated.

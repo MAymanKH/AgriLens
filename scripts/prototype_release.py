@@ -87,6 +87,7 @@ def build(sample_baseline=None):
               'data/fixtures/mock_climate_response.json', 'data/raw/fao_crop_calendar_EG_delta.json',
               'docs/FOUR_CROP_EVIDENCE.md',
               climate['raw_artifact']['uri']]
+    inputs.extend(path.relative_to(ROOT).as_posix() for path in (ROOT / 'docs/research/power_1991_2020').glob('*.json'))
     inputs.extend(path.relative_to(ROOT).as_posix() for path in (ROOT / 'data/processed/mongodb').glob('*') if path.is_file())
     inputs = sorted(set(inputs))
     artifacts = {name: base64.b64encode((ROOT / name).read_bytes()).decode() for name in sorted(set(inputs + runtime_paths()))}

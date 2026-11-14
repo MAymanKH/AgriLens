@@ -47,7 +47,30 @@ export function validateComparison(result, request, config) {
     check(metric(plan.hot_days) && typeof plan.soil_note === 'string' && texts(plan.reasons) && texts(plan.source_ids) && plan.source_ids.every(id => sourceIds.has(id)));
   }
   check(result.plans[0].id === 'baseline' && JSON.stringify(result.plans[0].crops) === JSON.stringify(request.baseline));
+  if (meta.historical_reference !== undefined) {
+    try { validateHistoricalReference(meta.historical_reference, result.plans, meta.heat_threshold_c); }
+    catch { return { ...result, meta: { ...meta, historical_reference: { status: 'unavailable' } } }; }
+  }
   return result;
+}
+
+export function validateHistoricalReference(reference, plans, threshold) {
+  check(object(reference) && ['available', 'unavailable'].includes(reference.status));
+  if (reference.status === 'unavailable') return;
+  check(reference.scientific_approval === 'pending' && reference.climate_period === '1991-2020' && reference.heat_threshold_c === threshold);
+  check(Array.isArray(reference.anchors) && reference.anchors.length > 0 && reference.anchors.length <= 30);
+  check(reference.anchors.every((year, i, years) => Number.isInteger(year) && year >= 1991 && year <= 2020 && (i === 0 || year > years[i - 1])));
+  check(Array.isArray(reference.plans) && reference.plans.length === plans.length);
+  for (const [i, plan] of reference.plans.entries()) {
+    check(plan.id === plans[i].id && JSON.stringify(plan.crops) === JSON.stringify(plans[i].crops));
+    check([plan.mean_hot_days, plan.min_hot_days, plan.max_hot_days].every(value => typeof value === 'number' && Number.isFinite(value) && value >= 0));
+    check(Array.isArray(plan.by_anchor) && plan.by_anchor.length === reference.anchors.length);
+    check(plan.by_anchor.every((row, j) => row.year === reference.anchors[j] && Number.isInteger(row.hot_days) && row.hot_days >= 0));
+    const counts = plan.by_anchor.map(row => row.hot_days);
+    check(plan.min_hot_days === Math.min(...counts) && plan.max_hot_days === Math.max(...counts));
+    check(Math.abs(plan.mean_hot_days - counts.reduce((sum, count) => sum + count, 0) / counts.length) < 1e-9);
+  }
+  check(object(reference.provenance) && safeUrl(reference.provenance.source_url) && text(reference.provenance.retrieved_at));
 }
 
 export async function requestJson(path, { body, signal, timeoutMs = 8000 } = {}) {

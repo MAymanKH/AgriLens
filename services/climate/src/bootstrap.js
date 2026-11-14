@@ -1,3 +1,4 @@
+import { historicalReference } from "./climate/historicalReference.js";
 import cors from "cors";
 import express from "express";
 import { closeDatabase, getClimateData } from "./DB/DB.connection.js";
@@ -114,7 +115,10 @@ export const createClimateHandlers = ({
       const issue = datasetIssue(data, mode);
       if (issue) return errorResponse(res, "INSUFFICIENT_DATA", issue);
 
-      return res.status(200).json(toClimateResponse(data));
+      const body = toClimateResponse(data);
+      const reference = historicalReference(mode, regionId, body.coordinates);
+      if (reference) body.historical_reference = reference;
+      return res.status(200).json(body);
     } catch {
       return errorResponse(res, "SERVICE_UNAVAILABLE", "Climate storage is unavailable. Retry shortly.");
     }

@@ -132,6 +132,52 @@ together. Crop and Climate internal APIs and storage ownership do not change.
   errors return 503. Chat is memory-only and New chat clears browser history.
   The owner requested a compact popup without an introductory notice on 2026-11-14.
 
+### Long-term heat context, 2026-11-14
+
+The project owner requested merging PR #2, fixing its audit issues, and completing
+its user-facing integration. This authorizes the additive research-reference
+feature across Climate, Comparison and App in `unreviewed` mode. It does not
+constitute Research approval. Existing 2016–2025 selection, ranking, water ranges
+and public scenario meanings remain unchanged.
+
+Before: the 1991–2020 audit and raw data were repository-only research artifacts.
+After: Details shows the same returned rotations against that separate reference,
+using the existing inclusive whole-month Tmax >=35°C exposure convention. Only
+common complete rotation windows are included. Current calendars give 28 start
+years, 1991–2018; final winters for 2019/2020 need dates after the reference ends.
+No later-year buffer, trend, solar-based ET0, forecast or crop-damage claim is added.
+The January–May 2026 probe remains research-only.
+
+Optional additions, implemented by the providing and consuming owners together:
+
+- Internal Climate adds `historical_reference` only for matching Zankalon inputs
+  in unreviewed mode. It is `{status:"unavailable"}` on missing/invalid reference
+  files, otherwise `{status:"available",scientific_approval:"pending",region_id,
+  coordinates,period:{first_year:1991,last_year:2020},units,daily,provenance}`.
+  Units and daily row shapes match the current Climate contract. Provenance adds
+  `audit_sha256` and `artifacts:[{raw_file,sha256,request_url,retrieved_at_utc}]`.
+  Climate checks the pinned audit and raw hashes, all six variables, exact dates,
+  coordinates, units and physical consistency before serving the reference.
+- Comparison adds `meta.historical_reference` in unreviewed observed mode. It is
+  `{status:"unavailable"}` when reference data cannot be used; otherwise it contains
+  `{status:"available",scientific_approval:"pending",climate_period:"1991-2020",
+  heat_threshold_c,anchors:[year],plans:[{id,crops,mean_hot_days,min_hot_days,
+  max_hot_days,by_anchor:[{year,hot_days}]}],provenance}`. IDs, order and crops match
+  the current response plans. The arithmetic mean and range use the same sorted
+  complete anchors across those returned plans. A year anchors the first summer;
+  following slots use actual consecutive dates. Counts use crop-days.
+- App displays a summary, line chart and expandable exact-value table in Details,
+  with English/Arabic labels, original source/retrieval date, and visible research,
+  coverage and field-scale limitations. Bad optional reference data cannot replace
+  or invalidate a valid current comparison. Old servers remain compatible.
+
+The release bundle pins and backs up the reference audit/raw files separately
+from the selected MongoDB snapshots. Fixtures remain synthetic; the compact
+`fixtures/comparison/historical_reference.json` demonstrates the additive shape.
+Acceptance includes independent raw-series checks for all 144 comparisons,
+interrupted acquisition/retry, corrupt reference files, preserved current results,
+source/coverage labels, and desktop/mobile/Arabic browser checks.
+
 ## 3. Shared API contracts (authoritative)
 
 These are the common field names and meanings. **Examples are structural, not real agricultural results.** No service may change these silently. Additional optional fields are allowed only if consumers can ignore them safely.

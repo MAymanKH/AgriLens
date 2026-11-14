@@ -218,3 +218,55 @@ test('missing-water warning identifies only the crop with incomplete evidence on
   assert.equal(result.plans[0].water_need_mm.min, null);
   assert.ok(result.plans[0].hot_days > 0);
 });
+
+test('long-term context follows returned rotations and independently reproduces all complete windows', async () => {
+  const { loadHistoricalReference } = await import('../../climate/src/climate/historicalReference.js');
+  const {catalog, climate, proposal} = researchInputs();
+  climate.historical_reference = loadHistoricalReference();
+  const options = { regionId: proposal.region_id, regionName: 'Zankalon', unreviewed: true };
+  const engine = createEngine(catalog, climate, options);
+  const request = { ...input, region_id: proposal.region_id, baseline: ['maize', 'wheat', 'maize', 'wheat'] };
+  const result = engine.compare(request);
+  const reference = result.meta.historical_reference;
+  assert.equal(reference.status, 'available');
+  assert.deepEqual(reference.anchors, Array.from({ length: 28 }, (_, i) => 1991 + i));
+  const temperatures = Object.assign({}, ...[1991, 2001, 2011].map(first => read(`../docs/research/power_1991_2020/raw_${first}_${first + 9}.json`).properties.parameter.T2M_MAX));
+  for (const [index, plan] of result.plans.entries()) {
+    const historic = reference.plans[index];
+    assert.deepEqual(historic.crops, plan.crops);
+    const values = reference.anchors.map(anchor => {
+      let count = 0;
+      plan.crops.forEach((id, slot) => {
+        const crop = catalog.crops.find(c => c.id === id);
+        const { start_month: start, end_month: end } = crop.grow_window;
+        const first = anchor + Math.floor(slot / 2);
+        const last = first + (start > end ? 1 : 0);
+        for (const [date, value] of Object.entries(temperatures)) {
+          const year = Number(date.slice(0, 4)), month = Number(date.slice(4, 6));
+          if ((year > first || year === first && month >= start) && (year < last || year === last && month <= end) && value >= 35) count++;
+        }
+      });
+      return count;
+    });
+    assert.deepEqual(historic.by_anchor.map(row => row.hot_days), values);
+    assert.equal(historic.mean_hot_days, values.reduce((sum, n) => sum + n, 0) / values.length);
+    assert.equal(historic.min_hot_days, Math.min(...values));
+    assert.equal(historic.max_hot_days, Math.max(...values));
+  }
+  const previous = structuredClone(climate); delete previous.historical_reference;
+  const withoutReference = createEngine(catalog, previous, options).compare(request);
+  assert.deepEqual(result.plans, withoutReference.plans);
+  for (const scenario of ['hottest_year', 'driest_year']) {
+    const stress = engine.compare({ ...request, scenario });
+    assert.deepEqual(stress.meta.historical_reference.plans.map(p => p.crops), stress.plans.map(p => p.crops));
+  }
+  climate.historical_reference.daily.find(row => row.date === '1992-02-29').tmax_c = null;
+  const incomplete = createEngine(catalog, climate, options).compare(request).meta.historical_reference;
+  assert.equal(incomplete.status, 'available');
+  assert.ok(!incomplete.anchors.includes(1991));
+  assert.ok(incomplete.anchors.includes(1992));
+  for (const plan of incomplete.plans) assert.deepEqual(plan.by_anchor.map(row => row.year), incomplete.anchors);
+  climate.historical_reference.coordinates.lat = 0;
+  assert.deepEqual(createEngine(catalog, climate, options).compare(request).meta.historical_reference, { status: 'unavailable' });
+  assert.equal(createEngine(catalog, previous, { ...options, unreviewed: false }).compare(request).meta.historical_reference, undefined);
+});

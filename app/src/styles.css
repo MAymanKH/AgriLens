@@ -269,6 +269,21 @@ html[dir="rtl"] .header-inner .brand { align-self: center; }
 .direct-comparison tbody:has(.metric-value) td { border-inline-start: 0; }
 .direct-comparison tbody:has(.metric-value) th { padding-bottom: .5rem; }
 
+.historical-reference { margin-block: 1.5rem; }
+.historical-reference h3 { margin-block-end: .25rem; }
+.historical-reference svg { width: 100%; height: auto; direction: ltr; }
+.historical-reference svg text { font: 12px sans-serif; fill: var(--text, #263d2e); }
+.chart-axis { fill: none; stroke: #697d6d; stroke-width: 1; }
+.reference-line { fill: none; stroke: currentColor; stroke-width: 2.5; }
+.reference-series-0 { color: #176044; }
+.reference-series-1 { color: #a14d12; stroke-dasharray: 7 3; }
+.reference-series-2 { color: #6450a1; stroke-dasharray: 2 3; }
+.reference-key { display: inline-block; width: .7rem; height: .7rem; background: currentColor; margin-inline-end: .4rem; }
+.reference-limit { padding-inline-start: .8rem; border-inline-start: 3px solid #a14d12; }
+.reference-table { overflow-x: auto; }
+.historical-reference details { margin-block: 1rem; }
+.historical-reference summary { cursor: pointer; font-weight: 600; padding-block: .5rem; }
+
 .farmer-benefits { margin-block: 1rem; padding: 1rem; background: var(--cream, #f5f3e9); border-radius: 8px; }
 .farmer-benefits h3 { margin: 0; font-size: 1rem; }
 .farmer-benefits p { font-size: .8rem; }

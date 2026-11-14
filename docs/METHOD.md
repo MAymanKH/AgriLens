@@ -92,3 +92,21 @@ These totals inherit unresolved crop-range evidence and calendar overlaps. They 
 Say only that crop families and legume presence differ. Avoid claims of severe nitrogen depletion, guaranteed organic-matter restoration, salt management, compliance, or quantified soil improvement without direct applicable evidence. Qualitative diversification principles do not establish outcomes on this farm.
 
 The annual climate statistics and independent arithmetic do not complete the Research role: exact source page/table support, crop scope approval, chronological rotation validity, reviewed ET0/Kc calculations, real service outputs, App screens, and presentation claims still require review. No scientific decision is approved by running this checker.
+
+## Separate long-term heat context, 2026-11-14
+
+At the owner's request, unreviewed Details includes the audited 1991–2020 NASA
+reference as descriptive context. For each returned rotation and each candidate
+start year, apply the same inclusive month windows and count daily Tmax >=35°C
+across all four slots. Discard a start year for all displayed plans if any plan
+lacks a daily temperature in any slot. Report arithmetic mean, minimum, maximum
+and exact counts over this shared set. Current calendars retain 1991–2018, 28
+complete starts; do not extrapolate final winters after 2020. The chart is indexed
+by rotation start year, not individual calendar years or crop injury.
+
+No reference rain/solar-derived water demand, period trend, future probability or
+new extreme-year selection is calculated. Main comparison metrics, ranking and
+water estimates still use their existing inputs. Raw/audit hashes, original request
+URLs and retrieval dates travel with the reference. Coverage/basic QA is not
+scientific approval or field validation; the solar source transition still needs
+review before ET0/trend work. The 2026 supplement remains research-only.

@@ -10,7 +10,7 @@ Climate includes every date in 2020–2024, including leap days. Synthetic annua
 
 | Service | Profiles |
 |---|---|
-| Comparison | `normal`, `one_plan`, `two_plans`, `missing_metrics`, `unsupported_scenario`, `incomplete_scenario`, `insufficient_data`, `outage` |
+| Comparison | `normal`, `historical_reference`, `one_plan`, `two_plans`, `missing_metrics`, `unsupported_scenario`, `incomplete_scenario`, `insufficient_data`, `outage` |
 | Climate | `normal`, `missing_day`, `insufficient_data`, `outage` |
 | Crop | `normal`, `missing_water`, `insufficient_data`, `outage` |
 
@@ -24,3 +24,8 @@ Assistant extension examples live in `app/test/fixtures/assistant/turn.json` and
 `app/test/fixtures/assistant/knowledge.json` relative to the repository root. These app-only examples are separate from the transport manifest. They are synthetic development data, not model output
 or NASA evidence. Search requires the runnable Comparison engine rather than the
 static fixture HTTP server. See `START_HERE.md` for the additive contracts.
+
+`comparison/historical_reference.json` is a synthetic response example
+for the optional long-term heat context. Its two reference start years and counts
+are invented shape examples, not NASA measurements. Regenerate with
+`python3 tools/generate_fixtures.py`. Select the `historical_reference` HTTP profile to serve it.

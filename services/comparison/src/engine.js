@@ -71,6 +71,44 @@ export function windows(crops, anchor) {
     return [Date.UTC(year, start - 1, 1), Date.UTC(year + (start > end ? 1 : 0), end, 0)];
   });
 }
+export function historicalContext(reference, plans, { regionId, coordinates, heatThreshold }) {
+  if (reference?.status !== 'available') return { status: 'unavailable' };
+  try {
+    dataCheck(reference.scientific_approval === 'pending' && reference.period?.first_year === 1991 && reference.period?.last_year === 2020);
+    const daily = validateClimate(reference, regionId);
+    dataCheck(Math.abs(reference.coordinates.lat - coordinates.lat) <= .00051 && Math.abs(reference.coordinates.lon - coordinates.lon) <= .00051);
+    const rows = [];
+    for (let year = 1991; year <= 2020; year++) {
+      const counts = plans.map(plan => {
+        let count = 0;
+        for (const [start, end] of windows(plan.crops, year)) {
+          for (let stamp = start; stamp <= end; stamp += dayMs) {
+            const row = daily.get(stamp);
+            if (!row || row.tmax_c === null) return null;
+            if (row.tmax_c >= heatThreshold) count++;
+          }
+        }
+        return count;
+      });
+      if (counts.every(count => count !== null)) rows.push({ year, counts });
+    }
+    if (!rows.length) return { status: 'unavailable' };
+    return {
+      status: 'available', scientific_approval: 'pending', climate_period: '1991-2020',
+      heat_threshold_c: heatThreshold, anchors: rows.map(row => row.year),
+      plans: plans.map((plan, index) => {
+        const values = rows.map(row => row.counts[index]);
+        return { id: plan.id, crops: plan.crops.map(crop => crop.id),
+          mean_hot_days: values.reduce((sum, value) => sum + value, 0) / values.length,
+          min_hot_days: Math.min(...values), max_hot_days: Math.max(...values),
+          by_anchor: rows.map(row => ({ year: row.year, hot_days: row.counts[index] })),
+        };
+      }),
+      provenance: reference.provenance,
+    };
+  } catch { return { status: 'unavailable' }; }
+}
+
 function validRotation(crops) {
   if (crops.some(crop => !crop.source_ids.length || [crop.grow_window.start_month, crop.grow_window.end_month].some(v => v === null))) return false;
   const periods = windows(crops, 2020);
@@ -239,6 +277,9 @@ export function createEngine(catalog, climate, { regionId, regionName, heatThres
         limitations: ['Historical exposure is not a forecast or observed crop damage.', 'Indicative crop-water ranges are not measured irrigation savings.',
           'Family diversity and legume presence do not quantify soil improvement.', 'Calculation follows the documented prototype convention; scientific evidence review remains pending.'],
         warnings,
+        ...(unreviewed && !fixture ? { historical_reference: historicalContext(climate.historical_reference,
+          chosen.map((plan, i) => ({ ...plan, id: ['baseline', 'water_conscious', 'diverse'][i] })),
+          { regionId, coordinates: climate.coordinates, heatThreshold }) } : {}),
       },
     };
   }

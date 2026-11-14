@@ -168,3 +168,15 @@ and unsupported-schema snapshots stay unavailable. Source references, units,
 coordinates, calendars, null handling, missing dates and NASA sentinels remain checked.
 Every service emits `X-AgriLens-Data-Mode: unreviewed`, and public configuration and
 comparison warnings disclose the prototype status.
+
+## Historical reference context
+
+Unreviewed Climate now serves the separately pinned PR #2 reference through the
+optional `historical_reference` field. The release bundle includes its audit and
+three raw files in input hashes and backups. Rebuild with `scripts/prototype_release.py build --pin` after changing reference/runtime
+files, then follow the normal build,
+import, check and deployment steps. Existing MongoDB climate period/scenario
+semantics are unchanged. Reference file corruption disables only this optional
+context; a service outage never substitutes it for the selected climate snapshot.
+`tools/backend.py check` independently reproduces reference counts and summaries
+for all 144 comparisons from retained raw temperatures.

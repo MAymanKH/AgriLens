@@ -382,6 +382,43 @@ try {
     await chat.close();
   });
 
+  await run('historical reference chart and exact values work on mobile and in Arabic', async () => {
+    const history = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const p = await history.newPage();
+    await p.route('**/api/config', route => route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(config) }));
+    let available = true;
+    await p.route('**/api/compare', async route => {
+      const data = await fixture('historical_reference');
+      if (!available) data.meta.historical_reference = { status: 'unavailable' };
+      await route.fulfill({ contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(data) });
+    });
+    await p.goto(url);
+    await p.getByRole('button', { name: 'Compare rotations', exact: true }).click();
+    await hasText(p, 'Long-term heat context is available in Details.');
+    await p.getByRole('button', { name: 'See details & stress test', exact: true }).click();
+    await p.getByRole('heading', { name: 'Long-term heat context', exact: true }).waitFor();
+    assert.equal(await p.locator('.reference-line').count(), 3);
+    await p.getByText('Year-by-year values', { exact: true }).click();
+    assert.equal(await p.locator('.reference-table tbody tr').count(), 2);
+    await noOverflow(p);
+    await p.screenshot({ path: new URL('history-mobile.png', output).pathname, fullPage: true });
+    await p.locator('#language-toggle').click();
+    await p.getByRole('heading', { name: 'التعرّض للحرارة على المدى الطويل', exact: true }).waitFor();
+    await noOverflow(p);
+    await p.screenshot({ path: new URL('history-arabic-mobile.png', output).pathname, fullPage: true });
+    await p.setViewportSize({ width: 1440, height: 1000 });
+    await noOverflow(p);
+    await p.screenshot({ path: new URL('history-arabic-desktop.png', output).pathname, fullPage: true });
+    await p.locator('#language-toggle').click();
+    await p.getByRole('button', { name: 'Edit choices', exact: true }).click();
+    available = false;
+    await p.getByRole('button', { name: 'Compare rotations', exact: true }).click();
+    await p.getByRole('button', { name: 'See details & stress test', exact: true }).click();
+    await hasText(p, 'The historical reference is unavailable.');
+    assert.equal(await p.locator('.reference-line').count(), 0);
+    await history.close();
+  });
+
   if (process.env.TEST_REAL_BACKEND === '1') {
     const real = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
     const page = await real.newPage(); page.on('pageerror', error => errors.push(error.message));
@@ -394,6 +431,12 @@ try {
       assert.equal(await page.locator('[data-plan]').count(), 3); await hasText(page, '1,900–2,900');
       await page.screenshot({ path: new URL('real-compare-desktop.png', output).pathname, fullPage: true });
       await page.getByRole('button', { name: 'See details & stress test' }).click();
+      if (process.env.TEST_HISTORICAL_REFERENCE === '1') {
+        await page.getByRole('heading', { name: 'Long-term heat context', exact: true }).waitFor();
+        await hasText(page, '28 complete rotation start years: 1991–2018');
+        await page.getByText('Year-by-year values', { exact: true }).click();
+        assert.equal(await page.locator('.reference-table tbody tr').count(), 28);
+      }
       for (const [scenario, year] of [['hottest_year', '2023'], ['driest_year', '2019'], ['average', null]]) {
         await page.getByLabel('Historical scenario', { exact: true }).selectOption(scenario);
         await page.waitForFunction(() => !document.querySelector('#scenario').disabled);

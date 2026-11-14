@@ -201,3 +201,20 @@ Verify with `npm test --prefix app`, `npm test --prefix services/comparison`, an
 text escaping, unsafe source links, stale actions and Arabic mobile UI; model tests
 stub Gemini to reproduce tool calls and quota errors without consuming quota.
 A real key is required for a live model smoke test.
+
+## Long-term heat context
+
+Details adds a separate 1991–2020 heat-reference summary, line chart and expandable
+exact-value table for the currently returned rotations. It uses 28 complete start
+years, 1991–2018, with the existing crop calendars. Source, retrieval date, threshold
+and research limitations appear with the numbers in English and Arabic. Main
+comparison values and scenario controls keep their existing meaning. Editing inputs
+or changing scenarios refreshes the context with the returned rotations.
+
+Deploy Climate and Comparison together with this app. Climate reads the pinned
+reference files bundled in the backend release; no additional import, database
+selection or network download is needed. The feature is available only in
+unreviewed mode. Missing/corrupt reference files show an unavailable section while
+preserving the current comparison. Older APIs omit the section. The retained 2026
+probe is not used. Verify using the backend acceptance suite and the browser harness
+with `TEST_REAL_BACKEND=1` against the updated backend.

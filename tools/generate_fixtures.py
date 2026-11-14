@@ -113,6 +113,18 @@ def build():
         for scenario in config['scenarios']:
             req = dict(request, priority=priority, scenario=scenario)
             case(f'{priority}_{scenario}', 'comparison', '/api/compare', comparison(req), method='POST', body=req)
+    reference_example = comparison(request)
+    reference_example['meta']['historical_reference'] = {
+        'status': 'available', 'scientific_approval': 'pending', 'climate_period': '1991-2020',
+        'heat_threshold_c': 35, 'anchors': [1991, 1992],
+        'plans': [{'id': plan['id'], 'crops': plan['crops'], 'mean_hot_days': 15,
+                   'min_hot_days': 10, 'max_hot_days': 20,
+                   'by_anchor': [{'year': 1991, 'hot_days': 10}, {'year': 1992, 'hot_days': 20}]}
+                  for plan in reference_example['plans']],
+        'provenance': {'source_url': SOURCE['url'], 'retrieved_at': '2026-11-14T00:00:00Z'},
+    }
+    case('historical_reference', 'comparison', '/api/compare', reference_example,
+         method='POST', body=request, profile='historical_reference')
     error('incomplete_scenario', 'comparison', '/api/compare', 'INSUFFICIENT_DATA',
           'Fixture historical window has missing daily observations.', method='POST',
           body=dict(request, scenario='hottest_year'), status=422, profile='incomplete_scenario')
