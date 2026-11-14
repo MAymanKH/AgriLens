@@ -60,7 +60,7 @@ test('service translations handle whole dynamic sentences and leave unfamiliar e
     assert.notEqual(serviceText('ar', sentence), sentence);
     assert.equal(serviceText('en', sentence), sentence);
   }
-  assert.ok(serviceText('ar', sentences[0]).includes('لا تُتوقَّع نتائج التربة'));
+  assert.ok(serviceText('ar', sentences[0]).includes('ده مش توقع لنتائج التربة'));
   assert.ok(serviceText('ar', sentences[7]).includes('٢٠٢٤'));
   assert.ok(serviceText('ar', sentences[7]).includes('٢٠٢٣'));
   assert.equal(serviceText('ar', 'New evidence; review it independently.'), 'New evidence; review it independently.');

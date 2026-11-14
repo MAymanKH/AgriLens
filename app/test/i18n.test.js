@@ -9,7 +9,7 @@ test('Arabic labels retain API identifiers, scientific scope and unknown values'
   assert.equal(cropLabel('ar', 'maize', 'Maize'), 'ذرة شامية');
   assert.equal(cropLabel('ar', 'unknown', 'New crop'), 'New crop');
   assert.equal(regionLabel('ar', { id: 'unknown', name: 'Original region' }), 'Original region');
-  assert.equal(scenarioName('hottest_year', 'unreviewed', 'ar'), 'أشد سنة بداية مؤهلة للدورة حرارة');
+  assert.equal(scenarioName('hottest_year', 'unreviewed', 'ar'), 'أحرّ سنة تنفع نبدأ فيها الدورة');
   assert.equal(number(null, 'ar'), 'لم يتم التقييم');
   assert.equal(waterRange({ min: null, max: 0 }, 'ar'), 'لم يتم التقييم');
   assert.equal(number(0, 'ar'), '٠');

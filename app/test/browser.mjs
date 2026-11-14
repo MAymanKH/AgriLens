@@ -286,7 +286,7 @@ try {
       await page.screenshot({ path: new URL('arabic-details-mobile.png', output).pathname, fullPage: true });
       await page.setViewportSize({ width: 1440, height: 1000 }); await noOverflow(page);
       arabicProfile = 'water_hottest_year';
-      await page.getByRole('button', { name: 'حاول مرة أخرى', exact: true }).click();
+      await page.getByRole('button', { name: 'جرّب تاني', exact: true }).click();
       await page.waitForFunction(() => document.querySelector('#scenario')?.value === 'hottest_year' && !document.querySelector('#scenario').disabled);
       assert.equal(await page.getByRole('alert').count(), 0);
       await page.locator('#language-toggle').click();
