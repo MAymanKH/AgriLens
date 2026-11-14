@@ -1,0 +1,574 @@
+{
+  "catalog_probes": [
+    {
+      "short_name": "HLSL30",
+      "collection_request": "https://cmr.earthdata.nasa.gov/search/collections.json?short_name=HLSL30&page_size=20",
+      "error": null,
+      "collections": [
+        {
+          "id": "C2021957657-LPCLOUD",
+          "version": "2.0",
+          "title": "HLS Landsat Operational Land Imager Surface Reflectance and TOA Brightness Daily Global 30m v2.0",
+          "time_start": "2013-04-11T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C2021957657-LPCLOUD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "40",
+          "error": null,
+          "sample_granule": [
+            [
+              "HLS.L30.T36RUU.2024126T082327.v2.0",
+              "2024-05-05T08:23:27.979Z"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "short_name": "HLSS30",
+      "collection_request": "https://cmr.earthdata.nasa.gov/search/collections.json?short_name=HLSS30&page_size=20",
+      "error": null,
+      "collections": [
+        {
+          "id": "C2021957295-LPCLOUD",
+          "version": "2.0",
+          "title": "HLS Sentinel-2 Multi-spectral Instrument Surface Reflectance Daily Global 30m v2.0",
+          "time_start": "2015-11-28T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C2021957295-LPCLOUD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "37",
+          "error": null,
+          "sample_granule": [
+            [
+              "HLS.S30.T36RUU.2024123T082559.v2.0",
+              "2024-05-02T08:41:52.712Z"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "short_name": "ECO_L3T_JET",
+      "collection_request": "https://cmr.earthdata.nasa.gov/search/collections.json?short_name=ECO_L3T_JET&page_size=20",
+      "error": null,
+      "collections": [
+        {
+          "id": "C2076106409-LPCLOUD",
+          "version": "002",
+          "title": "ECOSTRESS Tiled Evapotranspiration Instantaneous and Daytime L3 Global 70 m V002",
+          "time_start": "2018-07-10T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C2076106409-LPCLOUD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "5",
+          "error": null,
+          "sample_granule": [
+            [
+              "ECOv002_L3T_JET_33337_007_36RUU_20240523T123126_0711_01",
+              "2024-05-23T12:31:26.506Z"
+            ]
+          ]
+        },
+        {
+          "id": "C4057232489-LPCLOUD",
+          "version": "003",
+          "title": "ECOSTRESS Tiled Evapotranspiration PT-JPL Instantaneous and Daytime L3 Global 70 m v003",
+          "time_start": "2018-07-09T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C4057232489-LPCLOUD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "0",
+          "error": null,
+          "sample_granule": []
+        }
+      ]
+    },
+    {
+      "short_name": "ECO_L2T_LSTE",
+      "collection_request": "https://cmr.earthdata.nasa.gov/search/collections.json?short_name=ECO_L2T_LSTE&page_size=20",
+      "error": null,
+      "collections": [
+        {
+          "id": "C2076090826-LPCLOUD",
+          "version": "002",
+          "title": "ECOSTRESS Tiled Land Surface Temperature and Emissivity Instantaneous L2 Global 70 m V002",
+          "time_start": "2018-07-09T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C2076090826-LPCLOUD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "33",
+          "error": null,
+          "sample_granule": [
+            [
+              "ECOv002_L2T_LSTE_33047_008_36RUU_20240504T201017_0711_01",
+              "2024-05-04T20:10:17.718Z"
+            ]
+          ]
+        },
+        {
+          "id": "C3998139651-LPCLOUD",
+          "version": "003",
+          "title": "ECOSTRESS Tiled Land Surface Temperature and Emissivity Instantaneous L2 Global 70 m V003",
+          "time_start": "2018-07-09T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C3998139651-LPCLOUD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "0",
+          "error": null,
+          "sample_granule": []
+        }
+      ]
+    },
+    {
+      "short_name": "SPL4SMGP",
+      "collection_request": "https://cmr.earthdata.nasa.gov/search/collections.json?short_name=SPL4SMGP&page_size=20",
+      "error": null,
+      "collections": [
+        {
+          "id": "C3480440870-NSIDC_CPRD",
+          "version": "008",
+          "title": "SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V008",
+          "time_start": "2015-03-31T00:00:00.000Z",
+          "time_end": null,
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C3480440870-NSIDC_CPRD&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "1475",
+          "error": null,
+          "sample_granule": [
+            [
+              "SMAP_L4_SM_gph_20240430T223000_Vv8012_001.h5_u9loH5HD",
+              "2024-04-30T21:00:00.000Z"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "short_name": "GPM_3IMERGHH",
+      "collection_request": "https://cmr.earthdata.nasa.gov/search/collections.json?short_name=GPM_3IMERGHH&page_size=20",
+      "error": null,
+      "collections": [
+        {
+          "id": "C2723754847-GES_DISC",
+          "version": "07",
+          "title": "GPM IMERG Final Precipitation L3 Half Hourly 0.1 degree x 0.1 degree V07 (GPM_3IMERGHH)",
+          "time_start": "1998-01-01T00:00:00.000Z",
+          "time_end": "2025-09-30T23:59:59.999Z",
+          "query": "https://cmr.earthdata.nasa.gov/search/granules.json?collection_concept_id=C2723754847-GES_DISC&point=31.43332%2C30.58057&temporal=2024-05-01T00%3A00%3A00Z%2C2024-10-31T23%3A59%3A59Z&page_size=1",
+          "catalog_hits": "8832",
+          "error": null,
+          "sample_granule": [
+            [
+              "GPM_3IMERGHH.07:3B-HHR.MS.MRG.3IMERG.20240501-S000000-E002959.0000.V07B.HDF5",
+              "2024-05-01T00:00:00.000Z"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "power_probes": [
+    {
+      "request": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=19910101&end=19910107&format=JSON&time-standard=LST",
+      "error": null,
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SRB",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "19910101",
+        "end": "19910107"
+      },
+      "units": {
+        "T2M_MAX": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Maximum"
+        },
+        "T2M_MIN": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Minimum"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "WS2M": {
+          "units": "m/s",
+          "longname": "Wind Speed at 2 Meters"
+        }
+      },
+      "variables": {
+        "T2M_MAX": {
+          "days": 7,
+          "valid": 7
+        },
+        "T2M_MIN": {
+          "days": 7,
+          "valid": 7
+        },
+        "RH2M": {
+          "days": 7,
+          "valid": 7
+        },
+        "PRECTOTCORR": {
+          "days": 7,
+          "valid": 7
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "days": 7,
+          "valid": 7
+        },
+        "WS2M": {
+          "days": 7,
+          "valid": 7
+        }
+      }
+    },
+    {
+      "request": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20260101&end=20260107&format=JSON&time-standard=LST",
+      "error": null,
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SYN1DEG",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20260101",
+        "end": "20260107"
+      },
+      "units": {
+        "T2M_MAX": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Maximum"
+        },
+        "T2M_MIN": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Minimum"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "WS2M": {
+          "units": "m/s",
+          "longname": "Wind Speed at 2 Meters"
+        }
+      },
+      "variables": {
+        "T2M_MAX": {
+          "days": 7,
+          "valid": 7
+        },
+        "T2M_MIN": {
+          "days": 7,
+          "valid": 7
+        },
+        "RH2M": {
+          "days": 7,
+          "valid": 7
+        },
+        "PRECTOTCORR": {
+          "days": 7,
+          "valid": 7
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "days": 7,
+          "valid": 7
+        },
+        "WS2M": {
+          "days": 7,
+          "valid": 7
+        }
+      }
+    },
+    {
+      "request": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20260101&end=20260531&format=JSON&time-standard=LST",
+      "temporal": "daily",
+      "error": null,
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SYN1DEG",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20260101",
+        "end": "20260531"
+      },
+      "units": {
+        "T2M_MAX": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Maximum"
+        },
+        "T2M_MIN": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Minimum"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "WS2M": {
+          "units": "m/s",
+          "longname": "Wind Speed at 2 Meters"
+        }
+      },
+      "variables": {
+        "T2M_MAX": {
+          "steps": 151,
+          "first": "20260101",
+          "last": "20260531",
+          "valid": 151
+        },
+        "T2M_MIN": {
+          "steps": 151,
+          "first": "20260101",
+          "last": "20260531",
+          "valid": 151
+        },
+        "RH2M": {
+          "steps": 151,
+          "first": "20260101",
+          "last": "20260531",
+          "valid": 151
+        },
+        "PRECTOTCORR": {
+          "steps": 151,
+          "first": "20260101",
+          "last": "20260531",
+          "valid": 151
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "steps": 151,
+          "first": "20260101",
+          "last": "20260531",
+          "valid": 151
+        },
+        "WS2M": {
+          "steps": 151,
+          "first": "20260101",
+          "last": "20260531",
+          "valid": 151
+        }
+      },
+      "additional_checks": {
+        "exact_expected_dates_each_variable": true,
+        "all_values_finite_numeric_nonfill": true,
+        "tmin_not_above_tmax": true
+      },
+      "retained_response": "docs/research/power_zankalon_2026_jan_may_probe.json"
+    },
+    {
+      "request": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20261101&end=20261107&format=JSON&time-standard=LST",
+      "temporal": "daily",
+      "error": null,
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "GEOSIT",
+          "FLASHFLUX",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20261101",
+        "end": "20261107"
+      },
+      "units": {
+        "T2M_MAX": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Maximum"
+        },
+        "T2M_MIN": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Minimum"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        },
+        "WS2M": {
+          "units": "m/s",
+          "longname": "Wind Speed at 2 Meters"
+        }
+      },
+      "variables": {
+        "T2M_MAX": {
+          "steps": 7,
+          "first": "20261101",
+          "last": "20261107",
+          "valid": 7
+        },
+        "T2M_MIN": {
+          "steps": 7,
+          "first": "20261101",
+          "last": "20261107",
+          "valid": 7
+        },
+        "RH2M": {
+          "steps": 7,
+          "first": "20261101",
+          "last": "20261107",
+          "valid": 7
+        },
+        "PRECTOTCORR": {
+          "steps": 7,
+          "first": "20261101",
+          "last": "20261107",
+          "valid": 7
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "steps": 7,
+          "first": "20261101",
+          "last": "20261107",
+          "valid": 7
+        },
+        "WS2M": {
+          "steps": 7,
+          "first": "20261101",
+          "last": "20261107",
+          "valid": 7
+        }
+      }
+    },
+    {
+      "request": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CT2MDEW%2CWS2M%2CPS%2CALLSKY_SFC_SW_DWN&community=AG&longitude=31.43332&latitude=30.58057&start=20240501&end=20240502&format=JSON&time-standard=LST",
+      "temporal": "hourly",
+      "error": null,
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Hourly Data",
+        "api": {
+          "version": "v2.10.4",
+          "name": "POWER Hourly API"
+        },
+        "sources": [
+          "MERRA2",
+          "SYN1DEG",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20240501",
+        "end": "20240502"
+      },
+      "units": {
+        "T2M": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters"
+        },
+        "RH2M": {
+          "units": "%",
+          "longname": "Relative Humidity at 2 Meters"
+        },
+        "T2MDEW": {
+          "units": "C",
+          "longname": "Dew/Frost Point at 2 Meters"
+        },
+        "WS2M": {
+          "units": "m/s",
+          "longname": "Wind Speed at 2 Meters"
+        },
+        "PS": {
+          "units": "kPa",
+          "longname": "Surface Pressure"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/hr",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        }
+      },
+      "variables": {
+        "T2M": {
+          "steps": 48,
+          "first": "2024050100",
+          "last": "2024050223",
+          "valid": 48
+        },
+        "RH2M": {
+          "steps": 48,
+          "first": "2024050100",
+          "last": "2024050223",
+          "valid": 48
+        },
+        "T2MDEW": {
+          "steps": 48,
+          "first": "2024050100",
+          "last": "2024050223",
+          "valid": 48
+        },
+        "WS2M": {
+          "steps": 48,
+          "first": "2024050100",
+          "last": "2024050223",
+          "valid": 48
+        },
+        "PS": {
+          "steps": 48,
+          "first": "2024050100",
+          "last": "2024050223",
+          "valid": 48
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "steps": 48,
+          "first": "2024050100",
+          "last": "2024050223",
+          "valid": 48
+        }
+      }
+    }
+  ],
+  "inspection_date": "2026-11-14",
+  "note": "Catalog hits are not QA-screened usable observations. POWER probes cover seven-day samples, a 151-day 2026 supplement, and a 48-hour sample. The separate power_1991_2020 audit covers the full thirty-year reference.",
+  "retained_2026_response_sha256": "7179c3af9ed585ee4c986304ee056efa36ac73ce60483d752d4707dd03ae8d50"
+}

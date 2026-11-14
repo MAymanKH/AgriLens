@@ -1,0 +1,245 @@
+{
+  "status": "coverage_and_basic_QA_passed",
+  "scientific_approval": "pending",
+  "request_coordinates": {
+    "lat": 30.58057,
+    "lon": 31.43332
+  },
+  "period": {
+    "start": "1991-01-01",
+    "end": "2020-12-31"
+  },
+  "chunks": [
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=19910101&end=20001231&format=JSON&time-standard=LST",
+      "raw_file": "raw_1991_2000.json",
+      "retrieved_at_utc": "2026-11-14T07:41:59.432787+00:00",
+      "sha256": "7b7853d05e868964e92f32ce3c98eb142c4808c4f71f81c4283edd4d9a0e4486",
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SRB",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "19910101",
+        "end": "20001231"
+      },
+      "response_geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.433,
+          30.581,
+          31.5
+        ]
+      },
+      "variables": {
+        "T2M_MAX": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "C"
+        },
+        "T2M_MIN": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "C"
+        },
+        "RH2M": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "%"
+        },
+        "PRECTOTCORR": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "mm/day"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "MJ/m^2/day"
+        },
+        "WS2M": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "m/s"
+        }
+      }
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20010101&end=20101231&format=JSON&time-standard=LST",
+      "raw_file": "raw_2001_2010.json",
+      "retrieved_at_utc": "2026-11-14T07:42:04.604818+00:00",
+      "sha256": "64880b01f867dbadb1b04e6df173619c58ac50a56a8ac58874e0c35684bf6b6d",
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SYN1DEG",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20010101",
+        "end": "20101231"
+      },
+      "response_geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.433,
+          30.581,
+          31.5
+        ]
+      },
+      "variables": {
+        "T2M_MAX": {
+          "expected": 3652,
+          "valid": 3652,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "C"
+        },
+        "T2M_MIN": {
+          "expected": 3652,
+          "valid": 3652,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "C"
+        },
+        "RH2M": {
+          "expected": 3652,
+          "valid": 3652,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "%"
+        },
+        "PRECTOTCORR": {
+          "expected": 3652,
+          "valid": 3652,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "mm/day"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "expected": 3652,
+          "valid": 3652,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "MJ/m^2/day"
+        },
+        "WS2M": {
+          "expected": 3652,
+          "valid": 3652,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "m/s"
+        }
+      }
+    },
+    {
+      "request_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CRH2M%2CPRECTOTCORR%2CALLSKY_SFC_SW_DWN%2CWS2M&community=AG&longitude=31.43332&latitude=30.58057&start=20110101&end=20201231&format=JSON&time-standard=LST",
+      "raw_file": "raw_2011_2020.json",
+      "retrieved_at_utc": "2026-11-14T07:42:18.926035+00:00",
+      "sha256": "424a37d9095199a7ef39c9799bb234dfd6b7305c88fffdec4ef29104e990329a",
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SYN1DEG",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "LST",
+        "start": "20110101",
+        "end": "20201231"
+      },
+      "response_geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.433,
+          30.581,
+          31.5
+        ]
+      },
+      "variables": {
+        "T2M_MAX": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "C"
+        },
+        "T2M_MIN": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "C"
+        },
+        "RH2M": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "%"
+        },
+        "PRECTOTCORR": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "mm/day"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "MJ/m^2/day"
+        },
+        "WS2M": {
+          "expected": 3653,
+          "valid": 3653,
+          "missing_dates": 0,
+          "invalid_values": 0,
+          "unit": "m/s"
+        }
+      }
+    }
+  ],
+  "expected_days": 10958,
+  "actual_days": 10958,
+  "leap_days": 8,
+  "measurements": 65748,
+  "limitations": [
+    "Coverage is not station accuracy or scientific approval.",
+    "Solar source transition requires methodological review.",
+    "Four-slot anchor windows require data through anchor+2."
+  ]
+}
