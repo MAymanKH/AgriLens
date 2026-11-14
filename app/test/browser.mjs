@@ -145,6 +145,9 @@ try {
     assert.equal(lastRequest.scenario, 'hottest_year');
   });
   await run('source references open their source and stay on details', async () => {
+    assert.equal(await page.locator('#why-options').getAttribute('open'), null);
+    await page.locator('[data-open-details="why-options"]').click();
+    assert.equal(await page.locator('#why-options').getAttribute('open'), '');
     await page.locator('a[href^="#source-"]').first().click();
     assert.equal(await page.locator('#sources').getAttribute('open'), ''); await heading(page, 'Details & historical stress test');
   });
@@ -231,7 +234,7 @@ try {
         const data = rename(await fixture(arabicProfile));
         await route.fulfill({ status: data.error ? 422 : 200, contentType: 'application/json', headers: { 'X-AgriLens-Data-Mode': 'fixture' }, body: JSON.stringify(data) });
       });
-      await page.locator('#why-options > summary').click();
+      assert.equal(await page.locator('#why-options').getAttribute('open'), null);
       await page.locator('#language-toggle').click();
       await heading(page, 'التفاصيل وتجربة ظروف السنين اللي فاتت');
       assert.equal(await page.locator('html').getAttribute('lang'), 'ar');
