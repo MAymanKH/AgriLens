@@ -59,24 +59,18 @@ function localizedViews(language = 'en') {
     return `<div class="page-heading heading-actions"><div><h1 tabindex="-1">${t('Compare your options')}</h1><p>${escape(region(config))} · ${t('Priority:')} ${t(priorities[result.priority])}</p></div>${button('setup', 'Edit choices')}</div>
       <p class="scenario-caption">${t('Showing')} ${escape(scenario(result.scenario, state.mode))}${result.meta.scenario_year === null ? '' : `, ${year(result.meta.scenario_year)}`}. ${t('Period:')} <bdi>${escape(result.meta.climate_period)}</bdi>.</p>
       ${result.plans.length < 3 ? `<p class="notice">${t(result.plans.length === 1 ? 'No other valid rotation is available.' : 'One distinct valid alternative is available.')}</p>` : ''}
-      <div class="plans">${result.plans.map(plan => `<article class="plan ${plan.id === 'baseline' ? 'baseline' : ''}" data-plan="${plan.id}"><div class="plan-heading"><h2>${t(planNames[plan.id])}</h2>${plan.id === 'baseline' ? `<span>${t('Unchanged baseline')}</span>` : ''}</div>${plan.id !== 'baseline' ? directComparison([result.plans[0], plan], config, result.meta.sources) : `${cropSequence(plan, config)}
+      <div class="plans">${result.plans.map(plan => `<article class="plan ${plan.id === 'baseline' ? 'baseline' : ''}" data-plan="${plan.id}"><div class="plan-heading"><h2>${t(planNames[plan.id])}</h2>${plan.id === 'baseline' ? `<span>${t('Unchanged baseline')}</span>` : ''}</div>${plan.id !== 'baseline' ? directComparison([result.plans[0], plan], config) : `${cropSequence(plan, config)}
       <dl class="metrics"><div><dt>${icon('droplet')} ${t('Indicative water need')}</dt><dd><bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi>${plan.water_need_mm.min === null || plan.water_need_mm.max === null ? '' : `<small>${t('mm / four growing periods')}</small>`}</dd></div><div><dt>${icon('thermometer')} ${t('Historical hot-day exposure')}</dt><dd><bdi dir="ltr">${number(plan.hot_days)}</bdi>${plan.hot_days === null ? '' : `<small>${t('crop-days across the rotation')}</small>`}</dd></div></dl>
       <p class="soil-note"><span class="metric-label">${icon('sprout')} ${t('Crop diversity and soil')}</span><bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi></p><p class="reason" dir="auto">${escape(prose(plan.reasons[0] || t('See sources and limitations for available evidence.')))}</p>`}<p class="threshold">${result.meta.heat_threshold_c === null ? `${t('Heat threshold:')} ${t('Not evaluated')}` : `${t('Heat threshold:')} ${number(result.meta.heat_threshold_c)} ${t('°C. See details for the method.')}`}</p></article>`).join('')}</div>
       <div class="actions">${button('details', 'See details & stress test', 'primary')}</div>${warnings(result)}`;
   }
 
-  function directComparison(plans, config, sources) {
-    const sourceLinks = plan => plan.source_ids.length ? plan.source_ids.map(id => {
-      const source = sources.find(source => source.id === id);
-      return `<a href="${escape(safeUrl(source.url))}" target="_blank" rel="noopener noreferrer">${escape(prose(source.title))}</a>`;
-    }).join(', ') : t('Not evaluated');
+  function directComparison(plans, config) {
     const rows = [
       ...slotNames.map((name, i) => [t(name), plan => `<div class="crop-art">${cropArt(plan.crops[i])}</div>${escape(cropName(config, plan.crops[i]))}`]),
       [t('Indicative water need'), plan => `<bdi dir="ltr">${waterRange(plan.water_need_mm)}</bdi><small>${t('mm / four growing periods')}</small>`],
       [t('Historical hot-day exposure'), plan => `<bdi dir="ltr">${number(plan.hot_days)}</bdi><small>${t('crop-days across the rotation')}</small>`],
       [t('Crop diversity and soil'), plan => `<bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi>`],
-      [t('Reasons'), plan => plan.reasons.length ? list(plan.reasons) : t('Not evaluated')],
-      [t('Sources:'), sourceLinks],
     ];
     return `<div class="direct-comparison"><table><caption class="sr-only">${t('Your rotation vs {plan}', { plan: t(planNames[plans[1].id]) })}</caption><thead><tr>${plans.map(plan => `<th scope="col">${t(planNames[plan.id])}</th>`).join('')}</tr></thead>${rows.map(([label, value]) => `<tbody><tr><th scope="rowgroup" colspan="2">${label}</th></tr><tr>${plans.map(plan => `<td>${value(plan)}</td>`).join('')}</tr></tbody>`).join('')}</table></div>`;
   }

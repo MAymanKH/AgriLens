@@ -237,8 +237,6 @@ html[dir="rtl"] .header-inner > span { text-align: start; }
 .direct-comparison td { padding-top: .25rem; }
 .direct-comparison td + td { border-inline-start: 1px solid var(--line); }
 .direct-comparison td small { display: block; font-size: .7rem; color: var(--muted); }
-.direct-comparison ul { margin: 0; padding-inline-start: 1rem; }
-.direct-comparison li { font-size: inherit; }
 
 .assistant-widget { position: fixed; inset-inline-end: 1rem; bottom: 1rem; z-index: 30; max-width: calc(100vw - 2rem); }
 .assistant-toggle { background: #173d32; color: white; border-radius: 2rem; padding: .75rem 1.1rem; box-shadow: 0 4px 16px #173d3233; }

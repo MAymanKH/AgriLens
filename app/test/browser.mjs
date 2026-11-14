@@ -108,7 +108,7 @@ try {
       const card = page.locator(`[data-plan="${alternative.id}"]`);
       const comparison = card.locator('.direct-comparison');
       assert.deepEqual(await comparison.locator('thead th').allTextContents(), ['Your rotation', alternative.id === 'water_conscious' ? 'Alternative 1' : 'Alternative 2']);
-      assert.deepEqual(await comparison.locator('tbody th').allTextContents(), ['Year 1 Summer', 'Year 1 Winter', 'Year 2 Summer', 'Year 2 Winter', 'Indicative water need', 'Historical hot-day exposure', 'Crop diversity and soil', 'Reasons', 'Sources:']);
+      assert.deepEqual(await comparison.locator('tbody th').allTextContents(), ['Year 1 Summer', 'Year 1 Winter', 'Year 2 Summer', 'Year 2 Winter', 'Indicative water need', 'Historical hot-day exposure', 'Crop diversity and soil']);
       for (const [i, plan] of [data.plans[0], alternative].entries()) {
         const cells = await comparison.locator(`tbody td:nth-child(${i + 1})`).allTextContents();
         for (let slot = 0; slot < 4; slot++) {
@@ -118,10 +118,8 @@ try {
         assert.ok(cells[4].includes(`${plan.water_need_mm.min.toLocaleString('en')}–${plan.water_need_mm.max.toLocaleString('en')}`));
         assert.ok(cells[5].includes(String(plan.hot_days)));
         assert.equal(cells[6], plan.soil_note);
-        assert.ok(plan.reasons.every(reason => cells[7].includes(reason)));
-        const links = await comparison.locator(`tbody:last-child td:nth-child(${i + 1}) a`).evaluateAll(links => links.map(link => link.href));
-        assert.deepEqual(links, plan.source_ids.map(id => data.meta.sources.find(source => source.id === id).url));
       }
+      assert.equal(await comparison.locator('a').count(), 0);
       await card.getByRole('heading', { level: 2 }).click();
       await heading(page, 'Compare your options');
     }
