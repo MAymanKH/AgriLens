@@ -297,12 +297,5 @@ html[dir="rtl"] .header-inner .brand { align-self: center; }
 .historical-reference details { margin-block: 1rem; }
 .historical-reference summary { cursor: pointer; font-weight: 600; padding-block: .5rem; }
 
-.farmer-benefits { margin-block: 1rem; padding: 1rem; background: var(--cream, #f5f3e9); border-radius: 8px; }
-.farmer-benefits h3 { margin: 0; font-size: 1rem; }
-.farmer-benefits p { font-size: .8rem; }
-.farmer-benefits dl { margin: 0; }
-.farmer-benefits dl > div { margin-block: .75rem; }
-.farmer-benefits dt { font-size: .75rem; color: var(--muted); }
-.farmer-benefits dd { margin: .2rem 0 0; font-weight: 600; }
 .farm-outcomes { margin-block: 1.5rem; max-width: 65ch; }
 .farm-outcomes h2 { font-size: 1.1rem; }

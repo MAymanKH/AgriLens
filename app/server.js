@@ -10,7 +10,6 @@ const files = new Map([
   ['/src/main.js', ['src/main.js', 'text/javascript']],
   ['/src/api.js', ['src/api.js', 'text/javascript']],
   ['/src/i18n.js', ['src/i18n.js', 'text/javascript']],
-  ['/src/farmer-benefits.js', ['src/farmer-benefits.js', 'text/javascript']],
   ['/src/model.js', ['src/model.js', 'text/javascript']],
   ['/src/views.js', ['src/views.js', 'text/javascript']],
   ['/src/styles.css', ['src/styles.css', 'text/css']],

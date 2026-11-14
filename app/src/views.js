@@ -1,4 +1,3 @@
-import { farmerBenefits } from './farmer-benefits.js';
 import { slots, slotNames, priorities, planNames, scenarioName, modeNotice, number as formatNumber, waterRange as formatWaterRange, safeUrl, percentageDifference, waterMidpoint } from './model.js';
 import { t as translate, cropLabel, regionLabel, serviceText, visibleWarnings } from './i18n.js';
 
@@ -79,28 +78,12 @@ function localizedViews(language = 'en') {
     return `<strong class="metric-difference ${difference < 0 ? 'metric-lower' : difference > 0 ? 'metric-higher' : ''}" aria-label="${escape(context)}" title="${escape(context)}">${escape(t(change, { percent }))}</strong>`;
   }
 
-  function farmerSummary(baseline, plan) {
-    const benefits = farmerBenefits(baseline, plan);
-    const amount = value => new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en', { maximumSignificantDigits: 3 }).format(Math.abs(value));
-    const water = benefits.waterChangeM3PerHectare;
-    const heat = benefits.hotDayChange;
-    const waterText = water === null ? t('Not evaluated') : water === 0 ? t('Same estimated water need')
-      : t(water < 0 ? 'About {amount} m³ less water needed per hectare' : 'About {amount} m³ more water needed per hectare', { amount: amount(water) });
-    const heatText = heat === null ? t('Not evaluated') : heat === 0 ? t('Same historical heat exposure')
-      : t(heat < 0 ? 'About {amount} fewer hot crop-days' : 'About {amount} more hot crop-days', { amount: amount(heat) });
-    return `<section class="farmer-benefits"><h3>${t('What changes for your farm?')}</h3><p>${t('Compared with your rotation, over all four growing periods.')}</p><dl>
-      <div><dt>${t('Water need')}</dt><dd>${escape(waterText)}</dd></div>
-      <div><dt>${t('Heat exposure')}</dt><dd>${escape(heatText)}</dd></div>
-      <div><dt>${t('Different crops')}</dt><dd>${escape(t('{before} in your rotation → {after} in this option', { before: number(benefits.baselineCropCount), after: number(benefits.alternativeCropCount) }))}</dd></div>
-      </dl><p class="form-hint">${t('Water uses the middle of each estimated range: 1 mm over 1 hectare equals 10 m³. This is crop water need, not water saved at the pump.')}</p><p class="form-hint">${t('A hot crop-day is one crop exposed for one day. Fewer hot days do not tell us how much harvest is saved.')}</p></section>`;
-  }
-
   function compare(state) {
     const { result, config } = state;
     return `<div class="page-heading heading-actions"><div><h1 tabindex="-1">${t('Compare your options')}</h1><p>${escape(region(config))} · ${t('Priority:')} ${t(priorities[result.priority])}</p></div>${button('setup', 'Edit choices')}</div>
       <p class="scenario-caption">${t('Showing')} ${escape(scenario(result.scenario, state.mode))}${result.meta.scenario_year === null ? '' : `, ${year(result.meta.scenario_year)}`}. ${t('Period:')} <bdi>${escape(result.meta.climate_period)}</bdi>.</p>
       ${result.plans.length < 3 ? `<p class="notice">${t(result.plans.length === 1 ? 'No other valid rotation is available.' : 'One distinct valid alternative is available.')}</p>` : ''}
-      <div class="plans">${result.plans.map(plan => `<article class="plan ${plan.id === 'baseline' ? 'baseline' : ''}" data-plan="${plan.id}"><div class="plan-heading"><h2>${t(planNames[plan.id])}</h2>${plan.id === 'baseline' ? `<span>${t('Unchanged baseline')}</span>` : ''}</div>${plan.id !== 'baseline' ? farmerSummary(result.plans[0], plan) + directComparison([result.plans[0], plan], config, result) : `${cropSequence(plan, config)}
+      <div class="plans">${result.plans.map(plan => `<article class="plan ${plan.id === 'baseline' ? 'baseline' : ''}" data-plan="${plan.id}"><div class="plan-heading"><h2>${t(planNames[plan.id])}</h2>${plan.id === 'baseline' ? `<span>${t('Unchanged baseline')}</span>` : ''}</div>${plan.id !== 'baseline' ? directComparison([result.plans[0], plan], config, result) : `${cropSequence(plan, config)}
       <dl class="metrics"><div><dt>${icon('droplet')} ${t('Indicative water need')}</dt><dd>${waterValue(plan, result, config)}</dd></div><div><dt>${icon('thermometer')} ${t('Historical hot-day exposure')}</dt><dd><bdi dir="ltr">${number(plan.hot_days)}</bdi>${plan.hot_days === null ? '' : `<small>${t('crop-days across the rotation')}</small>`}</dd></div></dl>
       <p class="soil-note"><span class="metric-label">${icon('sprout')} ${t('Crop diversity and soil')}</span><bdi>${escape(prose(plan.soil_note || t('Diversity note: Not evaluated')))}</bdi></p><p class="reason" dir="auto">${escape(prose(plan.reasons[0] || t('See sources and limitations for available evidence.')))}</p>`}<p class="threshold">${result.meta.heat_threshold_c === null ? `${t('Heat threshold:')} ${t('Not evaluated')}` : `${t('Heat threshold:')} ${number(result.meta.heat_threshold_c)} ${t('°C. See details for the method.')}`}</p></article>`).join('')}</div>
       <aside class="farm-outcomes"><h2>${t('Land saved and harvest gained')}</h2><p>${t('Not evaluated. We do not have yield or crop-loss data to calculate hectares saved, extra harvest, or the share of your crop protected.')}</p><p>${t('These options compare crops grown on the same land over two years. More crop variety does not tell us how much soil health will improve.')}</p></aside>
